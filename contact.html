@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact · Kenneth Soriano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media(max-width:600px){ .contact-grid{ grid-template-columns:1fr; } }
+
+    .contact-link {
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:22px 26px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      text-decoration:none;
+      color:var(--text);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .contact-link:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+      border-color: var(--accent);
+    }
+    .contact-icon {
+      width:44px; height:44px;
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+      overflow:hidden;
+    }
+    .contact-icon svg { width:26px; height:26px; }
+    .contact-icon img { width:28px; height:28px; object-fit:contain; }
+
+    .contact-label { font-size:0.75rem; color:var(--muted); margin-bottom:2px; }
+    .contact-value { font-size:0.9rem; font-weight:500; }
+
+    .open-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(142,186,92,0.12);
+      color: #5a8a20;
+      font-size: 0.78rem;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    .open-badge::before {
+      content:'';
+      width:6px; height:6px;
+      background:#8eba5c;
+      border-radius:50%;
+    }
+
+    /* individual icon bg colours */
+    .icon-gmail   { background: #fff0f0; }
+    .icon-linkedin{ background: #e8f3fc; }
+    .icon-whatsapp{ background: #e8f8ee; }
+    .icon-discord { background: #f0effe; }
+    .icon-github  { background: #f4f4f4; }
+    .icon-location{ background: rgba(58,184,168,0.08); }
+
+    /* Animated role ticker */
+    .nav-roles {
+      overflow: hidden;
+      height: 1.2em;
+      margin-left: 6px;
+    }
+    .nav-roles-inner {
+      display: flex;
+      flex-direction: column;
+      animation: roleTick 6s steps(1) infinite;
+    }
+    .nav-roles-inner span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+      height: 1.2em;
+      line-height: 1.2em;
+    }
+    @keyframes roleTick {
+      0%   { transform: translateY(0); }
+      33%  { transform: translateY(-1.2em); }
+      66%  { transform: translateY(-2.4em); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <span class="nav-dot"></span>
+    <span class="nav-name">Kenneth Soriano</span>
+    <div class="nav-roles">
+      <div class="nav-roles-inner">
+        <span>Jr. AI Automation Specialist</span>
+        <span>Jr. Business Analyst</span>
+        <span>Customer Success</span>
+      </div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="writing.html">Writing</a></li>
+    <li><a href="recommendations.html">Recommendations</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="openDrawer()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+  <a href="about.html">About</a>
+  <a href="experience.html">Experience</a>
+  <a href="projects.html">Projects</a>
+  <a href="writing.html">Writing</a>
+  <a href="recommendations.html">Recommendations</a>
+  <a href="contact.html" class="active">Contact</a>
+</div>
+
+<main class="page">
+  <div class="page-header fade-in">
+    <div class="page-label">Get in Touch</div>
+    <h1 class="page-title">Let's<br><em>Connect</em></h1>
+  </div>
+
+  <div class="card fade-in" style="margin-bottom:28px;">
+    <span class="open-badge">Open to Remote &amp; Open to Relocation</span>
+    <div class="card-body">
+      <p>I'm currently looking for roles in <strong>Customer Success</strong>, <strong>Business Analysis</strong>, or <strong>AI Automation</strong>. If you think there's a fit — or just want to talk shop about automation, tools, or the tech scene in Southeast Asia — feel free to reach out on any platform below.</p>
+    </div>
+    <div class="tags" style="margin-top:20px;">
+      <span class="tag tag-accent">Customer Success</span>
+      <span class="tag tag-accent">Jr. Business Analyst</span>
+      <span class="tag tag-accent">Jr. AI Automation Specialist</span>
+    </div>
+  </div>
+
+  <div class="contact-grid fade-in">
+
+    <!-- Gmail -->
+    <a class="contact-link" href="mailto:nethxkensoriano@gmail.com">
+      <div class="contact-icon icon-gmail">
+        <!-- Gmail logo SVG -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#EA4335" d="M6 40h6V21.5L4 16v21c0 1.66 1.34 3 3 3z"/>
+          <path fill="#34A853" d="M36 40h6c1.66 0 3-1.34 3-3V16l-9 5.5V40z"/>
+          <path fill="#FBBC04" d="M36 10H12L4 16v5.5L24 34l20-12.5V16L36 10z"/>
+          <path fill="#4285F4" d="M6 16l-2-1.33V37c0 1.66 1.34 3 3 3h6V21.5L6 16z"/>
+          <path fill="#C5221F" d="M4 14.67L6 16l6 5.5V10H8c-2.21 0-4 1.79-4 4v.67z"/>
+          <path fill="#1967D2" d="M44 14.67C44 12.53 42.21 11 40 11h-4v10.5L42 16l2-1.33z"/>
+          <path fill="#EA4335" d="M36 10v11.5L44 16v-1.33C44 12.53 42.21 11 40 11h-4z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">nethxkensoriano@gmail.com</div>
+      </div>
+    </a>
+
+    <!-- LinkedIn -->
+    <a class="contact-link" href="https://linkedin.com/in/kennethsorianova" target="_blank">
+      <div class="contact-icon icon-linkedin">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#0A66C2" d="M40 4H8C5.79 4 4 5.79 4 8v32c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V8c0-2.21-1.79-4-4-4z"/>
+          <path fill="#fff" d="M14.5 20h-4v14h4V20zM12.5 18c-1.38 0-2.5-1.12-2.5-2.5S11.12 13 12.5 13s2.5 1.12 2.5 2.5S13.88 18 12.5 18zM38 34h-4v-7.5c0-1.93-.58-3.25-2.29-3.25C30 23.25 29 24.42 29 26.42V34h-4V20h4v1.93c.67-1.04 1.87-1.93 3.5-1.93C35.5 20 38 21.96 38 26.25V34z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">kennethsorianova</div>
+      </div>
+    </a>
+
+    <!-- WhatsApp -->
+    <a class="contact-link" href="https://wa.me/60146630493" target="_blank">
+      <div class="contact-icon icon-whatsapp">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#25D366" d="M24 4C12.95 4 4 12.95 4 24c0 3.57.94 6.92 2.58 9.82L4 44l10.48-2.52A19.9 19.9 0 0024 44c11.05 0 20-8.95 20-20S35.05 4 24 4z"/>
+          <path fill="#fff" d="M35.03 29.6c-.49-.24-2.87-1.42-3.32-1.58-.44-.16-.77-.24-1.09.24-.32.49-1.24 1.58-1.52 1.9-.28.32-.56.36-1.05.12-.49-.24-2.07-.76-3.95-2.43-1.46-1.3-2.44-2.9-2.73-3.39-.28-.49-.03-.75.21-.99.22-.22.49-.56.73-.84.24-.28.32-.49.49-.81.16-.32.08-.61-.04-.84-.12-.24-1.09-2.63-1.49-3.6-.39-.95-.8-.82-1.09-.83H19.2c-.32 0-.85.12-1.29.61-.44.49-1.69 1.65-1.69 4.02s1.73 4.66 1.97 4.98c.24.32 3.4 5.2 8.23 7.29 1.15.5 2.05.8 2.75 1.02 1.16.37 2.21.32 3.04.19.93-.14 2.87-1.17 3.28-2.3.4-1.13.4-2.1.28-2.3-.12-.2-.44-.32-.93-.56z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">WhatsApp</div>
+        <div class="contact-value">+60 14-663 0493</div>
+      </div>
+    </a>
+
+    <!-- Discord -->
+    <a class="contact-link" href="https://discord.gg/SKZQQPZh" target="_blank">
+      <div class="contact-icon icon-discord">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#5865F2" d="M40.6 8.1A39.4 39.4 0 0031 5.5c-.4.7-.9 1.8-1.2 2.5a36.7 36.7 0 00-11.5 0C18 7.3 17.4 6.2 17 5.5a39.1 39.1 0 00-9.6 2.6C3.5 17.4 2.4 26.5 2.9 35.5c4.1 3 8 4.8 11.9 6 1-1.3 1.8-2.7 2.6-4.1-1.4-.5-2.7-1.2-4-2l1-.7c7.7 3.6 16.1 3.6 23.7 0l1 .7c-1.3.8-2.6 1.5-4 2 .8 1.4 1.6 2.8 2.6 4.1 3.9-1.2 7.8-3 11.9-6 .6-10.4-1.8-19.4-5.9-27.4zM16.6 30c-2.5 0-4.5-2.3-4.5-5s2-5 4.5-5 4.6 2.3 4.5 5c0 2.7-2 5-4.5 5zm14.8 0c-2.5 0-4.5-2.3-4.5-5s2-5 4.5-5 4.6 2.3 4.5 5c0 2.7-2 5-4.5 5z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">Discord</div>
+        <div class="contact-value">Join my server</div>
+      </div>
+    </a>
+
+    <!-- GitHub -->
+    <a class="contact-link" href="https://github.com/kennethics" target="_blank">
+      <div class="contact-icon icon-github">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#1b1f23" d="M24 4C12.95 4 4 12.95 4 24c0 8.84 5.73 16.33 13.68 18.97.99.18 1.36-.43 1.36-.96 0-.47-.02-2.05-.03-3.73-5.56 1.21-6.74-2.37-6.74-2.37-.91-2.31-2.22-2.93-2.22-2.93-1.82-1.24.14-1.22.14-1.22 2.01.14 3.07 2.07 3.07 2.07 1.79 3.07 4.69 2.18 5.83 1.67.18-1.3.7-2.18 1.27-2.68-4.44-.5-9.11-2.22-9.11-9.89 0-2.18.78-3.97 2.06-5.37-.21-.51-.9-2.54.2-5.29 0 0 1.68-.54 5.5 2.05a19.15 19.15 0 0110.01 0c3.82-2.59 5.49-2.05 5.49-2.05 1.1 2.75.41 4.78.2 5.29 1.28 1.4 2.05 3.19 2.05 5.37 0 7.69-4.68 9.38-9.14 9.87.72.62 1.36 1.84 1.36 3.71 0 2.68-.02 4.84-.02 5.5 0 .53.36 1.15 1.37.96C38.28 40.32 44 32.84 44 24 44 12.95 35.05 4 24 4z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">kennethics</div>
+      </div>
+    </a>
+
+    <!-- Location (no link) -->
+    <div class="contact-link" style="cursor:default;">
+      <div class="contact-icon icon-location">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path fill="#3ab8a8" d="M24 4C16.27 4 10 10.27 10 18c0 11.25 14 26 14 26S38 29.25 38 18C38 10.27 31.73 4 24 4zm0 19a5 5 0 110-10 5 5 0 010 10z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">Location</div>
+        <div class="contact-value">Klang, Selangor, Malaysia</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  function openDrawer()  {
+    document.getElementById('nav-drawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('nav-drawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // Close drawer if user taps outside the links area
+  document.getElementById('nav-drawer').addEventListener('click', function(e) {
+    if (e.target === this) closeDrawer();
+  });
+</script>
+
+</body>
+</html>

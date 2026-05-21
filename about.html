@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About · Kenneth Soriano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    @media(max-width:640px){ .about-grid{ grid-template-columns:1fr; } }
+    .skill-group { margin-bottom: 8px; }
+    .skill-group-title { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:10px; font-weight:500; }
+
+    /* Animated role ticker */
+    .nav-roles {
+      overflow: hidden;
+      height: 1.2em;
+      margin-left: 6px;
+    }
+    .nav-roles-inner {
+      display: flex;
+      flex-direction: column;
+      animation: roleTick 6s steps(1) infinite;
+    }
+    .nav-roles-inner span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+      height: 1.2em;
+      line-height: 1.2em;
+    }
+    @keyframes roleTick {
+      0%   { transform: translateY(0); }
+      33%  { transform: translateY(-1.2em); }
+      66%  { transform: translateY(-2.4em); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <span class="nav-dot"></span>
+    <span class="nav-name">Kenneth Soriano</span>
+    <div class="nav-roles">
+      <div class="nav-roles-inner">
+        <span>Jr. AI Automation Specialist</span>
+        <span>Jr. Business Analyst</span>
+        <span>Customer Success</span>
+      </div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="writing.html">Writing</a></li>
+    <li><a href="recommendations.html">Recommendations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="openDrawer()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+  <a href="about.html" class="active">About</a>
+  <a href="experience.html">Experience</a>
+  <a href="projects.html">Projects</a>
+  <a href="writing.html">Writing</a>
+  <a href="recommendations.html">Recommendations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<script>
+  function openDrawer()  { document.getElementById('nav-drawer').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer() { document.getElementById('nav-drawer').classList.remove('open'); document.body.style.overflow=''; }
+</script>
+
+<main class="page">
+  <div class="page-header fade-in">
+    <div class="page-label">About Me</div>
+    <h1 class="page-title">The Long<br><em>Version</em></h1>
+  </div>
+
+  <div class="card fade-in">
+    <div class="card-body">
+      <p>I'm Kenneth — based in Klang, Selangor, Malaysia, originally from the Philippines. Over the past 10+ years I've worked across fintech, BPO, banking, and digital marketing in roles that put me at the crossroads of technology and people.</p>
+      <br>
+      <p>My career started in credit and risk analysis at China Banking Corporation, where I learned how to read data and make decisions under pressure. From there I moved into customer-facing roles — at Concentrix as a Sales Advisor, then at TDCX in Kuala Lumpur supporting Stripe merchants, and later at Sharpe Two in the UAE in sales and marketing.</p>
+      <br>
+      <p>These days I'm building AI automation personal projects using n8n, and actively looking for remote roles in Customer Success, Business Analysis, or AI Automation. I'm also an active writer — posting regularly on X, Threads, and publishing articles on Substack almost every week.</p>
+    </div>
+  </div>
+
+  <div class="about-grid">
+    <div class="card fade-in">
+      <div class="card-title" style="margin-bottom:20px;">Tools & Platforms</div>
+      <div class="skill-group">
+        <div class="skill-group-title">CRM & Support</div>
+        <div class="tags">
+          <span class="tag">Stripe</span>
+          <span class="tag">Salesforce</span>
+          <span class="tag">Zendesk</span>
+          <span class="tag">Twilio</span>
+        </div>
+      </div>
+      <div class="skill-group" style="margin-top:16px;">
+        <div class="skill-group-title">Project Management</div>
+        <div class="tags">
+          <span class="tag">Jira</span>
+          <span class="tag">Confluence</span>
+        </div>
+      </div>
+      <div class="skill-group" style="margin-top:16px;">
+        <div class="skill-group-title">Productivity</div>
+        <div class="tags">
+          <span class="tag">Google Workspace</span>
+          <span class="tag">Microsoft Office</span>
+          <span class="tag">Brevo</span>
+          <span class="tag">Typefully</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-title" style="margin-bottom:20px;">AI & Automation</div>
+      <div class="skill-group">
+        <div class="skill-group-title">Automation</div>
+        <div class="tags">
+          <span class="tag tag-accent">n8n</span>
+        </div>
+      </div>
+      <div class="skill-group" style="margin-top:16px;">
+        <div class="skill-group-title">AI Models & Tools</div>
+        <div class="tags">
+          <span class="tag tag-accent">Claude</span>
+          <span class="tag tag-accent">Gemini</span>
+          <span class="tag tag-accent">Perplexity</span>
+          <span class="tag tag-accent">NotebookLM</span>
+          <span class="tag tag-accent">Apify</span>
+        </div>
+      </div>
+      <div class="skill-group" style="margin-top:16px;">
+        <div class="skill-group-title">Data</div>
+        <div class="tags">
+          <span class="tag">Excel (Intermediate + Pivot)</span>
+          <span class="tag">SQL (Beginner)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card fade-in">
+    <div class="card-title" style="margin-bottom:16px;">Outside of Work</div>
+    <div class="card-body">
+      <p>I write — a lot. On X, Threads, and Substack. Not for reach or performance. More because I think better when I type. Topics lean toward career, AI, and the messy middle of figuring things out as a professional in Southeast Asia.</p>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Experience · Kenneth Soriano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .timeline-dot {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .card-meta-left { display:flex; gap:14px; align-items:flex-start; }
+    .location-tag {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .work-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      padding: 3px 9px;
+      border-radius: 100px;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+    .work-freelance { background: rgba(232,146,74,0.12); color: #b5621a; }
+    .work-fulltime  { background: rgba(58,184,168,0.12); color: var(--teal); }
+
+    /* Animated role ticker */
+    .nav-roles {
+      overflow: hidden;
+      height: 1.2em;
+      margin-left: 6px;
+    }
+    .nav-roles-inner {
+      display: flex;
+      flex-direction: column;
+      animation: roleTick 6s steps(1) infinite;
+    }
+    .nav-roles-inner span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+      height: 1.2em;
+      line-height: 1.2em;
+    }
+    @keyframes roleTick {
+      0%   { transform: translateY(0); }
+      33%  { transform: translateY(-1.2em); }
+      66%  { transform: translateY(-2.4em); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <span class="nav-dot"></span>
+    <span class="nav-name">Kenneth Soriano</span>
+    <div class="nav-roles">
+      <div class="nav-roles-inner">
+        <span>Jr. AI Automation Specialist</span>
+        <span>Jr. Business Analyst</span>
+        <span>Customer Success</span>
+      </div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html" class="active">Experience</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="writing.html">Writing</a></li>
+    <li><a href="recommendations.html">Recommendations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="openDrawer()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+  <a href="about.html">About</a>
+  <a href="experience.html" class="active">Experience</a>
+  <a href="projects.html">Projects</a>
+  <a href="writing.html">Writing</a>
+  <a href="recommendations.html">Recommendations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<script>
+  function openDrawer()  { document.getElementById('nav-drawer').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer() { document.getElementById('nav-drawer').classList.remove('open'); document.body.style.overflow=''; }
+</script>
+
+<main class="page">
+  <div class="page-header fade-in">
+    <div class="page-label">Work History</div>
+    <h1 class="page-title">10+ Years of<br><em>Experience</em></h1>
+  </div>
+
+  <!-- Sharpe Two -->
+  <div class="card fade-in">
+    <div class="card-meta">
+      <div class="card-meta-left">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="card-title">Sales and Marketing Specialist</div>
+          <div class="card-subtitle">Sharpe Two</div>
+          <div class="location-tag">📍 United Arab Emirates</div>
+          <span class="work-type work-freelance">Freelance</span>
+        </div>
+      </div>
+      <span class="card-date">Jan 2026 – Mar 2026</span>
+    </div>
+    <div class="card-body" style="margin-top:14px;">
+      <ul>
+        <li>Engineered automated cross-platform workflows using Make and MonitoRSS, improving real-time content distribution between Discord and social media channels.</li>
+        <li>Streamlined CRM operations by integrating the core platform with Brevo and implementing automated email workflows.</li>
+        <li>Reduced manual publishing effort by setting up automated content scheduling via Typefully across all social platforms.</li>
+        <li>Produced and edited multimedia content using Opus, Veed, and Descript; managed brand presence and customer review responses on Trustpilot.</li>
+      </ul>
+    </div>
+    <div class="tags">
+      <span class="tag">Make</span>
+      <span class="tag">MonitoRSS</span>
+      <span class="tag">Brevo</span>
+      <span class="tag">Typefully</span>
+      <span class="tag">Veed</span>
+      <span class="tag">Opus</span>
+      <span class="tag">Descript</span>
+      <span class="tag">Content Marketing</span>
+    </div>
+  </div>
+
+  <!-- TDCX -->
+  <div class="card fade-in">
+    <div class="card-meta">
+      <div class="card-meta-left">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="card-title">Account Specialist</div>
+          <div class="card-subtitle">TDCX MY · Supporting Stripe Merchants</div>
+          <div class="location-tag">📍 Kuala Lumpur, Malaysia</div>
+          <span class="work-type work-fulltime">Full-time</span>
+        </div>
+      </div>
+      <span class="card-date">Nov 2023 – Feb 2026</span>
+    </div>
+    <div class="card-body" style="margin-top:14px;">
+      <ul>
+        <li>Managed complex Stripe merchant inquiries including payment disputes, account verification, onboarding, and billing — consistently achieving high CSAT, FCR, and quality scores with minimal escalations.</li>
+        <li>Developed deep expertise in Stripe's SaaS and fintech ecosystem, enabling faster resolution times and confident handling of technical and billing cases.</li>
+        <li>Maintained full adherence to compliance standards and Stripe's customer experience guidelines across all interactions.</li>
+        <li>Consistently met and exceeded KPIs throughout tenure, reflecting strong product knowledge and a results-driven work ethic.</li>
+      </ul>
+    </div>
+    <div class="tags">
+      <span class="tag tag-accent">Stripe</span>
+      <span class="tag">Zendesk</span>
+      <span class="tag">SaaS Support</span>
+      <span class="tag">Fintech</span>
+      <span class="tag">Customer Success</span>
+    </div>
+  </div>
+
+  <!-- Concentrix -->
+  <div class="card fade-in">
+    <div class="card-meta">
+      <div class="card-meta-left">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="card-title">Sales Advisor</div>
+          <div class="card-subtitle">Concentrix</div>
+          <div class="location-tag">📍 Makati, Philippines</div>
+          <span class="work-type work-fulltime">Full-time</span>
+        </div>
+      </div>
+      <span class="card-date">Feb 2020 – Oct 2023</span>
+    </div>
+    <div class="card-body" style="margin-top:14px;">
+      <ul>
+        <li>Consistently met and exceeded monthly sales targets across inbound and outbound campaigns, earning recognition as a top-performing agent.</li>
+        <li>Maintained high customer satisfaction scores by delivering personalized, solution-focused interactions on every call.</li>
+        <li>Managed high call volumes while adapting pitch strategies to diverse customer profiles, maintaining quality and compliance standards throughout.</li>
+        <li>Built lasting customer rapport through active listening, contributing to improved retention metrics and repeat business.</li>
+      </ul>
+    </div>
+    <div class="tags">
+      <span class="tag">Sales</span>
+      <span class="tag">BPO</span>
+      <span class="tag">Customer Service</span>
+      <span class="tag">Outbound</span>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

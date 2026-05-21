@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects · Kenneth Soriano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .project-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-bottom: 16px;
+    }
+    .icon-teal   { background: rgba(58,184,168,0.12); }
+    .icon-orange { background: rgba(232,146,74,0.12); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .status-active  { background: rgba(58,184,168,0.12); color: var(--teal); }
+    .status-active::before  { content:''; width:5px; height:5px; background:var(--teal); border-radius:50%; }
+    .status-soon    { background: rgba(232,146,74,0.12); color: #b5621a; }
+    .status-soon::before    { content:''; width:5px; height:5px; background:#e8924a; border-radius:50%; }
+
+    /* Animated role ticker */
+    .nav-roles {
+      overflow: hidden;
+      height: 1.2em;
+      margin-left: 6px;
+    }
+    .nav-roles-inner {
+      display: flex;
+      flex-direction: column;
+      animation: roleTick 6s steps(1) infinite;
+    }
+    .nav-roles-inner span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+      height: 1.2em;
+      line-height: 1.2em;
+    }
+    @keyframes roleTick {
+      0%   { transform: translateY(0); }
+      33%  { transform: translateY(-1.2em); }
+      66%  { transform: translateY(-2.4em); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <span class="nav-dot"></span>
+    <span class="nav-name">Kenneth Soriano</span>
+    <div class="nav-roles">
+      <div class="nav-roles-inner">
+        <span>Jr. AI Automation Specialist</span>
+        <span>Jr. Business Analyst</span>
+        <span>Customer Success</span>
+      </div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="writing.html">Writing</a></li>
+    <li><a href="recommendations.html">Recommendations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="openDrawer()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+  <a href="about.html">About</a>
+  <a href="experience.html">Experience</a>
+  <a href="projects.html" class="active">Projects</a>
+  <a href="writing.html">Writing</a>
+  <a href="recommendations.html">Recommendations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<script>
+  function openDrawer()  { document.getElementById('nav-drawer').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer() { document.getElementById('nav-drawer').classList.remove('open'); document.body.style.overflow=''; }
+</script>
+
+<main class="page">
+  <div class="page-header fade-in">
+    <div class="page-label">Projects</div>
+    <h1 class="page-title">Things I'm<br><em>Building</em></h1>
+  </div>
+
+  <!-- AI Workflow Automation -->
+  <div class="card fade-in">
+    <div class="project-icon icon-teal">🤖</div>
+    <div class="card-meta">
+      <div>
+        <div class="card-title">AI Workflow Automations</div>
+        <div class="card-subtitle">n8n · Self-initiated</div>
+      </div>
+      <span class="status-badge status-active">Active</span>
+    </div>
+    <div class="card-body" style="margin-top:14px;">
+      <p>Building personal automation workflows using n8n — an open-source tool that connects apps and automates repetitive tasks without heavy coding. Think of it as setting up a series of "if this happens, do that" rules between different software tools, powered by AI.</p>
+      <ul>
+        <li>Automating content scheduling and distribution pipelines across platforms</li>
+        <li>Connecting AI models (Claude, Gemini) to trigger actions based on inputs</li>
+        <li>Experimenting with webhook-based workflows for data processing</li>
+        <li>Building AI agents that can browse, extract, and act on web data using Apify</li>
+      </ul>
+    </div>
+    <div class="tags">
+      <span class="tag tag-accent">n8n</span>
+      <span class="tag tag-accent">Claude</span>
+      <span class="tag tag-accent">Gemini</span>
+      <span class="tag tag-accent">Apify</span>
+      <span class="tag">Automation</span>
+      <span class="tag">Webhooks</span>
+      <span class="tag">No-code</span>
+    </div>
+  </div>
+
+  <!-- Data Analysis Practice -->
+  <div class="card fade-in">
+    <div class="project-icon icon-orange">📊</div>
+    <div class="card-meta">
+      <div>
+        <div class="card-title">Data Analysis Practice</div>
+        <div class="card-subtitle">SQL & Excel · Self-study</div>
+      </div>
+      <span class="status-badge status-soon">To Be Posted Soon</span>
+    </div>
+    <div class="card-body" style="margin-top:14px;">
+      <p>Actively building data skills through hands-on practice with real datasets. SQL and Excel are the two most common tools employers ask for in Business Analyst roles — so I'm building fluency in both by working through real-world scenarios.</p>
+      <ul>
+        <li>SQL: writing queries to filter, join, and summarize data from databases</li>
+        <li>Excel: Pivot Tables, VLOOKUP, and dashboards for reporting and insights</li>
+        <li>Applying both to simulate business reporting and operational analysis</li>
+      </ul>
+    </div>
+    <div class="tags">
+      <span class="tag">SQL</span>
+      <span class="tag">MySQL</span>
+      <span class="tag">Excel</span>
+      <span class="tag">Pivot Tables</span>
+      <span class="tag">Data Analysis</span>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
