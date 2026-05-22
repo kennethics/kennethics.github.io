@@ -62,8 +62,19 @@ nav {
   margin-left: 4px;
 }
 
-/* Nav links hidden — hamburger only on all screen sizes */
+/* Nav links: hidden on index (hamburger-only), visible on inner pages */
 .nav-links {
+  display: none !important;
+}
+/* Inner pages show horizontal nav on desktop */
+.inner-page .nav-links {
+  display: flex !important;
+  gap: 20px;
+  list-style: none;
+  align-items: center;
+}
+/* Inner pages hide hamburger on desktop */
+.inner-page .nav-hamburger {
   display: none !important;
 }
 
@@ -282,6 +293,10 @@ nav {
 
   /* Hide subtitle text on mobile */
   .nav-title { display: none; }
+
+  /* On mobile: inner pages revert to hamburger-only */
+  .inner-page .nav-links    { display: none !important; }
+  .inner-page .nav-hamburger { display: flex !important; }
 
   .page { padding: 80px 20px 60px; }
   .card { padding: 20px; }
