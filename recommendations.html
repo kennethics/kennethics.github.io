@@ -338,23 +338,36 @@
 </main>
 
 <script>
+  const navDrawer = document.getElementById('nav-drawer');
+  const hamburger = document.querySelector('.nav-hamburger');
+
   function toggleDrawer() {
-    const drawer = document.getElementById('nav-drawer');
-    const isOpen = drawer.classList.contains('open');
+    const isOpen = navDrawer.classList.contains('open');
     if (isOpen) {
-      drawer.classList.remove('open');
+      navDrawer.classList.remove('open');
       document.body.style.overflow = '';
+      hamburger.setAttribute('aria-expanded', 'false');
     } else {
-      drawer.classList.add('open');
+      navDrawer.classList.add('open');
       document.body.style.overflow = 'hidden';
+      hamburger.setAttribute('aria-expanded', 'true');
     }
   }
+
   function closeDrawer() {
-    document.getElementById('nav-drawer').classList.remove('open');
+    navDrawer.classList.remove('open');
     document.body.style.overflow = '';
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
   }
-  document.getElementById('nav-drawer').addEventListener('click', function(e) {
+
+  // Close when tapping the backdrop
+  navDrawer.addEventListener('click', function(e) {
     if (e.target === this) closeDrawer();
+  });
+
+  // Close when a nav link is tapped
+  navDrawer.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', closeDrawer);
   });
 
   function submitRec() {
