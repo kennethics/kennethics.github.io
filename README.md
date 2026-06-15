@@ -1,1 +1,1 @@
-Comprehensie vibe-coded Portfolio
+Comprehensive vibe-coded Portfolio
