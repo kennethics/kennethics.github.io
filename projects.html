@@ -60,6 +60,74 @@
       66%  { transform: translateY(-2.4em); }
       100% { transform: translateY(0); }
     }
+
+    /* n8n workflow repository list */
+    .workflow-list {
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .workflow-list-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+    .workflow-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .workflow-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .workflow-info { flex: 1; min-width: 0; }
+    .workflow-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .workflow-desc {
+      font-size: 0.80rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .workflow-repo-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: rgba(58,184,168,0.12);
+      color: var(--teal);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .workflow-repo-button:hover {
+      background: rgba(58,184,168,0.2);
+      transform: translateY(-1px);
+    }
+    .workflow-repo-button span {
+      line-height: 1;
+    }
+    @media (max-width: 480px) {
+      .workflow-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
   </style>
 </head>
 <body class="inner-page">
@@ -164,9 +232,58 @@
       <span class="tag tag-accent">Claude</span>
       <span class="tag tag-accent">Gemini</span>
       <span class="tag tag-accent">Apify</span>
+      <span class="tag tag-accent">Codex</span>
       <span class="tag">Automation</span>
       <span class="tag">Webhooks</span>
       <span class="tag">No-code</span>
+    </div>
+    <div class="workflow-list">
+      <div class="workflow-list-label">Workflow Repositories</div>
+      <div class="workflow-item">
+        <div class="workflow-info">
+          <div class="workflow-name">Agentic Sales Lead Generation</div>
+          <div class="workflow-desc">This workflow automatically discovers qualified prospects, enriches lead data, generates personalized outreach emails, and sends them at scale.</div>
+        </div>
+        <a class="workflow-repo-button" href="https://github.com/kennethics/Sales-Lead-Generation" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Sales Lead Generation repository" title="Open GitHub repository">
+          <span aria-hidden="true">&#129302;</span>
+        </a>
+      </div>
+      <div class="workflow-item">
+        <div class="workflow-info">
+          <div class="workflow-name">AI Cold Email Automation</div>
+          <div class="workflow-desc">Automated cold email outreach system built with n8n, Google Sheets, Gmail, and dynamic email templates.</div>
+        </div>
+        <a class="workflow-repo-button" href="https://github.com/kennethics/For-FlowMingo---Cold-Email-Automation" target="_blank" rel="noopener noreferrer" aria-label="Open AI Cold Email Automation repository" title="Open GitHub repository">
+          <span aria-hidden="true">&#129302;</span>
+        </a>
+      </div>
+      <div class="workflow-item">
+        <div class="workflow-info">
+          <div class="workflow-name">Agentic Email Manager</div>
+          <div class="workflow-desc">An AI-powered email assistant built in n8n that can read emails, send messages, and maintain conversation memory.</div>
+        </div>
+        <a class="workflow-repo-button" href="https://github.com/kennethics/Agentic-Email-Manager" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Email Manager repository" title="Open GitHub repository">
+          <span aria-hidden="true">&#129302;</span>
+        </a>
+      </div>
+      <div class="workflow-item">
+        <div class="workflow-info">
+          <div class="workflow-name">Agentic Job Application Automation (My own version)</div>
+          <div class="workflow-desc">An AI-powered job search and application assistant built with n8n that automatically discovers jobs, finds hiring contacts, drafts tailored applications, generates customized resumes, and keeps a complete application tracking system.</div>
+        </div>
+        <a class="workflow-repo-button" href="https://github.com/kennethics/kenneth-job-application-automation" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Job Application Automation repository" title="Open GitHub repository">
+          <span aria-hidden="true">&#129302;</span>
+        </a>
+      </div>
+      <div class="workflow-item">
+        <div class="workflow-info">
+          <div class="workflow-name">Agentic Researcher (Startup Company Researcher)</div>
+          <div class="workflow-desc">An AI-powered startup intelligence workflow that researches companies and automatically stores structured business information into Google Sheets.</div>
+        </div>
+        <a class="workflow-repo-button" href="https://github.com/kennethics/startup-company-research-agent" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Researcher repository" title="Open GitHub repository">
+          <span aria-hidden="true">&#129302;</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -176,15 +293,16 @@
     <div class="card-meta">
       <div>
         <div class="card-title">Data Analysis Practice</div>
-        <div class="card-subtitle">SQL & Excel · Self-study</div>
+        <div class="card-subtitle">SQL, Excel & PowerBi · Self-study</div>
       </div>
-      <span class="status-badge status-soon">To Be Posted Soon</span>
+      <span class="status-badge status-active">Active</span>
     </div>
     <div class="card-body" style="margin-top:14px;">
-      <p>Actively building data skills through hands-on practice with real datasets. SQL and Excel are the two most common tools employers ask for in Business Analyst roles — so I'm building fluency in both by working through real-world scenarios.</p>
+      <p>Actively building data skills through hands-on practice with real datasets. SQL, Excel and PowerBi are the most common tools employers ask for in Business Analyst roles, so I'm building fluency in both by working through real-world scenarios.</p>
       <ul>
         <li>SQL: writing queries to filter, join, and summarize data from databases</li>
         <li>Excel: Pivot Tables, VLOOKUP, and dashboards for reporting and insights</li>
+        <li>PowerBi: Building dashboards and data modeling</li>
         <li>Applying both to simulate business reporting and operational analysis</li>
       </ul>
     </div>
