@@ -4,7 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!profileCard) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const frontPhoto = profileCard.querySelector('.hero-profile-card__face--front .hero-photo');
+  const avatar = profileCard.querySelector('.hero-avatar');
   let isFlipped = false;
+
+  if (avatar && frontPhoto) {
+    avatar.style.setProperty('--avatar-image', `url("${frontPhoto.src}")`);
+  }
 
   function setCardState(flipped) {
     profileCard.classList.toggle('is-flipped', flipped);
