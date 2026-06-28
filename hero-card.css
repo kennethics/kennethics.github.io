@@ -80,7 +80,7 @@
   background:
     radial-gradient(circle at 50% 12%, rgba(112, 223, 255, 0.18), transparent 26%),
     linear-gradient(180deg, rgba(3, 24, 48, 0.84), rgba(1, 44, 88, 0.32)),
-    var(--avatar-image, url("ai-avatar.png")) center/cover no-repeat;
+    var(--avatar-image, url("ai-avatar-ref.png")) center/cover no-repeat;
   background-blend-mode: overlay;
   filter: saturate(1.15) contrast(1.14) brightness(0.94) hue-rotate(-1deg);
   transform: scale(1.01);
