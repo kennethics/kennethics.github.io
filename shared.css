@@ -290,23 +290,6 @@ nav {
 .fade-in:nth-child(5) { animation-delay:0.33s; }
 .fade-in:nth-child(6) { animation-delay:0.40s; }
 
-/* ── MOBILE ── */
-@media (max-width: 768px) {
-  nav {
-    padding: 14px 20px;
-  }
-
-  /* Hide subtitle text on mobile */
-  .nav-title { display: none; }
-
-  /* On mobile: inner pages revert to hamburger-only */
-  .inner-page .nav-links    { display: none !important; }
-  .inner-page .nav-hamburger { display: flex !important; }
-
-.page { padding: 80px 20px 60px; }
-  .card { padding: 20px; }
-}
-
 /* ── HERO WAVE EMOJI ── */
 .wave {
   display: inline-block;
@@ -325,3 +308,19 @@ nav {
   100% { transform: rotate(0deg); }
 }
 
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav {
+    padding: 14px 20px;
+  }
+
+  /* Hide subtitle text on mobile */
+  .nav-title { display: none; }
+
+  /* On mobile: inner pages revert to hamburger-only */
+  .inner-page .nav-links    { display: none !important; }
+  .inner-page .nav-hamburger { display: flex !important; }
+
+  .page { padding: 80px 20px 60px; }
+  .card { padding: 20px; }
+}
