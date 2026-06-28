@@ -303,12 +303,11 @@ nav {
   .inner-page .nav-links    { display: none !important; }
   .inner-page .nav-hamburger { display: flex !important; }
 
-  .page { padding: 80px 20px 60px; }
+.page { padding: 80px 20px 60px; }
   .card { padding: 20px; }
+}
 
-  {
-
-  /* ── HERO WAVE EMOJI ── */
+/* ── HERO WAVE EMOJI ── */
 .wave {
   display: inline-block;
   transform-origin: 70% 70%;
@@ -325,3 +324,4 @@ nav {
   12%  { transform: rotate(0deg); }
   100% { transform: rotate(0deg); }
 }
+
