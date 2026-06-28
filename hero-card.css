@@ -2,6 +2,7 @@
   --hero-card-size: clamp(240px, 30vw, 320px);
   --hero-card-shadow: 0 32px 70px rgba(17, 24, 39, 0.16);
   --hero-card-border: rgba(255, 255, 255, 0.7);
+  --avatar-image: url("https://s.3daistudio.com/media/thumbnails/e1ddcd72-3c93-4643-9d68-521efbcaa5ae_thumbnail.png");
 }
 
 /* Hero profile card */
@@ -176,4 +177,21 @@
     animation: none !important;
     transition: none !important;
   }
+
+/* ── HERO WAVE EMOJI ── */
+.wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave-animation 6s infinite;
+}
+
+@keyframes wave-animation {
+  0%   { transform: rotate(0deg); }
+  2%   { transform: rotate(14deg); }
+  4%   { transform: rotate(-8deg); }
+  6%   { transform: rotate(14deg); }
+  8%   { transform: rotate(-4deg); }
+  10%  { transform: rotate(10deg); }
+  12%  { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
 }

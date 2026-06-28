@@ -290,6 +290,24 @@ nav {
 .fade-in:nth-child(5) { animation-delay:0.33s; }
 .fade-in:nth-child(6) { animation-delay:0.40s; }
 
+/* ── HERO WAVE EMOJI ── */
+.wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave-animation 6s infinite;
+}
+
+@keyframes wave-animation {
+  0%   { transform: rotate(0deg); }
+  2%   { transform: rotate(14deg); }
+  4%   { transform: rotate(-8deg); }
+  6%   { transform: rotate(14deg); }
+  8%   { transform: rotate(-4deg); }
+  10%  { transform: rotate(10deg); }
+  12%  { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   nav {
