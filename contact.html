@@ -11,36 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    @media(max-width:600px){ .contact-grid{ grid-template-columns:1fr; } }
-
-    .contact-link {
-      display:flex;
-      align-items:center;
-      gap:16px;
-      padding:22px 26px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:14px;
-      text-decoration:none;
-      color:var(--text);
-      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    }
-    .contact-link:hover {
-      transform:translateY(-2px);
-      box-shadow:0 8px 20px rgba(0,0,0,0.08);
-      border-color: var(--accent);
-    }
-    .contact-icon {
-      width:44px; height:44px;
-      border-radius:10px;
-      display:flex; align-items:center; justify-content:center;
-      flex-shrink:0;
-      overflow:hidden;
-    }
-    .contact-icon svg { width:26px; height:26px; }
-    .contact-icon img { width:28px; height:28px; object-fit:contain; }
-
     .hero-logo-links {
       display: flex;
       gap: 16px;
@@ -76,9 +46,6 @@
       display: block;
     }
 
-    .contact-label { font-size:0.75rem; color:var(--muted); margin-bottom:2px; }
-    .contact-value { font-size:0.9rem; font-weight:500; }
-
     .open-badge {
       display: inline-flex;
       align-items: center;
@@ -97,14 +64,6 @@
       background:#8eba5c;
       border-radius:50%;
     }
-
-    /* individual icon bg colours */
-    .icon-gmail   { background: #fff0f0; }
-    .icon-linkedin{ background: #e8f3fc; }
-    .icon-whatsapp{ background: #e8f8ee; }
-    .icon-discord { background: #f0effe; }
-    .icon-github  { background: #f4f4f4; }
-    .icon-location{ background: rgba(58,184,168,0.08); }
 
     /* Animated role ticker */
     .nav-roles {
@@ -195,49 +154,22 @@
     <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
       <img src="https://img.icons8.com/?size=100&id=MR3dZdlA53te&format=png&color=000000" alt="LinkedIn icon" aria-hidden="true" />
     </a>
-  </div>
-
-  <div class="contact-grid fade-in">
-    <!-- WhatsApp -->
-    <a class="contact-link" href="https://wa.me/60146630493" target="_blank">
-      <div class="contact-icon icon-whatsapp">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#25D366" d="M24 4C12.95 4 4 12.95 4 24c0 3.57.94 6.92 2.58 9.82L4 44l10.48-2.52A19.9 19.9 0 0024 44c11.05 0 20-8.95 20-20S35.05 4 24 4z"/>
-          <path fill="#fff" d="M35.03 29.6c-.49-.24-2.87-1.42-3.32-1.58-.44-.16-.77-.24-1.09.24-.32.49-1.24 1.58-1.52 1.9-.28.32-.56.36-1.05.12-.49-.24-2.07-.76-3.95-2.43-1.46-1.3-2.44-2.9-2.73-3.39-.28-.49-.03-.75.21-.99.22-.22.49-.56.73-.84.24-.28.32-.49.49-.81.16-.32.08-.61-.04-.84-.12-.24-1.09-2.63-1.49-3.6-.39-.95-.8-.82-1.09-.83H19.2c-.32 0-.85.12-1.29.61-.44.49-1.69 1.65-1.69 4.02s1.73 4.66 1.97 4.98c.24.32 3.4 5.2 8.23 7.29 1.15.5 2.05.8 2.75 1.02 1.16.37 2.21.32 3.04.19.93-.14 2.87-1.17 3.28-2.3.4-1.13.4-2.1.28-2.3-.12-.2-.44-.32-.93-.56z"/>
-        </svg>
-      </div>
-      <div>
-        <div class="contact-label">WhatsApp</div>
-        <div class="contact-value">+60 14-663 0493</div>
-      </div>
+    <a class="hero-logo-link" href="https://wa.me/60146630493" target="_blank" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#25D366" d="M24 4C12.95 4 4 12.95 4 24c0 3.57.94 6.92 2.58 9.82L4 44l10.48-2.52A19.9 19.9 0 0024 44c11.05 0 20-8.95 20-20S35.05 4 24 4z"/>
+        <path fill="#fff" d="M35.03 29.6c-.49-.24-2.87-1.42-3.32-1.58-.44-.16-.77-.24-1.09.24-.32.49-1.24 1.58-1.52 1.9-.28.32-.56.36-1.05.12-.49-.24-2.07-.76-3.95-2.43-1.46-1.3-2.44-2.9-2.73-3.39-.28-.49-.03-.75.21-.99.22-.22.49-.56.73-.84.24-.28.32-.49.49-.81.16-.32.08-.61-.04-.84-.12-.24-1.09-2.63-1.49-3.6-.39-.95-.8-.82-1.09-.83H19.2c-.32 0-.85.12-1.29.61-.44.49-1.69 1.65-1.69 4.02s1.73 4.66 1.97 4.98c.24.32 3.4 5.2 8.23 7.29 1.15.5 2.05.8 2.75 1.02 1.16.37 2.21.32 3.04.19.93-.14 2.87-1.17 3.28-2.3.4-1.13.4-2.1.28-2.3-.12-.2-.44-.32-.93-.56z"/>
+      </svg>
     </a>
-
-    <!-- GitHub -->
-    <a class="contact-link" href="https://github.com/kennethics" target="_blank">
-      <div class="contact-icon icon-github">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#1b1f23" d="M24 4C12.95 4 4 12.95 4 24c0 8.84 5.73 16.33 13.68 18.97.99.18 1.36-.43 1.36-.96 0-.47-.02-2.05-.03-3.73-5.56 1.21-6.74-2.37-6.74-2.37-.91-2.31-2.22-2.93-2.22-2.93-1.82-1.24.14-1.22.14-1.22 2.01.14 3.07 2.07 3.07 2.07 1.79 3.07 4.69 2.18 5.83 1.67.18-1.3.7-2.18 1.27-2.68-4.44-.5-9.11-2.22-9.11-9.89 0-2.18.78-3.97 2.06-5.37-.21-.51-.9-2.54.2-5.29 0 0 1.68-.54 5.5 2.05a19.15 19.15 0 0110.01 0c3.82-2.59 5.49-2.05 5.49-2.05 1.1 2.75.41 4.78.2 5.29 1.28 1.4 2.05 3.19 2.05 5.37 0 7.69-4.68 9.38-9.14 9.87.72.62 1.36 1.84 1.36 3.71 0 2.68-.02 4.84-.02 5.5 0 .53.36 1.15 1.37.96C38.28 40.32 44 32.84 44 24 44 12.95 35.05 4 24 4z"/>
-        </svg>
-      </div>
-      <div>
-        <div class="contact-label">GitHub</div>
-        <div class="contact-value">kennethics</div>
-      </div>
+    <a class="hero-logo-link" href="https://github.com/kennethics" target="_blank" title="GitHub" aria-label="View GitHub profile">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#1b1f23" d="M24 4C12.95 4 4 12.95 4 24c0 8.84 5.73 16.33 13.68 18.97.99.18 1.36-.43 1.36-.96 0-.47-.02-2.05-.03-3.73-5.56 1.21-6.74-2.37-6.74-2.37-.91-2.31-2.22-2.93-2.22-2.93-1.82-1.24.14-1.22.14-1.22 2.01.14 3.07 2.07 3.07 2.07 1.79 3.07 4.69 2.18 5.83 1.67.18-1.3.7-2.18 1.27-2.68-4.44-.5-9.11-2.22-9.11-9.89 0-2.18.78-3.97 2.06-5.37-.21-.51-.9-2.54.2-5.29 0 0 1.68-.54 5.5 2.05a19.15 19.15 0 0110.01 0c3.82-2.59 5.49-2.05 5.49-2.05 1.1 2.75.41 4.78.2 5.29 1.28 1.4 2.05 3.19 2.05 5.37 0 7.69-4.68 9.38-9.14 9.87.72.62 1.36 1.84 1.36 3.71 0 2.68-.02 4.84-.02 5.5 0 .53.36 1.15 1.37.96C38.28 40.32 44 32.84 44 24 44 12.95 35.05 4 24 4z"/>
+      </svg>
     </a>
-
-    <!-- Location → Google Maps -->
-    <a class="contact-link" href="https://www.google.com/maps/search/Klang,+Selangor,+Malaysia" target="_blank">
-      <div class="contact-icon icon-location">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
-          <path fill="#3ab8a8" d="M24 4C16.27 4 10 10.27 10 18c0 11.25 14 26 14 26S38 29.25 38 18C38 10.27 31.73 4 24 4zm0 19a5 5 0 110-10 5 5 0 010 10z"/>
-        </svg>
-      </div>
-      <div>
-        <div class="contact-label">Location</div>
-        <div class="contact-value">Klang, Selangor, Malaysia</div>
-      </div>
+    <a class="hero-logo-link" id="location-link" href="https://www.google.com/maps/search/Klang,+Selangor,+Malaysia" target="_blank" title="My Location" aria-label="Find my current location on Google Maps">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#3ab8a8" d="M24 4C16.27 4 10 10.27 10 18c0 11.25 14 26 14 26S38 29.25 38 18C38 10.27 31.73 4 24 4zm0 19a5 5 0 110-10 5 5 0 010 10z"/>
+      </svg>
     </a>
-
   </div>
 </main>
 
@@ -273,6 +205,60 @@
   navDrawer.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', closeDrawer);
   });
+
+  // Location icon: request the browser's location permission, reverse-geocode
+  // the coordinates to a city/country via OpenStreetMap's free Nominatim API,
+  // then open Google Maps centered on that location. If permission is denied
+  // (or geolocation/lookup fails for any reason), fall back to the existing
+  // Google Maps link already set as this icon's href.
+  const locationLink = document.getElementById('location-link');
+  if (locationLink) {
+    locationLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      const fallbackUrl = locationLink.getAttribute('href');
+
+      if (!navigator.geolocation) {
+        window.open(fallbackUrl, '_blank', 'noopener');
+        return;
+      }
+
+      // Open the tab synchronously, inside the click handler, so browsers don't
+      // block it as a popup once the async geolocation + fetch lookup resolves.
+      const mapTab = window.open('', '_blank', 'noopener');
+
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1', {
+            headers: { 'Accept-Language': 'en' }
+          })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+              const addr = (data && data.address) || {};
+              const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
+              const country = addr.country || '';
+              const query = [city, country].filter(Boolean).join(', ');
+              const mapsUrl = query
+                ? 'https://www.google.com/maps/search/' + encodeURIComponent(query)
+                : fallbackUrl;
+              if (mapTab) { mapTab.location.href = mapsUrl; }
+              else { window.open(mapsUrl, '_blank', 'noopener'); }
+            })
+            .catch(function () {
+              if (mapTab) { mapTab.location.href = fallbackUrl; }
+              else { window.open(fallbackUrl, '_blank', 'noopener'); }
+            });
+        },
+        function () {
+          // Permission denied, timed out, or position unavailable
+          if (mapTab) { mapTab.location.href = fallbackUrl; }
+          else { window.open(fallbackUrl, '_blank', 'noopener'); }
+        },
+        { timeout: 8000, maximumAge: 300000 }
+      );
+    });
+  }
 </script>
 
 </body>
