@@ -224,7 +224,14 @@
 
       // Open the tab synchronously, inside the click handler, so browsers don't
       // block it as a popup once the async geolocation + fetch lookup resolves.
-      const mapTab = window.open('', '_blank', 'noopener');
+      // IMPORTANT: do NOT pass 'noopener' here — browsers return null instead of
+      // a window reference when 'noopener' is set, which left this tab blank
+      // forever. We strip .opener manually below instead, to keep the same
+      // security benefit while still holding a usable reference.
+      const mapTab = window.open('', '_blank');
+      if (mapTab) {
+        try { mapTab.opener = null; } catch (err) { /* ignore */ }
+      }
 
       navigator.geolocation.getCurrentPosition(
         function (position) {
