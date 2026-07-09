@@ -207,31 +207,40 @@
   98%           { opacity: 1; }
 }
 
-/* ── Independent waving hand layer (separate cutout, not the whole avatar) ── */
+/* ── Subtle hand wave: SAME base image, clipped to hand+forearm region ──
+   Using the identical source image (not a separately generated cutout)
+   guarantees the "wave" layer is pixel-perfect identical to the hand
+   already drawn in the artwork — zero risk of a mismatched/doubled hand,
+   because there is only ever one hand image, shown twice at the same spot. */
 
-.hero-avatar-hand {
+.hero-avatar-hand-wave {
   position: absolute;
-  width: 42%;
-  height: 42%;
-  left: 2%;
-  bottom: 6%;
-  object-fit: contain;
-  transform-origin: 85% 90%; /* wrist pivot — bottom-right of the hand image */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
   pointer-events: none;
   z-index: 6; /* above blink crossfade, below border ring */
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+  /* Clip to hand + wrist + forearm only, measured against a % grid
+     on the source image: fingertips start ~38% down, hand+forearm
+     stay within the left ~40% of the frame. Generous margin included
+     so a subtle rotation never reveals a hard clip edge. */
+  clip-path: inset(36% 60% 0% 0%);
+  /* Pivot near the wrist (~20% from left, ~62% from top) so the
+     forearm above the elbow stays visually anchored while only the
+     hand arcs — matches natural wrist-only wave motion. */
+  transform-origin: 20% 62%;
 }
 
-.hero-profile-card.is-flipped .hero-avatar-hand {
-  animation: avatarHandWave 2.4s ease-in-out 0.4s 3 both;
+.hero-profile-card.is-flipped .hero-avatar-hand-wave {
+  animation: avatarHandWaveSubtle 2.6s ease-in-out 0.5s 2 both;
 }
 
-@keyframes avatarHandWave {
+@keyframes avatarHandWaveSubtle {
   0%   { transform: rotate(0deg); }
-  15%  { transform: rotate(-16deg); }
-  30%  { transform: rotate(14deg); }
-  45%  { transform: rotate(-14deg); }
-  60%  { transform: rotate(12deg); }
-  75%  { transform: rotate(-6deg); }
+  25%  { transform: rotate(-4deg); }
+  50%  { transform: rotate(3deg); }
+  75%  { transform: rotate(-2deg); }
   100% { transform: rotate(0deg); }
 }
