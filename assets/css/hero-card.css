@@ -207,11 +207,18 @@
   98%           { opacity: 1; }
 }
 
-/* ── Subtle hand wave: SAME base image, clipped to hand+forearm region ──
-   Using the identical source image (not a separately generated cutout)
-   guarantees the "wave" layer is pixel-perfect identical to the hand
-   already drawn in the artwork — zero risk of a mismatched/doubled hand,
-   because there is only ever one hand image, shown twice at the same spot. */
+/* ── Subtle hand wave: SAME base image, SOFT-MASKED to the hand region ──
+   Same identical source image as before (not a separate cutout), so the
+   hand itself can never mismatch. This version replaces the old hard
+   clip-path rectangle with a feathered radial mask.
+
+   Why: rotating a HARD rectangular clip also rotates its edge, so the
+   boundary sweeps across the forearm at an angle mid-animation and
+   exposes a visible seam against the static layer underneath — that
+   caused the "duplicated wrist" artifact. A soft gradient mask instead
+   fades this layer to fully transparent well before it reaches the
+   wrist/forearm junction, so any tiny rotational offset blends away
+   invisibly instead of cutting a hard line. */
 
 .hero-avatar-hand-wave {
   position: absolute;
@@ -222,15 +229,16 @@
   object-position: center top;
   pointer-events: none;
   z-index: 6; /* above blink crossfade, below border ring */
-  /* Clip to hand + wrist + forearm only, measured against a % grid
-     on the source image: fingertips start ~38% down, hand+forearm
-     stay within the left ~40% of the frame. Generous margin included
-     so a subtle rotation never reveals a hard clip edge. */
-  clip-path: inset(36% 60% 0% 0%);
-  /* Pivot near the wrist (~20% from left, ~62% from top) so the
-     forearm above the elbow stays visually anchored while only the
-     hand arcs — matches natural wrist-only wave motion. */
-  transform-origin: 20% 62%;
+  /* Ellipse centered over the palm, fully opaque through the fingers
+     and most of the palm, then fading to 0 opacity well before the
+     wrist — the fade zone absorbs any rotation offset. */
+  -webkit-mask-image: radial-gradient(ellipse 20% 22% at 15% 54%, #000 0%, #000 45%, transparent 78%);
+          mask-image: radial-gradient(ellipse 20% 22% at 15% 54%, #000 0%, #000 45%, transparent 78%);
+  /* Pivot sits INSIDE the opaque zone (mid-palm), not at the wrist —
+     keeps rotation confined to where the mask is fully solid.
+     Measured against a % grid on the source artwork so the ellipse
+     hugs the fingers+palm and stays fully transparent by the wrist. */
+  transform-origin: 15% 54%;
 }
 
 .hero-profile-card.is-flipped .hero-avatar-hand-wave {
