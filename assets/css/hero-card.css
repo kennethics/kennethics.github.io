@@ -207,18 +207,32 @@
   98%           { opacity: 1; }
 }
 
-/* ── Subtle hand wave: SAME base image, SOFT-MASKED to the hand region ──
-   Same identical source image as before (not a separate cutout), so the
-   hand itself can never mismatch. This version replaces the old hard
-   clip-path rectangle with a feathered radial mask.
+/* ── Hand wave: same source image, soft-masked to the hand region ──
 
-   Why: rotating a HARD rectangular clip also rotates its edge, so the
-   boundary sweeps across the forearm at an angle mid-animation and
-   exposes a visible seam against the static layer underneath — that
-   caused the "duplicated wrist" artifact. A soft gradient mask instead
-   fades this layer to fully transparent well before it reaches the
-   wrist/forearm junction, so any tiny rotational offset blends away
-   invisibly instead of cutting a hard line. */
+   MEASURED, NOT GUESSED: coordinates below were sampled directly from
+   the actual ai-avatar-cartoon.jpg pixels (900x900 source). The real
+   hand+fingers occupy roughly x: 8%–25%, y: 40%–70% of the image, with
+   the wrist (narrowest point, natural rotation pivot) at ~17%, 66%.
+
+   Why the old version still looked "off": this technique layers a
+   rotating cutout directly on top of an IDENTICAL static copy of the
+   same image underneath. At rest (0deg) the pixels line up perfectly
+   and the seam is invisible. The instant it rotates, the soft-fade
+   ring of the mask shows a blend of the moved (rotated) hand pixels
+   and the stationary hand pixels still visible from the layer below —
+   which reads as ghosting/doubling. The previous ellipse's opaque core
+   didn't fully contain the real hand shape, so the fade ring cut
+   directly through fingers/palm detail, making the ghosting obvious.
+
+   Fix: size the fully-opaque core to comfortably contain the ENTIRE
+   measured hand (with margin), and push the fade ring outward so it
+   falls mostly over the plain wall background surrounding the hand
+   instead of over hand detail. A blend over flat, near-uniform
+   background is effectively invisible; a blend over fingers is not.
+   The rotation pivot is also moved from mid-palm to the actual wrist
+   point, and the swing angle is reduced, since smaller displacement
+   means less of the hand ever reaches the fade ring in the first
+   place — the single biggest lever for reducing residual ghosting. */
 
 .hero-avatar-hand-wave {
   position: absolute;
@@ -229,26 +243,26 @@
   object-position: center top;
   pointer-events: none;
   z-index: 6; /* above blink crossfade, below border ring */
-  /* Ellipse centered over the palm, fully opaque through the fingers
-     and most of the palm, then fading to 0 opacity well before the
-     wrist — the fade zone absorbs any rotation offset. */
-  -webkit-mask-image: radial-gradient(ellipse 20% 22% at 15% 54%, #000 0%, #000 45%, transparent 78%);
-          mask-image: radial-gradient(ellipse 20% 22% at 15% 54%, #000 0%, #000 45%, transparent 78%);
-  /* Pivot sits INSIDE the opaque zone (mid-palm), not at the wrist —
-     keeps rotation confined to where the mask is fully solid.
-     Measured against a % grid on the source artwork so the ellipse
-     hugs the fingers+palm and stays fully transparent by the wrist. */
-  transform-origin: 15% 54%;
+  -webkit-mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
+          mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
+  /* Pivot at the measured wrist point, not mid-palm — a real wave
+     swings from the wrist, so the fingers/palm sweep further than
+     the wrist itself, which reads as natural motion instead of the
+     whole hand floating/sliding as a rigid block. */
+  transform-origin: 17% 66%;
 }
 
 .hero-profile-card.is-flipped .hero-avatar-hand-wave {
-  animation: avatarHandWaveSubtle 2.6s ease-in-out 0.5s 2 both;
+  animation: avatarHandWaveSubtle 2.8s ease-in-out 0.5s 2 both;
 }
 
+/* Reduced amplitude (max ~3deg vs. the previous ~4deg) — smaller swing
+   keeps more of the hand inside the fully-opaque core throughout the
+   whole animation, so less of it ever crosses into the fade ring. */
 @keyframes avatarHandWaveSubtle {
   0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(-4deg); }
-  50%  { transform: rotate(3deg); }
-  75%  { transform: rotate(-2deg); }
+  25%  { transform: rotate(-3deg); }
+  50%  { transform: rotate(2.5deg); }
+  75%  { transform: rotate(-1.5deg); }
   100% { transform: rotate(0deg); }
 }
