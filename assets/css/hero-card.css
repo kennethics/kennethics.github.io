@@ -182,50 +182,56 @@
   100% { transform: rotate(0deg); }
 }
 
-/* ── Avatar wave + blink (plays only when card is flipped) ── */
+/* ── Avatar blink: real eyes-closed image crossfade (plays when flipped) ── */
 
-.hero-profile-card.is-flipped .hero-avatar {
-  animation: avatarWave 2.6s ease-in-out 0.4s 3 both;
-  /* Pivot RIGHT-bottom = opposite side from the waving hand (left).
-     This makes the left hand arc in a wide sweep — much more visible. */
-  transform-origin: 75% 88%;
-}
-
-@keyframes avatarWave {
-  0%   { transform: scale(1.02) rotate(0deg)  translateX(0); }
-  12%  { transform: scale(1.02) rotate(8deg)  translateX(-5px); }
-  24%  { transform: scale(1.02) rotate(-7deg) translateX(5px); }
-  36%  { transform: scale(1.02) rotate(8deg)  translateX(-5px); }
-  48%  { transform: scale(1.02) rotate(-5deg) translateX(3px); }
-  62%  { transform: scale(1.02) rotate(5deg)  translateX(-3px); }
-  80%  { transform: scale(1.02) rotate(0deg)  translateX(0); }
-  100% { transform: scale(1.02) rotate(0deg)  translateX(0); }
-}
-
-/* Fake "eyelid" — a skin-tone bar that drops over the eyes */
-.hero-avatar-blink {
-  --skin-tone: #df9373; /* sampled directly from the cartoon avatar */
+.hero-avatar-blink-img {
   position: absolute;
-  left: 50%;   /* ← tweak in DevTools until bar sits over both eyes */
-  top: 24%;    /* ← tweak in DevTools — eyes are roughly 24% from top */
-  width: 26%;
-  height: 7%;
-  background: var(--skin-tone);
-  border-radius: 3px;
-  transform: scaleY(0);
-  transform-origin: center top;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
   pointer-events: none;
-  filter: blur(1px);
-  z-index: 10; /* sits above ::after border ring */
+  z-index: 5;
 }
 
-.hero-profile-card.is-flipped .hero-avatar-blink {
-  animation: avatarBlink 4.5s ease-in-out 1.4s infinite;
+.hero-profile-card.is-flipped .hero-avatar-blink-img {
+  animation: avatarBlinkCrossfade 4.5s ease-in-out 1.4s infinite;
 }
 
-@keyframes avatarBlink {
-  0%, 92%, 100% { transform: scaleY(0); }
-  94%           { transform: scaleY(1); }
-  97%           { transform: scaleY(0.2); }
-  98%           { transform: scaleY(1); }
+@keyframes avatarBlinkCrossfade {
+  0%, 92%, 100% { opacity: 0; }
+  94%           { opacity: 1; }
+  97%           { opacity: 0.15; }
+  98%           { opacity: 1; }
+}
+
+/* ── Independent waving hand layer (separate cutout, not the whole avatar) ── */
+
+.hero-avatar-hand {
+  position: absolute;
+  width: 42%;
+  height: 42%;
+  left: 2%;
+  bottom: 6%;
+  object-fit: contain;
+  transform-origin: 85% 90%; /* wrist pivot — bottom-right of the hand image */
+  pointer-events: none;
+  z-index: 6; /* above blink crossfade, below border ring */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+}
+
+.hero-profile-card.is-flipped .hero-avatar-hand {
+  animation: avatarHandWave 2.4s ease-in-out 0.4s 3 both;
+}
+
+@keyframes avatarHandWave {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-16deg); }
+  30%  { transform: rotate(14deg); }
+  45%  { transform: rotate(-14deg); }
+  60%  { transform: rotate(12deg); }
+  75%  { transform: rotate(-6deg); }
+  100% { transform: rotate(0deg); }
 }
