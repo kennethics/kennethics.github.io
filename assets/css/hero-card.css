@@ -211,28 +211,35 @@
 
    MEASURED, NOT GUESSED: coordinates below were sampled directly from
    the actual ai-avatar-cartoon.jpg pixels (900x900 source). The real
-   hand+fingers occupy roughly x: 8%–25%, y: 40%–70% of the image, with
-   the wrist (narrowest point, natural rotation pivot) at ~17%, 66%.
+   hand+fingers occupy roughly x: 8%–25%, y: 40%–70% of the image.
 
-   Why the old version still looked "off": this technique layers a
-   rotating cutout directly on top of an IDENTICAL static copy of the
-   same image underneath. At rest (0deg) the pixels line up perfectly
-   and the seam is invisible. The instant it rotates, the soft-fade
-   ring of the mask shows a blend of the moved (rotated) hand pixels
-   and the stationary hand pixels still visible from the layer below —
-   which reads as ghosting/doubling. The previous ellipse's opaque core
-   didn't fully contain the real hand shape, so the fade ring cut
-   directly through fingers/palm detail, making the ghosting obvious.
+   Why only the fingertips looked like they were moving (2nd bug):
+   Rotational displacement of any point equals angle × distance-from-
+   pivot. The previous version pivoted at the wrist, which sits INSIDE
+   the masked hand region — so the palm/wrist (near the pivot) barely
+   moved while the fingertips (farthest from that same pivot) swept
+   the most. The whole hand was technically rotating, but the visible
+   motion was wildly uneven across it, reading as "only some fingers
+   move." Fix: move the pivot OUTSIDE the hand entirely, out past the
+   bottom of the image toward where the forearm/elbow would be. With
+   the pivot that far away, every part of the hand — palm, wrist,
+   fingertips — sits at roughly the same distance from it, so they all
+   get roughly the same displacement and swing together as one rigid
+   unit. The rotation angle is reduced to compensate, since arc length
+   ≈ angle × radius — a small angle at a large radius still produces a
+   natural amount of visible movement without an exaggerated swing.
 
-   Fix: size the fully-opaque core to comfortably contain the ENTIRE
-   measured hand (with margin), and push the fade ring outward so it
-   falls mostly over the plain wall background surrounding the hand
-   instead of over hand detail. A blend over flat, near-uniform
-   background is effectively invisible; a blend over fingers is not.
-   The rotation pivot is also moved from mid-palm to the actual wrist
-   point, and the swing angle is reduced, since smaller displacement
-   means less of the hand ever reaches the fade ring in the first
-   place — the single biggest lever for reducing residual ghosting. */
+   Why the ghosting/seam risk (1st bug, still relevant): this technique
+   layers a rotating cutout directly on top of an IDENTICAL static copy
+   of the same image underneath. At rest (0deg) the pixels line up
+   perfectly and the seam is invisible. The instant it rotates, the
+   soft-fade ring of the mask can show a blend of the moved (rotated)
+   pixels and the stationary pixels still visible from the layer below.
+   The opaque core below is sized to comfortably contain the entire
+   measured hand (with margin), and the fade ring is pushed outward so
+   it falls mostly over the plain wall background surrounding the hand
+   instead of over hand detail — a blend over flat background is
+   effectively invisible; a blend over fingers is not. */
 
 .hero-avatar-hand-wave {
   position: absolute;
@@ -245,24 +252,29 @@
   z-index: 6; /* above blink crossfade, below border ring */
   -webkit-mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
           mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
-  /* Pivot at the measured wrist point, not mid-palm — a real wave
-     swings from the wrist, so the fingers/palm sweep further than
-     the wrist itself, which reads as natural motion instead of the
-     whole hand floating/sliding as a rigid block. */
-  transform-origin: 17% 66%;
+  /* Off-canvas pivot, well below and slightly right of the hand —
+     an estimate of where the forearm/elbow would be off-frame, since
+     the actual elbow isn't visible in the source image. This is a
+     rotation-pivot design choice, not a pixel measurement: nudge the
+     Y value further down (e.g. 160%, 180%) for even more uniform,
+     whole-hand movement, or back up (e.g. 110%) for a bit more
+     differential motion if the wave starts feeling too stiff/robotic. */
+  transform-origin: 22% 145%;
 }
 
 .hero-profile-card.is-flipped .hero-avatar-hand-wave {
   animation: avatarHandWaveSubtle 2.8s ease-in-out 0.5s 2 both;
 }
 
-/* Reduced amplitude (max ~3deg vs. the previous ~4deg) — smaller swing
-   keeps more of the hand inside the fully-opaque core throughout the
-   whole animation, so less of it ever crosses into the fade ring. */
+/* Amplitude reduced further (max ~1.5deg vs. the previous ~3deg) because
+   the pivot is now much farther away — the same visible arc length at
+   the hand (angle × radius) is preserved with a smaller angle, avoiding
+   an unnaturally wide swing now that the WHOLE hand moves by this much,
+   not just the fingertips. */
 @keyframes avatarHandWaveSubtle {
   0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(-3deg); }
-  50%  { transform: rotate(2.5deg); }
-  75%  { transform: rotate(-1.5deg); }
+  25%  { transform: rotate(-1.5deg); }
+  50%  { transform: rotate(1.2deg); }
+  75%  { transform: rotate(-0.7deg); }
   100% { transform: rotate(0deg); }
 }
