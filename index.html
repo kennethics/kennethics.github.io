@@ -356,6 +356,18 @@
 
     @keyframes fadeUp { to { opacity:1; transform:none; } }
 
+    /* ── Hero skills strip ── */
+    .hero-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
+    .hero-skills .tag {
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--card);
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-skills .tag-accent { background: rgba(58,184,168,0.12); color: var(--teal); }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       nav { padding: 14px 20px; }
@@ -364,6 +376,7 @@
       .hero-photo-wrap { width: min(100%, 280px); }
       .hero-bio { max-width: 100%; }
       .hero-logo-links { justify-content: center; }
+      .hero-skills { justify-content: center; }
       .hero-nav { justify-content: center; }
     }
 
@@ -437,6 +450,16 @@
         Currently building AI automation projects using n8n and AI tools and exploring roles in Customer Success,
         Business Analysis, and AI Automation. Rooted in the Philippines.
       </p>
+
+      <!-- Core skills at a glance -->
+      <div class="hero-skills fade-up">
+        <span class="tag tag-accent">n8n</span>
+        <span class="tag tag-accent">Claude</span>
+        <span class="tag tag-accent">Prompt Engineering</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Excel</span>
+        <span class="tag">Salesforce</span>
+      </div>
 
       <!-- Gmail + LinkedIn logos only -->
       <div class="hero-logo-links fade-up">
