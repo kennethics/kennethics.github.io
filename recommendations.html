@@ -9,6 +9,7 @@
   <title>Recommendations · Kenneth Soriano</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="assets/js/theme.js"></script>
   <link rel="stylesheet" href="assets/css/shared.css">
   <style>
     .quote-mark {
@@ -263,17 +264,24 @@
 <body class="inner-page">
 
 <nav>
-  <a class="nav-brand" href="index.html">
-    <span class="nav-dot"></span>
-    <span class="nav-name">Kenneth Soriano</span>
-    <div class="nav-roles">
-      <div class="nav-roles-inner">
-        <span>AI Automation Specialist</span>
-        <span>Business Analyst</span>
-        <span>Customer Success</span>
+  <div class="nav-brand">
+    <a class="nav-brand-link" href="index.html">
+      <span class="nav-dot"></span>
+      <span class="nav-name">Kenneth Soriano</span>
+      <div class="nav-roles">
+        <div class="nav-roles-inner">
+          <span>AI Automation Specialist</span>
+          <span>Business Analyst</span>
+          <span>Customer Success</span>
+        </div>
       </div>
+    </a>
+    <div class="theme-switcher" role="group" aria-label="Theme">
+      <button class="theme-toggle" data-theme-set="light" type="button" aria-label="Light theme" title="Light theme">☀️</button>
+      <button class="theme-toggle" data-theme-set="dark" type="button" aria-label="Dark theme" title="Dark theme">🌙</button>
+      <button class="theme-toggle" data-theme-set="auto" type="button" aria-label="Auto theme" title="Auto theme">🖥️</button>
     </div>
-  </a>
+  </div>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
     <li><a href="experience.html">Experience</a></li>
