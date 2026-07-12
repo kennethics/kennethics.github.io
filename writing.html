@@ -43,8 +43,8 @@
     .platform-icon-wrap svg { width: 30px; height: 30px; }
 
     .icon-substack { background: var(--orange); }
-    .icon-x        { background: var(--text); }
-    .icon-threads  { background: var(--text); }
+    .icon-x        { background: #1a1a18; }
+    .icon-threads  { background: #1a1a18; }
 
     .platform-name { font-family:'DM Serif Display',serif; font-size:1.1rem; margin-bottom:6px; }
     .platform-desc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
@@ -88,21 +88,23 @@
 <body class="inner-page">
 
 <nav>
-  <a class="nav-brand" href="index.html">
-    <span class="nav-dot"></span>
-    <span class="nav-name">Kenneth Soriano</span>
-    <div class="nav-roles">
-      <div class="nav-roles-inner">
-        <span>AI Automation Specialist</span>
-        <span>Business Analyst</span>
-        <span>Customer Success</span>
+  <div class="nav-brand">
+    <a class="nav-brand-link" href="index.html">
+      <span class="nav-dot"></span>
+      <span class="nav-name">Kenneth Soriano</span>
+      <div class="nav-roles">
+        <div class="nav-roles-inner">
+          <span>AI Automation Specialist</span>
+          <span>Business Analyst</span>
+          <span>Customer Success</span>
+        </div>
       </div>
+    </a>
+    <div class="theme-switcher" role="group" aria-label="Theme">
+      <button class="theme-toggle" data-theme-set="light" type="button" aria-label="Light theme" title="Light theme">☀️</button>
+      <button class="theme-toggle" data-theme-set="dark" type="button" aria-label="Dark theme" title="Dark theme">🌙</button>
+      <button class="theme-toggle" data-theme-set="auto" type="button" aria-label="Auto theme" title="Auto theme">🖥️</button>
     </div>
-  </a>
-  <div class="theme-switcher" role="group" aria-label="Theme">
-    <button class="theme-toggle" data-theme-set="light" type="button">☀️ Light</button>
-    <button class="theme-toggle" data-theme-set="dark" type="button">🌙 Dark</button>
-    <button class="theme-toggle" data-theme-set="auto" type="button">🖥️ Auto</button>
   </div>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
