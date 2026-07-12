@@ -1,5 +1,5 @@
 (function () {
-  const select = document.getElementById('theme-select');
+  const toggles = Array.from(document.querySelectorAll('.theme-toggle'));
   const storageKey = 'theme-preference';
 
   function getSystemTheme() {
@@ -15,7 +15,12 @@
     const resolved = theme === 'auto' ? getSystemTheme() : theme;
     document.documentElement.setAttribute('data-theme', resolved);
     document.body.setAttribute('data-theme', resolved);
-    if (select) select.value = theme;
+
+    toggles.forEach(function (button) {
+      const isActive = button.getAttribute('data-theme-set') === theme;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
   }
 
   function setTheme(theme) {
@@ -23,11 +28,11 @@
     applyTheme(theme);
   }
 
-  if (select) {
-    select.addEventListener('change', function (event) {
-      setTheme(event.target.value);
+  toggles.forEach(function (button) {
+    button.addEventListener('click', function () {
+      setTheme(button.getAttribute('data-theme-set'));
     });
-  }
+  });
 
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   if (mediaQuery.addEventListener) {

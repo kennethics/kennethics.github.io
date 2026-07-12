@@ -80,17 +80,25 @@
     .theme-switcher {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-right: 12px;
     }
 
-    .theme-switcher select {
+    .theme-toggle {
       border: 1px solid var(--border);
       background: var(--card-bg);
       color: var(--text);
       padding: 6px 10px;
       border-radius: 999px;
       font: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .theme-toggle.is-active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
 
     .sr-only {
@@ -471,13 +479,10 @@
       </div>
     </div>
   </a>
-  <div class="theme-switcher">
-    <label class="sr-only" for="theme-select">Theme</label>
-    <select id="theme-select" aria-label="Theme">
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-      <option value="auto">Auto</option>
-    </select>
+  <div class="theme-switcher" role="group" aria-label="Theme">
+    <button class="theme-toggle" data-theme-set="light" type="button">☀️ Light</button>
+    <button class="theme-toggle" data-theme-set="dark" type="button">🌙 Dark</button>
+    <button class="theme-toggle" data-theme-set="auto" type="button">🖥️ Auto</button>
   </div>
   <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
     <span></span><span></span><span></span>

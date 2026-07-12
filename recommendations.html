@@ -274,13 +274,10 @@
       </div>
     </div>
   </a>
-  <div class="theme-switcher">
-    <label class="sr-only" for="theme-select">Theme</label>
-    <select id="theme-select" aria-label="Theme">
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-      <option value="auto">Auto</option>
-    </select>
+  <div class="theme-switcher" role="group" aria-label="Theme">
+    <button class="theme-toggle" data-theme-set="light" type="button">☀️ Light</button>
+    <button class="theme-toggle" data-theme-set="dark" type="button">🌙 Dark</button>
+    <button class="theme-toggle" data-theme-set="auto" type="button">🖥️ Auto</button>
   </div>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
