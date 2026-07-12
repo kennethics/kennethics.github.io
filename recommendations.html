@@ -383,8 +383,12 @@
           <input type="text" id="rec-name" placeholder="e.g. Jane Smith" />
         </div>
         <div class="form-group">
-          <label for="rec-role">Your Role / Company</label>
-          <input type="text" id="rec-role" placeholder="e.g. Team Lead at Stripe" />
+          <label for="rec-position">Your Position / Role</label>
+          <input type="text" id="rec-position" placeholder="e.g. Team Lead" />
+        </div>
+        <div class="form-group">
+          <label for="rec-company">Your Company</label>
+          <input type="text" id="rec-company" placeholder="e.g. Stripe" />
         </div>
         <div class="form-group">
           <label for="rec-relationship">How did we work together?</label>
@@ -467,7 +471,8 @@
   // ---- 1. Form submission ----
   function submitRec() {
     const nameEl = document.getElementById('rec-name');
-    const roleEl = document.getElementById('rec-role');
+    const positionEl = document.getElementById('rec-position');
+    const companyEl = document.getElementById('rec-company');
     const relationshipEl = document.getElementById('rec-relationship');
     const emailEl = document.getElementById('rec-email');
     const textEl = document.getElementById('rec-text');
@@ -476,7 +481,8 @@
     const errorMsg = document.getElementById('error-msg');
 
     const name = nameEl.value.trim();
-    const role = roleEl.value.trim();
+    const position = positionEl.value.trim();
+    const company = companyEl.value.trim();
     const relationship = relationshipEl.value;
     const email = emailEl.value.trim();
     const text = textEl.value.trim();
@@ -514,8 +520,8 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         name: name,
-        company: role,
-        position: role,
+        company: company,
+        position: position,
         relationship: relationship,
         email: email,
         recommendation: text,
