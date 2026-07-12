@@ -34,7 +34,7 @@
     .status-active  { background: rgba(58,184,168,0.12); color: var(--teal); }
     .status-active::before  { content:''; width:5px; height:5px; background:var(--teal); border-radius:50%; }
     .status-soon    { background: rgba(232,146,74,0.12); color: var(--orange); }
-    .status-soon::before    { content:''; width:5px; height:5px; background:#e8924a; border-radius:50%; }
+    .status-soon::before    { content:''; width:5px; height:5px; background:var(--orange); border-radius:50%; }
 
     /* Animated role ticker */
     .nav-roles {
@@ -134,21 +134,23 @@
 <body class="inner-page">
 
 <nav>
-  <a class="nav-brand" href="index.html">
-    <span class="nav-dot"></span>
-    <span class="nav-name">Kenneth Soriano</span>
-    <div class="nav-roles">
-      <div class="nav-roles-inner">
-        <span>AI Automation Specialist</span>
-        <span>Business Analyst</span>
-        <span>Customer Success</span>
+  <div class="nav-brand">
+    <a class="nav-brand-link" href="index.html">
+      <span class="nav-dot"></span>
+      <span class="nav-name">Kenneth Soriano</span>
+      <div class="nav-roles">
+        <div class="nav-roles-inner">
+          <span>AI Automation Specialist</span>
+          <span>Business Analyst</span>
+          <span>Customer Success</span>
+        </div>
       </div>
+    </a>
+    <div class="theme-switcher" role="group" aria-label="Theme">
+      <button class="theme-toggle" data-theme-set="light" type="button" aria-label="Light theme" title="Light theme">☀️</button>
+      <button class="theme-toggle" data-theme-set="dark" type="button" aria-label="Dark theme" title="Dark theme">🌙</button>
+      <button class="theme-toggle" data-theme-set="auto" type="button" aria-label="Auto theme" title="Auto theme">🖥️</button>
     </div>
-  </a>
-  <div class="theme-switcher" role="group" aria-label="Theme">
-    <button class="theme-toggle" data-theme-set="light" type="button">☀️ Light</button>
-    <button class="theme-toggle" data-theme-set="dark" type="button">🌙 Dark</button>
-    <button class="theme-toggle" data-theme-set="auto" type="button">🖥️ Auto</button>
   </div>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
