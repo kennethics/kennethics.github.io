@@ -192,6 +192,72 @@
       66.666%  { transform: translateY(-2.4em); }
       100% { transform: translateY(0); }
     }
+
+    /* ===== Recommendation system additions ===== */
+
+    /* Honeypot — invisible to real visitors, only bots fill this */
+    .honeypot-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .rec-section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      margin: 8px 0 6px;
+      color: var(--text);
+    }
+    .rec-section-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Initials avatar for dynamically-loaded website recommendations
+       (no photo is collected from public submitters) */
+    .rec-avatar-initials {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      border: 2px solid var(--card);
+    }
+
+    .rec-loading, .rec-empty {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 12px 0 28px;
+    }
+
+    .error-msg {
+      display: none;
+      background: rgba(232,146,74,0.12);
+      border: 1px solid rgba(232,146,74,0.3);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-top: 20px;
+      color: #a35a1a;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
   </style>
 </head>
 <body class="inner-page">
@@ -236,6 +302,9 @@
     <div class="page-label">What Others Say</div>
     <h1 class="page-title">Recommendations</h1>
   </div>
+
+  <!-- SECTION 1: LinkedIn Recommendations (curated, static — real photos, not stored in a spreadsheet) -->
+  <div class="rec-section-title fade-in">LinkedIn Recommendations</div>
 
   <!-- LinkedIn CTA — logo only -->
   <div class="linkedin-cta-wrap fade-in">
@@ -288,6 +357,15 @@
 
   <hr class="divider">
 
+  <!-- SECTION 2: Website Recommendations (dynamic — pulled live from Google Sheets, Status = Approved only) -->
+  <div class="rec-section-title fade-in">Website Recommendations</div>
+  <p class="rec-section-sub fade-in">Submitted directly through this site and approved by Kenneth.</p>
+  <div id="website-recs-list" class="fade-in">
+    <p class="rec-loading" id="rec-loading-msg">Loading recommendations…</p>
+  </div>
+
+  <hr class="divider">
+
   <!-- Write a Recommendation Form -->
   <div class="form-section fade-in">
     <div class="form-title">Write a Recommendation</div>
@@ -295,6 +373,11 @@
 
     <div class="card" style="padding:32px;">
       <div class="form-grid" id="rec-form">
+        <!-- Honeypot: real users never see/fill this field. If it's filled, the submission is silently dropped. -->
+        <div class="form-group honeypot-field" aria-hidden="true">
+          <label for="rec-hp">Leave this field blank</label>
+          <input type="text" id="rec-hp" name="hp_website" tabindex="-1" autocomplete="off" />
+        </div>
         <div class="form-group">
           <label for="rec-name">Your Name</label>
           <input type="text" id="rec-name" placeholder="e.g. Jane Smith" />
@@ -316,8 +399,8 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="rec-email">Your Email (optional)</label>
-          <input type="email" id="rec-email" placeholder="So I can say thank you" />
+          <label for="rec-email">Your Email</label>
+          <input type="email" id="rec-email" placeholder="So Kenneth can say thank you" required />
         </div>
         <div class="form-group full">
           <label for="rec-text">Your Recommendation</label>
@@ -328,7 +411,11 @@
         </div>
       </div>
       <div class="success-msg" id="success-msg">
-        ✅ Thank you! Your recommendation has been sent to Kenneth. He'll reach out soon to say thanks.
+        ✅ Thank you! Your recommendation has been saved. Kenneth reviews every submission personally — check your inbox for a quick thank-you note, and it may appear here once approved.
+      </div>
+      <div class="error-msg" id="error-msg">
+        ⚠️ Something went wrong sending your recommendation. Please try again in a moment, or email it directly to
+        <a href="mailto:nethxkensoriano@gmail.com" style="color:inherit;text-decoration:underline;">nethxkensoriano@gmail.com</a>.
       </div>
     </div>
   </div>
@@ -368,29 +455,168 @@
     link.addEventListener('click', closeDrawer);
   });
 
-  function submitRec() {
-    const name = document.getElementById('rec-name').value.trim();
-    const role = document.getElementById('rec-role').value.trim();
-    const relationship = document.getElementById('rec-relationship').value;
-    const email = document.getElementById('rec-email').value.trim();
-    const text = document.getElementById('rec-text').value.trim();
+  // =============================================================
+  // RECOMMENDATION SYSTEM — Google Sheets + Google Apps Script backend
+  // =============================================================
+  //
+  // SETUP (one-time, done in Google Sheets / Apps Script — see docs sent
+  // separately): deploy the Apps Script as a Web App ("Execute as: Me",
+  // "Who has access: Anyone"), then paste the deployment URL below.
+  const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
-    if (!name || !text || !relationship) {
-      alert('Please fill in your name, relationship, and recommendation text.');
+  // ---- 1. Form submission ----
+  function submitRec() {
+    const nameEl = document.getElementById('rec-name');
+    const roleEl = document.getElementById('rec-role');
+    const relationshipEl = document.getElementById('rec-relationship');
+    const emailEl = document.getElementById('rec-email');
+    const textEl = document.getElementById('rec-text');
+    const honeypotEl = document.getElementById('rec-hp');
+    const submitBtn = document.querySelector('#rec-form .submit-btn');
+    const errorMsg = document.getElementById('error-msg');
+
+    const name = nameEl.value.trim();
+    const role = roleEl.value.trim();
+    const relationship = relationshipEl.value;
+    const email = emailEl.value.trim();
+    const text = textEl.value.trim();
+    const honeypot = honeypotEl.value.trim();
+
+    errorMsg.style.display = 'none';
+
+    // Required fields — email is required per spec
+    if (!name || !text || !relationship || !email) {
+      alert('Please fill in your name, relationship, email, and recommendation text.');
       return;
     }
 
-    const subject = encodeURIComponent('Portfolio Recommendation from ' + name);
-    const body = encodeURIComponent(
-      'Name: ' + name + '\nRole: ' + role + '\nRelationship: ' + relationship + '\nEmail: ' + (email || 'Not provided') + '\n\nRecommendation:\n' + text
-    );
+    // Spam trap: if the hidden honeypot field has a value, a bot filled it.
+    // Silently pretend success so bots don't learn to avoid the trap.
+    if (honeypot) {
+      showSuccess();
+      resetForm();
+      return;
+    }
 
-    window.location.href = 'mailto:nethxkensoriano@gmail.com?subject=' + subject + '&body=' + body;
+    if (APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) {
+      errorMsg.textContent = '⚠️ The recommendation backend isn\'t connected yet. (Dev note: paste the Apps Script Web App URL into APPS_SCRIPT_URL.)';
+      errorMsg.style.display = 'block';
+      return;
+    }
 
-    document.getElementById('rec-form').style.opacity = '0.4';
-    document.getElementById('rec-form').style.pointerEvents = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    // Content-Type "text/plain" avoids a CORS preflight (OPTIONS) request,
+    // which Apps Script Web Apps don't handle. The script parses JSON manually.
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        name: name,
+        company: role,
+        position: role,
+        relationship: relationship,
+        email: email,
+        recommendation: text,
+        source: 'Website',
+        hp_website: honeypot
+      })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.result === 'success') {
+          showSuccess();
+          resetForm();
+        } else {
+          throw new Error((data && data.message) || 'Unknown error');
+        }
+      })
+      .catch(function (err) {
+        console.error('Recommendation submission failed:', err);
+        errorMsg.style.display = 'block';
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Recommendation ↗';
+      });
+  }
+
+  function showSuccess() {
     document.getElementById('success-msg').style.display = 'block';
   }
+
+  function resetForm() {
+    const form = document.getElementById('rec-form');
+    form.querySelectorAll('input, select, textarea').forEach(function (el) {
+      el.value = '';
+    });
+    form.style.opacity = '0.4';
+    form.style.pointerEvents = 'none';
+  }
+
+  // ---- 2. Load approved Website Recommendations dynamically ----
+  function getInitials(name) {
+    return name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(function (p) { return p[0].toUpperCase(); })
+      .join('');
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function loadWebsiteRecommendations() {
+    const listEl = document.getElementById('website-recs-list');
+
+    if (APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) {
+      listEl.innerHTML = '<p class="rec-empty">Recommendation backend not connected yet.</p>';
+      return;
+    }
+
+    fetch(APPS_SCRIPT_URL + '?source=Website')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        const items = (data && data.recommendations) || [];
+        if (!items.length) {
+          listEl.innerHTML = '<p class="rec-empty">No website recommendations yet — be the first to leave one below.</p>';
+          return;
+        }
+        listEl.innerHTML = items.map(function (rec) {
+          const name = escapeHtml(rec.name);
+          const roleLine = escapeHtml(rec.position || rec.company || '');
+          const text = escapeHtml(rec.recommendation).replace(/\n/g, '<br>');
+          const date = rec.timestamp
+            ? new Date(rec.timestamp).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+            : '';
+          return (
+            '<div class="card fade-in">' +
+              '<span class="quote-mark">"</span>' +
+              '<div class="card-body"><p>' + text + '</p></div>' +
+              '<div class="rec-author">' +
+                '<div class="rec-avatar-initials" aria-hidden="true">' + escapeHtml(getInitials(name)) + '</div>' +
+                '<div>' +
+                  '<div class="rec-name">' + name + '</div>' +
+                  (roleLine ? '<div class="rec-role">' + roleLine + '</div>' : '') +
+                  (date ? '<div class="rec-managed">Submitted ' + date + '</div>' : '') +
+                '</div>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join('');
+      })
+      .catch(function (err) {
+        console.error('Failed to load website recommendations:', err);
+        listEl.innerHTML = '<p class="rec-empty">Couldn\'t load recommendations right now. Please refresh the page.</p>';
+      });
+  }
+
+  loadWebsiteRecommendations();
 </script>
 
 </body>
