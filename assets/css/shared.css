@@ -330,7 +330,7 @@ nav {
 .card-body {
   font-size: 0.95rem;
   line-height: 1.75;
-  color: #444;
+  color: var(--muted);
   font-weight: 300;
 }
 

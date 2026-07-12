@@ -9,13 +9,14 @@
   <title>Writing · Kenneth Soriano</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="assets/js/theme.js"></script>
   <link rel="stylesheet" href="assets/css/shared.css">
   <style>
     .platform-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:24px; }
     @media(max-width:600px){ .platform-grid{ grid-template-columns:1fr; } }
 
     .platform-card {
-      background:#fff;
+      background: var(--card-bg);
       border:1px solid var(--border);
       border-radius:14px;
       padding:24px 20px;
@@ -41,9 +42,9 @@
     }
     .platform-icon-wrap svg { width: 30px; height: 30px; }
 
-    .icon-substack { background: #ff6719; }
-    .icon-x        { background: #000; }
-    .icon-threads  { background: #000; }
+    .icon-substack { background: var(--orange); }
+    .icon-x        { background: var(--text); }
+    .icon-threads  { background: var(--text); }
 
     .platform-name { font-family:'DM Serif Display',serif; font-size:1.1rem; margin-bottom:6px; }
     .platform-desc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
@@ -199,7 +200,6 @@
 
 </main>
 
-<script src="assets/js/theme-switcher.js"></script>
 <script>
   const navDrawer = document.getElementById('nav-drawer');
   const hamburger = document.querySelector('.nav-hamburger');
