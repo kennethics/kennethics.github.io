@@ -115,11 +115,30 @@
       padding: 12px 16px;
       border: 1px solid var(--border);
       border-radius: 10px;
-      background: #fff;
+      background: var(--card-bg);
       color: var(--text);
       outline: none;
       transition: border-color 0.2s;
       resize: vertical;
+    }
+
+    select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+      background-position: calc(100% - 20px) calc(50% - 2px), calc(100% - 14px) calc(50% - 2px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 40px;
+      color-scheme: light;
+    }
+
+    :root[data-theme="dark"] select {
+      color-scheme: dark;
+    }
+
+    select option {
+      background-color: var(--card-bg);
+      color: var(--text);
     }
 
     input:focus, select:focus, textarea:focus {
@@ -351,8 +370,12 @@
           <input type="text" id="rec-name" placeholder="e.g. Jane Smith" />
         </div>
         <div class="form-group">
-          <label for="rec-role">Your Role / Company</label>
-          <input type="text" id="rec-role" placeholder="e.g. Team Lead at Stripe" />
+          <label for="rec-company">Company</label>
+          <input type="text" id="rec-company" placeholder="e.g. Stripe" />
+        </div>
+        <div class="form-group">
+          <label for="rec-role">Position / Role</label>
+          <input type="text" id="rec-role" placeholder="e.g. Team Lead" />
         </div>
         <div class="form-group">
           <label for="rec-relationship">How did we work together?</label>
@@ -435,6 +458,7 @@
   // ---- 1. Form submission ----
   function submitRec() {
     const nameEl = document.getElementById('rec-name');
+    const companyEl = document.getElementById('rec-company');
     const roleEl = document.getElementById('rec-role');
     const relationshipEl = document.getElementById('rec-relationship');
     const emailEl = document.getElementById('rec-email');
@@ -444,6 +468,7 @@
     const errorMsg = document.getElementById('error-msg');
 
     const name = nameEl.value.trim();
+    const company = companyEl.value.trim();
     const role = roleEl.value.trim();
     const relationship = relationshipEl.value;
     const email = emailEl.value.trim();
@@ -482,7 +507,7 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         name: name,
-        company: role,
+        company: company,
         position: role,
         relationship: relationship,
         email: email,
