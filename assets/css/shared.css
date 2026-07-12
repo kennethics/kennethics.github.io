@@ -79,17 +79,23 @@ body {
 .theme-switcher {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 12px;
+  gap: 4px;
+  margin-left: 22px;
 }
 
 .theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 999px;
-  font: inherit;
+  background: transparent;
+  color: var(--muted);
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.68rem;
+  line-height: 1;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
@@ -117,12 +123,19 @@ nav {
 
 .nav-brand {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  flex-shrink: 0;
+  z-index: 201;
+}
+
+.nav-brand-link {
+  display: flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
   color: var(--text);
-  flex-shrink: 0;
-  z-index: 201;
 }
 
 .nav-dot { width:12px; height:12px; background:var(--accent); border-radius:50%; flex-shrink:0; }
