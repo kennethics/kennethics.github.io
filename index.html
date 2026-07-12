@@ -81,17 +81,23 @@
     .theme-switcher {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-right: 12px;
+      gap: 4px;
+      margin-left: 22px;
     }
 
     .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
       border: 1px solid var(--border);
-      background: var(--card-bg);
-      color: var(--text);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font: inherit;
+      background: transparent;
+      color: var(--muted);
+      padding: 0;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      line-height: 1;
       cursor: pointer;
       transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
@@ -133,6 +139,13 @@
 
     /* Brand: dot + name + animated role */
     .nav-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .nav-brand-link {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -345,7 +358,8 @@
     .hero-bio {
       font-size: 1.05rem;
       line-height: 1.75;
-      color: #444;
+      color: var(--text);
+      opacity: 0.82;
       max-width: 460px;
       font-weight: 300;
     }
@@ -365,8 +379,8 @@
       width: 64px;
       height: 64px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(0, 0, 0, 0.06);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
       color: var(--text);
       transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       text-decoration: none;
@@ -374,7 +388,7 @@
 
     .hero-logo-link:hover {
       transform: translateY(-3px);
-      background: #fff;
+      background: var(--card-bg);
       border-color: rgba(58, 184, 168, 0.3);
       color: var(--accent);
     }
@@ -384,6 +398,13 @@
       width: 28px;
       height: 28px;
       display: block;
+    }
+
+    /* The email/LinkedIn glyphs are fixed-black PNGs (baked-in color via the
+       icons8 URL), so they disappear against a dark card background. Invert
+       them in dark mode so they render light instead. */
+    :root[data-theme="dark"] .hero-logo-link img {
+      filter: invert(1) brightness(1.1);
     }
 
     /* ── Oval buttons ── */
@@ -469,21 +490,23 @@
 
 <!-- NAV: hamburger only -->
 <nav>
-  <a class="nav-brand" href="index.html">
-    <span class="nav-dot"></span>
-    <span class="nav-name">Kenneth Soriano</span>
-    <div class="nav-roles">
-      <div class="nav-roles-inner">
-        <span>AI Automation Specialist</span>
-        <span>Business Analyst</span>
-        <span>Customer Success</span>
+  <div class="nav-brand">
+    <a class="nav-brand-link" href="index.html">
+      <span class="nav-dot"></span>
+      <span class="nav-name">Kenneth Soriano</span>
+      <div class="nav-roles">
+        <div class="nav-roles-inner">
+          <span>AI Automation Specialist</span>
+          <span>Business Analyst</span>
+          <span>Customer Success</span>
+        </div>
       </div>
+    </a>
+    <div class="theme-switcher" role="group" aria-label="Theme">
+      <button class="theme-toggle" data-theme-set="light" type="button" aria-label="Light theme" title="Light theme">☀️</button>
+      <button class="theme-toggle" data-theme-set="dark" type="button" aria-label="Dark theme" title="Dark theme">🌙</button>
+      <button class="theme-toggle" data-theme-set="auto" type="button" aria-label="Auto theme" title="Auto theme">🖥️</button>
     </div>
-  </a>
-  <div class="theme-switcher" role="group" aria-label="Theme">
-    <button class="theme-toggle" data-theme-set="light" type="button">☀️ Light</button>
-    <button class="theme-toggle" data-theme-set="dark" type="button">🌙 Dark</button>
-    <button class="theme-toggle" data-theme-set="auto" type="button">🖥️ Auto</button>
   </div>
   <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
     <span></span><span></span><span></span>
