@@ -30,11 +30,6 @@
   <link rel="canonical" href="https://kennethics.github.io/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- Phosphor Icons (fill weight) — used for the Gmail/LinkedIn hero icons.
-       onerror: if the CDN fails to load (blocked/offline/down), flag it so
-       CSS can fall back to the local SVG icons instead. -->
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css"
-        onerror="document.documentElement.classList.add('ph-fallback')">
   <script src="assets/js/theme.js"></script>
   <link rel="stylesheet" href="assets/css/hero-card.css">
   <style>
@@ -390,69 +385,13 @@
       font-weight: 300;
     }
 
-    /* ── Logo links (Gmail + LinkedIn only) ── */
+    /* ── Logo links ── */
     .hero-logo-links {
       display: flex;
       align-items: center;
       gap: 16px;
       margin-top: 30px;
-    }
-
-    .hero-logo-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-      text-decoration: none;
-    }
-
-    .hero-logo-link:hover {
-      transform: translateY(-3px);
-      background: var(--card-bg);
-      border-color: rgba(58, 184, 168, 0.3);
-      color: var(--accent);
-    }
-
-    .hero-logo-link svg,
-    .hero-logo-link img {
-      width: 28px;
-      height: 28px;
-      display: block;
-    }
-
-    /* Phosphor icon glyphs: sized to match the old 28px SVG/img icons.
-       Colors are fixed hex values (not currentColor or CSS variables) so
-       they never invert or shift between light/dark mode, and don't change
-       on hover — same behavior as the SVGs they replace. */
-    .hero-logo-link i.ph-fill {
-      font-size: 28px;
-      line-height: 1;
-      display: block;
-    }
-    .hero-logo-link .icon-gmail { color: #EA4335; }
-    .hero-logo-link .icon-linkedin { color: #0A66C2; }
-
-    /* Local-SVG fallback: hidden by default. Shown instead of the Phosphor
-       icon if the CDN fails to load (JS sets .ph-fallback on <html>), or
-       if JavaScript is disabled entirely (see <noscript> in <head>). */
-    .hero-logo-link .icon-fallback {
-      display: none;
-      width: 28px;
-      height: 28px;
-    }
-    .ph-fallback .hero-logo-link i.ph-fill,
-    .no-js .hero-logo-link i.ph-fill {
-      display: none;
-    }
-    .ph-fallback .hero-logo-link .icon-fallback,
-    .no-js .hero-logo-link .icon-fallback {
-      display: block;
+      flex-wrap: wrap;
     }
 
 
@@ -616,21 +555,18 @@
         <span class="tag">Stripe</span>
       </div>
 
-      <!-- Gmail + LinkedIn logos only -->
       <div class="hero-logo-links fade-up">
-
-<!-- Gmail icon: Phosphor Icons (fixed brand color, theme-independent), with local SVG fallback -->
-      <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
-        <i class="ph-fill ph-envelope-simple icon-gmail" aria-hidden="true"></i>
-        <img src="assets/icons/gmail.svg" alt="Gmail icon" aria-hidden="true" class="icon-fallback" />
-      </a>
-
-      <!-- LinkedIn icon: Phosphor Icons (fixed brand color, theme-independent), with local SVG fallback -->
-      <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-        <i class="ph-fill ph-linkedin-logo icon-linkedin" aria-hidden="true"></i>
-        <img src="assets/icons/linkedin.svg" alt="LinkedIn icon" aria-hidden="true" class="icon-fallback" />
-      </a>
-
+        <a class="icon-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16v12H4z"></path>
+            <path d="m4 7 8 6 8-6"></path>
+          </svg>
+        </a>
+        <a class="icon-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.94 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5 8.48h-2V20h2V8.48Zm3.18 0h-2V20h2v-6.88c0-2 2.6-2.16 2.6 0V20h2v-7.3c0-3.42-3.65-3.29-4.5-1.62V8.48Z"></path>
+          </svg>
+        </a>
       </div>
     </div>
   </div>

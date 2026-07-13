@@ -28,11 +28,6 @@
   <link rel="canonical" href="https://kennethics.github.io/contact.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- Phosphor Icons (fill weight) — used for the Gmail/LinkedIn hero icons.
-       onerror: if the CDN fails to load (blocked/offline/down), flag it so
-       CSS can fall back to the local SVG icons instead. -->
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css"
-        onerror="document.documentElement.classList.add('ph-fallback')">
   <script src="assets/js/theme.js"></script>
   <link rel="stylesheet" href="assets/css/shared.css">
   <style>
@@ -41,63 +36,6 @@
       gap: 16px;
       margin-top: 22px;
       flex-wrap: wrap;
-    }
-
-    .hero-logo-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-      text-decoration: none;
-    }
-
-    .hero-logo-link:hover {
-      transform: translateY(-3px);
-      background: var(--card-bg);
-      border-color: rgba(58, 184, 168, 0.3);
-      color: var(--accent);
-    }
-
-    .hero-logo-link svg,
-    .hero-logo-link img {
-      width: 28px;
-      height: 28px;
-      display: block;
-    }
-
-    /* Phosphor icon glyphs: sized to match the old 28px SVG/img icons.
-       Colors are fixed hex values (not currentColor or CSS variables) so
-       they never invert or shift between light/dark mode, and don't change
-       on hover — same behavior as the SVGs they replace. */
-    .hero-logo-link i.ph-fill {
-      font-size: 28px;
-      line-height: 1;
-      display: block;
-    }
-    .hero-logo-link .icon-gmail { color: #EA4335; }
-    .hero-logo-link .icon-linkedin { color: #0A66C2; }
-
-    /* Local-SVG fallback: hidden by default. Shown instead of the Phosphor
-       icon if the CDN fails to load (JS sets .ph-fallback on <html>), or
-       if JavaScript is disabled entirely (see <noscript> in <head>). */
-    .hero-logo-link .icon-fallback {
-      display: none;
-      width: 28px;
-      height: 28px;
-    }
-    .ph-fallback .hero-logo-link i.ph-fill,
-    .no-js .hero-logo-link i.ph-fill {
-      display: none;
-    }
-    .ph-fallback .hero-logo-link .icon-fallback,
-    .no-js .hero-logo-link .icon-fallback {
-      display: block;
     }
 
     .open-badge {
@@ -209,28 +147,33 @@
   </div>
 
   <div class="hero-logo-links fade-in">
-    <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
-      <i class="ph-fill ph-envelope-simple icon-gmail" aria-hidden="true"></i>
-      <img src="assets/icons/gmail.svg" alt="Gmail icon" aria-hidden="true" class="icon-fallback" />
-    </a>
-    <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-      <i class="ph-fill ph-linkedin-logo icon-linkedin" aria-hidden="true"></i>
-      <img src="assets/icons/linkedin.svg" alt="LinkedIn icon" aria-hidden="true" class="icon-fallback" />
-    </a>
-    <a class="hero-logo-link" href="https://wa.me/60146630493" target="_blank" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path fill="#25D366" d="M24 4C12.95 4 4 12.95 4 24c0 3.57.94 6.92 2.58 9.82L4 44l10.48-2.52A19.9 19.9 0 0024 44c11.05 0 20-8.95 20-20S35.05 4 24 4z"/>
-        <path fill="#fff" d="M35.03 29.6c-.49-.24-2.87-1.42-3.32-1.58-.44-.16-.77-.24-1.09.24-.32.49-1.24 1.58-1.52 1.9-.28.32-.56.36-1.05.12-.49-.24-2.07-.76-3.95-2.43-1.46-1.3-2.44-2.9-2.73-3.39-.28-.49-.03-.75.21-.99.22-.22.49-.56.73-.84.24-.28.32-.49.49-.81.16-.32.08-.61-.04-.84-.12-.24-1.09-2.63-1.49-3.6-.39-.95-.8-.82-1.09-.83H19.2c-.32 0-.85.12-1.29.61-.44.49-1.69 1.65-1.69 4.02s1.73 4.66 1.97 4.98c.24.32 3.4 5.2 8.23 7.29 1.15.5 2.05.8 2.75 1.02 1.16.37 2.21.32 3.04.19.93-.14 2.87-1.17 3.28-2.3.4-1.13.4-2.1.28-2.3-.12-.2-.44-.32-.93-.56z"/>
+    <a class="icon-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6h16v12H4z"></path>
+        <path d="m4 7 8 6 8-6"></path>
       </svg>
     </a>
-    <a class="hero-logo-link" href="https://github.com/kennethics" target="_blank" title="GitHub" aria-label="View GitHub profile">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path fill="currentColor" d="M24 4C12.95 4 4 12.95 4 24c0 8.84 5.73 16.33 13.68 18.97.99.18 1.36-.43 1.36-.96 0-.47-.02-2.05-.03-3.73-5.56 1.21-6.74-2.37-6.74-2.37-.91-2.31-2.22-2.93-2.22-2.93-1.82-1.24.14-1.22.14-1.22 2.01.14 3.07 2.07 3.07 2.07 1.79 3.07 4.69 2.18 5.83 1.67.18-1.3.7-2.18 1.27-2.68-4.44-.5-9.11-2.22-9.11-9.89 0-2.18.78-3.97 2.06-5.37-.21-.51-.9-2.54.2-5.29 0 0 1.68-.54 5.5 2.05a19.15 19.15 0 0110.01 0c3.82-2.59 5.49-2.05 5.49-2.05 1.1 2.75.41 4.78.2 5.29 1.28 1.4 2.05 3.19 2.05 5.37 0 7.69-4.68 9.38-9.14 9.87.72.62 1.36 1.84 1.36 3.71 0 2.68-.02 4.84-.02 5.5 0 .53.36 1.15 1.37.96C38.28 40.32 44 32.84 44 24 44 12.95 35.05 4 24 4z"/>
+    <a class="icon-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6.94 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5 8.48h-2V20h2V8.48Zm3.18 0h-2V20h2v-6.88c0-2 2.6-2.16 2.6 0V20h2v-7.3c0-3.42-3.65-3.29-4.5-1.62V8.48Z"></path>
       </svg>
     </a>
-    <a class="hero-logo-link" id="location-link" href="https://www.google.com/maps/search/Klang,+Selangor,+Malaysia" target="_blank" title="My Location" aria-label="Find my current location on Google Maps">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path fill="#3ab8a8" d="M24 4C16.27 4 10 10.27 10 18c0 11.25 14 26 14 26S38 29.25 38 18C38 10.27 31.73 4 24 4zm0 19a5 5 0 110-10 5 5 0 010 10z"/>
+    <a class="icon-link" href="https://wa.me/60146630493" target="_blank" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7.9 19.1 5 20l.9-2.9A8.3 8.3 0 1 1 7.9 19.1Z"></path>
+        <path d="M14.8 13.8c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.2.2-.5.7-.7.9-.1.1-.3.2-.5.1-.2-.1-.9-.3-1.7-.9-.6-.5-1-.9-1.1-1.2-.1-.2 0-.3.1-.4.1-.1.2-.2.3-.3.1-.1.1-.2.2-.3.1-.1 0-.2 0-.3-.1-.1-.5-1.2-.7-1.7-.2-.5-.3-.4-.5-.4h-.4c-.1 0-.3 0-.5.1-.2.1-.7.7-.7 1.7s.7 2 .8 2.2c.1.2 1.4 2.2 3.5 3.1.5.2.9.3 1.2.4.5.1.9.1 1.3.1.4 0 1.1-.4 1.3-.8.2-.4.2-.8.1-.9-.1-.2-.2-.2-.5-.3Z"></path>
+      </svg>
+    </a>
+    <a class="icon-link" href="https://github.com/kennethics" target="_blank" title="GitHub" aria-label="View GitHub profile">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 19c-4.3 1.3-4.3-2.5-6-3"></path>
+        <path d="M15 21v-3.3a2.8 2.8 0 0 0-.8-2.2c2.7-.3 5.5-1.3 5.5-5.9a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.1 12.1 0 0 0-6.3 0C6.3 2.8 5.2 3.1 5.2 3.1a4.3 4.3 0 0 0-.1 3.2 4.6 4.6 0 0 0-1.3 3.2c0 4.6 2.8 5.6 5.5 5.9a2.8 2.8 0 0 0-.8 2.2V21"></path>
+      </svg>
+    </a>
+    <a class="icon-link" id="location-link" href="https://www.google.com/maps/search/Klang,+Selangor,+Malaysia" target="_blank" title="My Location" aria-label="Find my current location on Google Maps">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-6-5.7-6-11a6 6 0 1 1 12 0c0 5.3-6 11-6 11Z"></path>
+        <circle cx="12" cy="10" r="2.5"></circle>
       </svg>
     </a>
   </div>
