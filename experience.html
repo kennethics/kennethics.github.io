@@ -101,10 +101,14 @@
         </div>
       </div>
     </a>
-    <div class="theme-switcher" role="group" aria-label="Theme">
-      <button class="theme-toggle" data-theme-set="light" type="button" aria-label="Light theme" title="Light theme">☀️</button>
-      <button class="theme-toggle" data-theme-set="dark" type="button" aria-label="Dark theme" title="Dark theme">🌙</button>
-      <button class="theme-toggle" data-theme-set="auto" type="button" aria-label="Auto theme" title="Auto theme">🖥️</button>
+    <div class="theme-switcher">
+      <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-icon theme-toggle-icon-sun">☀️</span>
+          <span class="theme-toggle-icon theme-toggle-icon-moon">🌙</span>
+          <span class="theme-toggle-thumb"></span>
+        </span>
+      </button>
     </div>
   </div>
   <ul class="nav-links">
