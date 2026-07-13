@@ -76,32 +76,26 @@
       align-items: center;
       gap: 10px;
       padding: 12px 22px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: #0a66c2;
       border-radius: 12px;
       text-decoration: none;
-      color: var(--text);
+      color: #fff;
       font-size: 0.88rem;
       font-weight: 500;
-      transition: transform 0.2s, box-shadow 0.2s, color 0.2s, border-color 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
     }
 
     .linkedin-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      color: var(--accent);
-      border-color: rgba(58, 184, 168, 0.3);
+      box-shadow: 0 8px 20px rgba(10,102,194,0.3);
+      opacity: 0.95;
     }
 
-    .linkedin-btn svg {
+    .linkedin-btn svg,
+    .linkedin-btn img {
       width: 20px;
       height: 20px;
       flex-shrink: 0;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
     }
 
     .linkedin-note {
@@ -360,8 +354,8 @@
   <!-- LinkedIn CTA — logo only -->
   <div class="linkedin-cta-wrap fade-in">
     <a class="linkedin-btn" href="https://linkedin.com/in/kennethsorianova" target="_blank">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6.94 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5 8.48h-2V20h2V8.48Zm3.18 0h-2V20h2v-6.88c0-2 2.6-2.16 2.6 0V20h2v-7.3c0-3.42-3.65-3.29-4.5-1.62V8.48Z"></path>
+      <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
       </svg>
       View on LinkedIn
     </a>
@@ -417,7 +411,7 @@
         </div>
         <div class="form-group">
           <label for="rec-email">Your Email</label>
-          <input type="email" id="rec-email" placeholder="your@email.com" required />
+          <input type="email" id="rec-email" placeholder="So Kenneth can say thank you" required />
         </div>
         <div class="form-group full">
           <label for="rec-text">Your Recommendation</label>
