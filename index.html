@@ -416,8 +416,6 @@
     .hero-logo-link svg {
       width: 28px;
       height: 28px;
-      stroke: currentColor;
-      stroke-width: 2;
       display: block;
     }
 
@@ -593,11 +591,10 @@
         </svg>
       </a>
 
-      <!-- LinkedIn: Lucide has no brand-logo icons, so "briefcase" (professional profile) is used to keep the icon set fully generic -->
+      <!-- LinkedIn: brand logo (fill uses currentColor, so it still tracks var(--text)/var(--accent) like the rest of the set) -->
       <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-          <rect width="20" height="14" x="2" y="6" rx="2" />
+        <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
         </svg>
       </a>
 
