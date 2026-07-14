@@ -63,7 +63,7 @@
     .rec-role { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
     .rec-managed { font-size: 0.72rem; color: var(--accent); margin-top: 3px; }
 
-    /* LinkedIn CTA — now just a logo button */
+    /* LinkedIn CTA — icon-only link, matches the site-wide icon-link style used on contact.html */
     .linkedin-cta-wrap {
       display: flex;
       align-items: center;
@@ -71,37 +71,31 @@
       margin-bottom: 32px;
     }
 
-    .linkedin-btn {
+    .hero-logo-link {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 22px;
-      background: #0a66c2;
-      border-radius: 12px;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       text-decoration: none;
-      color: #fff;
-      font-size: 0.88rem;
-      font-weight: 500;
-      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
     }
 
-    .linkedin-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(10,102,194,0.3);
-      opacity: 0.95;
+    .hero-logo-link:hover {
+      transform: translateY(-3px);
+      background: var(--card-bg);
+      border-color: rgba(58, 184, 168, 0.3);
+      color: var(--accent);
     }
 
-    .linkedin-btn svg,
-    .linkedin-btn img {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-
-    .linkedin-note {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.5;
+    .hero-logo-link svg {
+      width: 28px;
+      height: 28px;
+      display: block;
     }
 
     /* FORM */
@@ -349,21 +343,19 @@
 <main class="page">
   <div class="page-header fade-in">
     <div class="page-label">What Others Say</div>
-    <h1 class="page-title">Recommendations</h1>
+    <h1 class="page-title">What others say</h1>
   </div>
 
   <!-- SECTION 1: LinkedIn Recommendations (curated, static — real photos, not stored in a spreadsheet) -->
   <div class="rec-section-title fade-in">LinkedIn Recommendations</div>
 
-  <!-- LinkedIn CTA — logo only -->
+  <!-- LinkedIn CTA — icon only, matches site-wide icon-link styling (see contact.html .hero-logo-link) -->
   <div class="linkedin-cta-wrap fade-in">
-    <a class="linkedin-btn" href="https://linkedin.com/in/kennethsorianova" target="_blank">
+    <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
       <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
       </svg>
-      View on LinkedIn
     </a>
-    <p class="linkedin-note">See all recommendations on my LinkedIn profile</p>
   </div>
 
   <hr class="divider">
