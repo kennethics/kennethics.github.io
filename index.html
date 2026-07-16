@@ -508,6 +508,194 @@
     }
     .hero-skills .tag-accent { background: rgba(58,184,168,0.12); color: var(--teal); }
 
+    /* ── Hero subhead (value proposition line) ── */
+    .hero-subhead {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--text);
+      max-width: 520px;
+      font-weight: 500;
+      margin-top: 4px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Credibility strip ── */
+    .hero-credibility {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .credibility-item { white-space: nowrap; }
+    .credibility-dot { color: var(--border); }
+
+    /* ── Hero CTA row ── */
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 30px;
+      border-radius: 100px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-btn:hover { transform: translateY(-2px); }
+
+    .cta-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(58,184,168,0.25);
+    }
+    .cta-primary:hover { box-shadow: 0 10px 24px rgba(58,184,168,0.35); }
+
+    .cta-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .cta-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .cta-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .cta-ghost:hover { color: var(--text); }
+
+    /* Extra fade-up stagger slots for the added hero children */
+    .fade-up:nth-child(6) { animation-delay: 0.7s; }
+    .fade-up:nth-child(7) { animation-delay: 0.8s; }
+
+    /* ═══════════════════════════════════
+       HOMEPAGE SECTIONS (Featured Work / Testimonial)
+    ═══════════════════════════════════ */
+    .home-section {
+      padding: 72px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .home-section-muted {
+      background: var(--card);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .home-section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .home-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+      max-width: 640px;
+    }
+
+    .featured-card {
+      display: flex;
+      gap: 28px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 4px 16px var(--card-shadow);
+    }
+
+    .featured-card-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      border-radius: 14px;
+    }
+
+    .featured-card-body h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    .featured-tag-row { margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .featured-card-body p { line-height: 1.7; margin-bottom: 12px; font-size: 0.96rem; }
+    .featured-card-body p:last-of-type { margin-bottom: 20px; }
+
+    .text-link {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .text-link:hover { text-decoration: underline; }
+
+    .home-quote {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+
+    .quote-mark {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.5rem;
+      color: var(--accent);
+      opacity: 0.35;
+      line-height: 1;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .home-quote p {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .home-quote footer {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    .home-section-muted .text-link {
+      display: block;
+      text-align: center;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       nav { padding: 14px 20px; }
@@ -518,6 +706,12 @@
       .hero-logo-links { justify-content: center; }
       .hero-skills { justify-content: center; }
       .hero-nav { justify-content: center; }
+      .hero-subhead { max-width: 100%; }
+      .hero-credibility { justify-content: center; }
+      .hero-cta { justify-content: center; }
+      .home-section { padding: 56px 24px; }
+      .featured-card { flex-direction: column; }
+      .home-section h2 { max-width: 100%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -590,16 +784,16 @@
     </div>
 
     <div class="hero-text">
-      <div class="hero-label fade-up">Currently based in Malaysia · Open to Remote & Relocation</div>
+      <div class="hero-label fade-up">Hi <span class="hero-wave" aria-hidden="true">👋</span> I'm Kenneth — based in Malaysia · Open to Remote &amp; Relocation</div>
 
-      <h1 class="fade-up">Hi <span class="hero-wave" aria-hidden="true">👋</span>
-      </h1>
-  
-      <p class="hero-bio fade-up" style="font-weight:500; margin-bottom:8px;">A bit about ME</p>
+      <h1 class="fade-up">I build <em>AI automation</em> that fits how businesses actually operate.</h1>
+
+      <p class="hero-subhead fade-up">
+        I help ops, Customer Success, and founder-led teams cut out repetitive manual work — lead generation, cold outreach, research, email management, job applications — with automations people actually keep using.
+      </p>
+
       <p class="hero-bio fade-up">
-        I'm a seasoned professional with vast experience across fintech support, sales, credit &amp; risk analysis, and content writing and marketing.
-        Currently building AI automation projects using n8n and AI tools and exploring roles in Customer Success,
-        Business Analysis, and AI Automation. Rooted in the Philippines.
+        10+ years across fintech support, BPO sales, and credit &amp; risk analysis taught me how businesses really run. I bring that operator's eye to AI automation, Business Analysis, and Customer Success — building systems that solve operational problems, not just technical ones.
       </p>
 
       <!-- Core skills at a glance -->
@@ -610,6 +804,24 @@
         <span class="tag">SQL</span>
         <span class="tag">Excel</span>
         <span class="tag">Stripe</span>
+      </div>
+
+      <!-- Credibility strip -->
+      <div class="hero-credibility fade-up">
+        <span class="credibility-item">10+ Years Experience</span>
+        <span class="credibility-dot" aria-hidden="true">·</span>
+        <span class="credibility-item">China Banking Corp</span>
+        <span class="credibility-dot" aria-hidden="true">·</span>
+        <span class="credibility-item">Concentrix</span>
+        <span class="credibility-dot" aria-hidden="true">·</span>
+        <span class="credibility-item">TDCX Malaysia</span>
+      </div>
+
+      <!-- Primary CTAs -->
+      <div class="hero-cta fade-up">
+        <a class="cta-btn cta-primary" href="projects.html">See What I've Automated</a>
+        <a class="cta-btn cta-secondary" href="contact.html">Let's Talk</a>
+        <a class="cta-btn cta-ghost" href="https://drive.google.com/uc?export=download&id=1p7kv4TKVNp1ToJmrSnhFfTOnVLgYLsMp" target="_blank" rel="noopener">Download Resume</a>
       </div>
 
       <!-- Gmail + LinkedIn logos only -->
@@ -644,6 +856,41 @@
     <a class="oval-btn oval-contact"  href="contact.html">Contact</a>
   </div>
 </main>
+
+<section class="home-section" aria-labelledby="featured-work-heading">
+  <div class="home-section-inner">
+    <div class="section-eyebrow">Featured Work</div>
+    <h2 id="featured-work-heading">Automation, applied to real operational work</h2>
+    <div class="featured-card">
+      <div class="featured-card-icon" aria-hidden="true">🤖</div>
+      <div class="featured-card-body">
+        <h3>AI Workflow Automations</h3>
+        <div class="featured-tag-row">
+          <span class="tag tag-accent">n8n</span>
+          <span class="tag tag-accent">Claude</span>
+          <span class="tag">Apify</span>
+        </div>
+        <p><strong>Problem:</strong> Repetitive manual work across lead generation, cold outreach, research, email management, and job applications was eating hours that should have gone to higher-value work.</p>
+        <p><strong>Solution:</strong> Built a set of n8n workflows connected to Claude, Gemini, and OpenAI that handle the repeatable parts of each process end-to-end — data gathering through first-draft outreach — with a human reviewing before anything goes out.</p>
+        <p><strong>Outcome:</strong> Hours of repetitive manual work reclaimed every week across five separate workflows — time redirected back into the parts of the job that actually need a person.</p>
+        <a class="text-link" href="projects.html">See all projects →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-section home-section-muted" aria-labelledby="testimonial-heading">
+  <div class="home-section-inner">
+    <div class="section-eyebrow">What People Say</div>
+    <h2 id="testimonial-heading" class="sr-only">Testimonial</h2>
+    <blockquote class="home-quote">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <p><!-- TODO(Ken): paste Alex Hubert's actual recommendation quote here, replacing this placeholder line --></p>
+      <footer>&mdash; Alex Hubert</footer>
+    </blockquote>
+    <a class="text-link" href="recommendations.html">Read more recommendations →</a>
+  </div>
+</section>
 
 <script src="assets/js/hero-card.js"></script>
 
