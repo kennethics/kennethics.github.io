@@ -59,6 +59,103 @@
     .work-freelance { background: rgba(232,146,74,0.12); color: var(--orange); }
     .work-fulltime  { background: rgba(58,184,168,0.12); color: var(--teal); }
 
+    /* ── Collapsible experience details ── */
+    /* Cards start collapsed (title/subtitle/work-type/date only). The toggle
+       button reveals the body + tags; clicking again collapses back. */
+    .card-body,
+    .tags {
+      overflow: hidden;
+      max-height: 800px;
+      opacity: 1;
+      transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+    }
+
+    .card.collapsed .card-body,
+    .card.collapsed .tags {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0 !important;
+      pointer-events: none;
+    }
+
+    .exp-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .exp-toggle:hover,
+    .exp-toggle:focus-visible {
+      color: var(--accent);
+      border-color: rgba(58, 184, 168, 0.3);
+    }
+
+    .exp-toggle-icon {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .exp-toggle.is-open .exp-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ── Back to top button ── */
+    .back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px var(--card-shadow);
+      z-index: 150;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease,
+                  border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover,
+    .back-to-top:focus-visible {
+      border-color: rgba(58, 184, 168, 0.3);
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .back-to-top {
+        right: 16px;
+        bottom: 16px;
+        width: 44px;
+        height: 44px;
+      }
+    }
+
     /* Animated role ticker */
     .nav-roles {
       overflow: hidden;
@@ -176,7 +273,7 @@
   </div>
 
   <!-- Sharpe Two -->
-  <div class="card fade-in">
+  <div class="card fade-in collapsed">
     <div class="card-meta">
       <div class="card-meta-left">
         <div class="timeline-dot"></div>
@@ -189,6 +286,10 @@
       </div>
       <span class="card-date">Jan 2026 – Mar 2026</span>
     </div>
+    <button type="button" class="exp-toggle" aria-expanded="false" onclick="toggleExpCard(this)">
+      <span class="exp-toggle-label">Show details</span>
+      <span class="exp-toggle-icon" aria-hidden="true">▾</span>
+    </button>
     <div class="card-body" style="margin-top:14px;">
       <ul>
         <li>Engineered automated cross-platform workflows using Make and MonitoRSS, improving real-time content distribution between Discord and social media channels.</li>
@@ -210,7 +311,7 @@
   </div>
 
   <!-- TDCX -->
-  <div class="card fade-in">
+  <div class="card fade-in collapsed">
     <div class="card-meta">
       <div class="card-meta-left">
         <div class="timeline-dot"></div>
@@ -223,6 +324,10 @@
       </div>
       <span class="card-date">Nov 2023 – Feb 2026</span>
     </div>
+    <button type="button" class="exp-toggle" aria-expanded="false" onclick="toggleExpCard(this)">
+      <span class="exp-toggle-label">Show details</span>
+      <span class="exp-toggle-icon" aria-hidden="true">▾</span>
+    </button>
     <div class="card-body" style="margin-top:14px;">
       <ul>
         <li>Managed complex Stripe merchant inquiries including payment disputes, account verification, onboarding, and billing — consistently achieving high CSAT, FCR, and quality scores with minimal escalations.</li>
@@ -241,7 +346,7 @@
   </div>
 
   <!-- Concentrix -->
-  <div class="card fade-in">
+  <div class="card fade-in collapsed">
     <div class="card-meta">
       <div class="card-meta-left">
         <div class="timeline-dot"></div>
@@ -254,6 +359,10 @@
       </div>
       <span class="card-date">Feb 2020 – Oct 2023</span>
     </div>
+    <button type="button" class="exp-toggle" aria-expanded="false" onclick="toggleExpCard(this)">
+      <span class="exp-toggle-label">Show details</span>
+      <span class="exp-toggle-icon" aria-hidden="true">▾</span>
+    </button>
     <div class="card-body" style="margin-top:14px;">
       <ul>
         <li>Consistently met and exceeded monthly sales targets across inbound and outbound campaigns, earning recognition as a top-performing agent.</li>
@@ -271,7 +380,7 @@
   </div>
 
   <!-- Chinabank -->
-  <div class="card fade-in">
+  <div class="card fade-in collapsed">
     <div class="card-meta">
       <div class="card-meta-left">
         <div class="timeline-dot"></div>
@@ -284,6 +393,10 @@
       </div>
       <span class="card-date">March 2015 – Feb 2020</span>
     </div>
+    <button type="button" class="exp-toggle" aria-expanded="false" onclick="toggleExpCard(this)">
+      <span class="exp-toggle-label">Show details</span>
+      <span class="exp-toggle-icon" aria-hidden="true">▾</span>
+    </button>
     <div class="card-body" style="margin-top:14px;">
       <ul>
         <li>Conducted credit evaluations for corporate, SME, and retail loan applications, analyzing financial statements, cash flows, collateral, and risk profiles</li>
@@ -303,5 +416,45 @@
   </div>
   
 </main>
+
+<!-- Back to top -->
+<button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <line x1="12" y1="19" x2="12" y2="5"></line>
+    <polyline points="5 12 12 5 19 12"></polyline>
+  </svg>
+</button>
+
+<script>
+  // ── Collapsible experience cards ──
+  // Cards load collapsed (title/subtitle/work-type/date only). Toggling
+  // reveals the body + tags; toggling again collapses back to the summary.
+  function toggleExpCard(btn) {
+    const card = btn.closest('.card');
+    const collapsed = card.classList.toggle('collapsed');
+    const expanded = !collapsed;
+    btn.setAttribute('aria-expanded', String(expanded));
+    btn.classList.toggle('is-open', expanded);
+    btn.querySelector('.exp-toggle-label').textContent = expanded ? 'Hide details' : 'Show details';
+  }
+
+  // ── Back to top ──
+  (function () {
+    const backToTop = document.getElementById('back-to-top');
+    if (!backToTop) return;
+    const SHOW_AFTER = 400;
+
+    function updateVisibility() {
+      backToTop.classList.toggle('show', window.scrollY > SHOW_AFTER);
+    }
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    updateVisibility();
+  })();
+</script>
 </body>
 </html>
