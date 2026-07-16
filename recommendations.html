@@ -63,12 +63,14 @@
     .rec-role { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
     .rec-managed { font-size: 0.72rem; color: var(--accent); margin-top: 3px; }
 
-    /* LinkedIn CTA — icon-only link, matches the site-wide icon-link style used on contact.html */
+    /* LinkedIn CTA — icon + label, placed inside the recommendation form above the submit button.
+       Icon box reuses the site-wide icon-link style (see contact.html .hero-logo-link). */
     .linkedin-cta-wrap {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 32px;
+      text-decoration: none;
+      color: inherit;
     }
 
     .hero-logo-link {
@@ -82,10 +84,9 @@
       border: 1px solid var(--border);
       color: var(--text);
       transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-      text-decoration: none;
     }
 
-    .hero-logo-link:hover {
+    .linkedin-cta-wrap:hover .hero-logo-link {
       transform: translateY(-3px);
       background: var(--card-bg);
       border-color: rgba(58, 184, 168, 0.3);
@@ -96,6 +97,17 @@
       width: 28px;
       height: 28px;
       display: block;
+    }
+
+    .linkedin-cta-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    .linkedin-cta-wrap:hover .linkedin-cta-text {
+      color: var(--accent);
     }
 
     /* FORM */
@@ -346,21 +358,7 @@
     <h1 class="page-title">What Others<br><em>Say</em></h1>
   </div>
 
-  <!-- SECTION 1: LinkedIn Recommendations (curated, static — real photos, not stored in a spreadsheet) -->
-  <div class="rec-section-title fade-in">LinkedIn Feedbacks</div>
-
-  <!-- LinkedIn CTA — icon only, matches site-wide icon-link styling (see contact.html .hero-logo-link) -->
-  <div class="linkedin-cta-wrap fade-in">
-    <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-      <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
-      </svg>
-    </a>
-  </div>
-
-  <hr class="divider">
-
-  <!-- SECTION 2: Recommendations (dynamic — pulled live from Google Sheets, Status = Approved only, all sources) -->
+  <!-- SECTION: Recommendations (dynamic — pulled live from Google Sheets, Status = Approved only, all sources) -->
   <div class="rec-section-title fade-in">Recommendations</div>
   <p class="rec-section-sub fade-in">From clients, colleagues, managers and website visitors.</p>
   <div id="website-recs-list" class="fade-in">
@@ -412,6 +410,16 @@
         <div class="form-group full">
           <label for="rec-text">Your Recommendation</label>
           <textarea id="rec-text" placeholder="Share what it was like working with Kenneth..."></textarea>
+        </div>
+        <div class="form-group full">
+          <a class="linkedin-cta-wrap" href="https://linkedin.com/in/kennethsorianova" target="_blank" rel="noopener" aria-label="Continue on LinkedIn">
+            <span class="hero-logo-link" aria-hidden="true">
+              <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
+              </svg>
+            </span>
+            <span class="linkedin-cta-text">Continue on LinkedIn</span>
+          </a>
         </div>
         <div class="form-group full">
           <button class="submit-btn" onclick="submitRec()">Send Recommendation ↗</button>
