@@ -35,6 +35,55 @@
     .skill-group { margin-bottom: 8px; }
     .skill-group-title { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:10px; font-weight:500; }
 
+    /* ── Bio card collapse/expand ── */
+    /* Starts expanded (full bio). "Minimize" collapses down to the first
+       sentence only; clicking again ("Show more") restores the rest. */
+    .bio-more {
+      overflow: hidden;
+      max-height: 800px;
+      opacity: 1;
+      transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+    }
+
+    .card.bio-collapsed .bio-more {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0 !important;
+      pointer-events: none;
+    }
+
+    .exp-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .exp-toggle:hover,
+    .exp-toggle:focus-visible {
+      color: var(--accent);
+      border-color: rgba(58, 184, 168, 0.3);
+    }
+
+    .exp-toggle-icon {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .exp-toggle.is-open .exp-toggle-icon {
+      transform: rotate(180deg);
+    }
+
     /* Animated role ticker */
     .nav-roles {
       overflow: hidden;
@@ -154,10 +203,16 @@
   <div class="card fade-in">
     <div class="card-body">
       <p>I'm Kenneth! Currently based in Malaysia, originally from the Philippines. Over the past 10+ years I've worked across fintech, BPO, banking, and content marketing in roles that put me at the crossroads of technology and people.</p>
-      <br>
-      <p>My career started in credit and risk analysis at China Banking Corporation, where I learned how to read data and make decisions under pressure. From there I moved into customer-facing roles at Concentrix, as a Sales Advisor, then at TDCX in Kuala Lumpur supporting Stripe merchants, and later freelance work at Sharpe Two based in the UAE for Sales and Marketing.</p>
-      <br>
-      <p>These days I'm building AI automation and Business analysis projects using n8n and AI tools, and actively looking for remote roles in Customer Success, Business Analysis, or AI Automation. I'm also an active writer, posting regularly on X, Threads, and publishing articles on Substack almost every week.</p>
+      <div class="bio-more">
+        <br>
+        <p>My career started in credit and risk analysis at China Banking Corporation, where I learned how to read data and make decisions under pressure. From there I moved into customer-facing roles at Concentrix, as a Sales Advisor, then at TDCX in Kuala Lumpur supporting Stripe merchants, and later freelance work at Sharpe Two based in the UAE for Sales and Marketing.</p>
+        <br>
+        <p>These days I'm building AI automation and Business analysis projects using n8n and AI tools, and actively looking for remote roles in Customer Success, Business Analysis, or AI Automation. I'm also an active writer, posting regularly on X, Threads, and publishing articles on Substack almost every week.</p>
+      </div>
+      <button type="button" class="exp-toggle is-open" aria-expanded="true" onclick="toggleBio(this)">
+        <span class="exp-toggle-label">Minimize</span>
+        <span class="exp-toggle-icon" aria-hidden="true">▾</span>
+      </button>
     </div>
   </div>
 
@@ -234,5 +289,18 @@
   </div>
 
 </main>
+
+<script>
+  // Bio card collapse/expand. Starts expanded; "Minimize" shrinks the card
+  // down to the first sentence only, "Show more" restores the full bio.
+  function toggleBio(btn) {
+    const card = btn.closest('.card');
+    const collapsed = card.classList.toggle('bio-collapsed');
+    const expanded = !collapsed;
+    btn.setAttribute('aria-expanded', String(expanded));
+    btn.classList.toggle('is-open', expanded);
+    btn.querySelector('.exp-toggle-label').textContent = expanded ? 'Minimize' : 'Show more';
+  }
+</script>
 </body>
 </html>
