@@ -16,6 +16,14 @@
   --drawer-bg: rgba(240, 238, 235, 0.99);
   --card-bg: #ffffff;
   --card-shadow: rgba(0,0,0,0.07);
+
+  /* Shared interaction tokens — one timing/easing language for every
+     hover, lift, and reveal on the site (nav, cards, buttons, toggle). */
+  --ease-standard: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-fast: 0.15s ease;
+  --lift-sm: -2px;
+  --lift-md: -3px;
+  --space-section: clamp(48px, 7vw, 88px);
 }
 
 :root[data-theme="dark"] {
@@ -106,14 +114,14 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   color: var(--text);
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: transform var(--ease-standard), background var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .icon-link:hover,
 .icon-link:focus-visible {
-  transform: translateY(-3px);
+  transform: translateY(var(--lift-md));
   background: var(--card-bg);
   border-color: rgba(58, 184, 168, 0.3);
   color: var(--accent);
@@ -140,17 +148,28 @@ body {
   margin-left: 22px;
 }
 
+/* Theme toggle: a quiet utility, not a feature. No track, no pill — just
+   an icon that only announces itself on hover/focus, so it never competes
+   with real content. The sun/moon crossfade+rotate on click so the state
+   change still reads clearly despite the minimal chrome. */
 .theme-toggle {
   position: relative;
-  width: 44px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  background: var(--card);
+  border: none;
+  border-radius: 10px;
+  background: transparent;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--ease-fast);
+}
+
+.theme-toggle:hover {
+  background: var(--card);
 }
 
 .theme-toggle:focus-visible {
@@ -162,38 +181,31 @@ body {
   transform: scale(0.93);
 }
 
-.theme-toggle-track {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .theme-toggle-icon {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.62rem;
+  font-size: 0.95rem;
   line-height: 1;
+  transition: opacity var(--ease-standard), transform var(--ease-standard);
 }
 
-.theme-toggle-icon-sun { left: 5px; }
-.theme-toggle-icon-moon { right: 5px; }
-
-.theme-toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease;
+.theme-toggle-icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
-.theme-toggle[aria-checked="true"] .theme-toggle-thumb {
-  transform: translateX(20px);
+.theme-toggle-icon-moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+
+.theme-toggle[aria-checked="true"] .theme-toggle-icon-sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+.theme-toggle[aria-checked="true"] .theme-toggle-icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 /* ── NAV ── */
@@ -205,11 +217,29 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 18px 48px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--ease-standard), border-color var(--ease-standard),
+              box-shadow var(--ease-standard), transform 0.3s ease;
+}
+
+/* Once the page scrolls past the top, the nav picks up its surface —
+   until then it stays invisible so it never competes with the hero. */
+nav.nav-scrolled {
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  transition: transform 0.3s ease;
+  border-bottom-color: var(--border);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+/* Inner pages (About, Projects, etc.) have no hero to sit over, so the
+   nav should read as present from the first frame rather than fading in. */
+.inner-page nav {
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--border);
 }
 
 /* Tucked away while scrolling down past the top of the page; reappears on
@@ -403,11 +433,11 @@ nav.nav-hidden {
   padding: 32px 36px;
   border: 1px solid var(--border);
   margin-bottom: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform var(--ease-standard), box-shadow var(--ease-standard);
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--lift-sm));
   box-shadow: 0 8px 24px var(--card-shadow);
 }
 
@@ -463,11 +493,12 @@ nav.nav-hidden {
 
 /* FADE IN — reveals once when the element scrolls into view (see
    assets/js/interactions.js). Starts hidden so there's no flash of
-   fully-visible content before JS attaches the observer. */
+   fully-visible content before JS attaches the observer. Kept short and
+   using the shared deceleration curve so it reads as a settle, not a slide. */
 .fade-in {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard);
 }
 
 .fade-in.is-visible {
@@ -532,11 +563,11 @@ nav.nav-hidden {
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+  transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast), border-color var(--ease-fast);
   letter-spacing: 0.01em;
 }
 
-.cta-btn:hover { transform: translateY(-2px); }
+.cta-btn:hover { transform: translateY(var(--lift-sm)); }
 .cta-btn:active { transform: translateY(0) scale(0.97); }
 
 .cta-primary {

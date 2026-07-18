@@ -52,6 +52,14 @@
       --drawer-bg: rgba(240,238,235,0.99);
       --card-bg: #ffffff;
       --card-shadow: rgba(0,0,0,0.07);
+
+      /* Shared interaction tokens — same timing/easing language as the
+         rest of the site (see assets/css/shared.css). */
+      --ease-standard: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-fast: 0.15s ease;
+      --lift-sm: -2px;
+      --lift-md: -3px;
+      --space-section: clamp(48px, 7vw, 88px);
     }
 
     :root[data-theme="dark"] {
@@ -119,15 +127,22 @@
 
     .theme-toggle {
       position: relative;
-      width: 44px;
-      height: 24px;
+      width: 36px;
+      height: 36px;
       padding: 0;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      background: var(--card);
+      border: none;
+      border-radius: 10px;
+      background: transparent;
       cursor: pointer;
       flex-shrink: 0;
-      transition: background 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--ease-fast);
+    }
+
+    .theme-toggle:hover {
+      background: var(--card);
     }
 
     .theme-toggle:focus-visible {
@@ -135,38 +150,35 @@
       outline-offset: 2px;
     }
 
-    .theme-toggle-track {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
+    .theme-toggle:active {
+      transform: scale(0.93);
     }
 
     .theme-toggle-icon {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.62rem;
+      font-size: 0.9rem;
       line-height: 1;
+      transition: opacity var(--ease-standard), transform var(--ease-standard);
     }
 
-    .theme-toggle-icon-sun { left: 5px; }
-    .theme-toggle-icon-moon { right: 5px; }
-
-    .theme-toggle-thumb {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-      transition: transform 0.2s ease;
+    .theme-toggle-icon-sun {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
     }
 
-    .theme-toggle[aria-checked="true"] .theme-toggle-thumb {
-      transform: translateX(20px);
+    .theme-toggle-icon-moon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.6);
+    }
+
+    .theme-toggle[aria-checked="true"] .theme-toggle-icon-sun {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.6);
+    }
+
+    .theme-toggle[aria-checked="true"] .theme-toggle-icon-moon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
     }
 
     .sr-only {
@@ -192,11 +204,20 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 32px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background var(--ease-standard), border-color var(--ease-standard),
+                  box-shadow var(--ease-standard), transform 0.3s ease;
+    }
+
+    /* Stays invisible over the hero; only picks up its surface once the
+       page has scrolled past the top, so it never competes with the photo. */
+    nav.nav-scrolled {
       background: var(--nav-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      transition: transform 0.3s ease;
+      border-bottom-color: var(--border);
+      box-shadow: 0 1px 0 var(--border);
     }
 
     /* Tucked away while scrolling down past the top of the page; reappears
@@ -270,7 +291,7 @@
       flex-direction: column;
       justify-content: center;
       gap: 5px;
-      width: 44px; height: 44px;
+      width: 40px; height: 40px;
       background: none;
       border: none;
       cursor: pointer;
@@ -451,12 +472,12 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      transition: transform var(--ease-standard), background var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
       text-decoration: none;
     }
 
     .hero-logo-link:hover {
-      transform: translateY(-3px);
+      transform: translateY(var(--lift-md));
       background: var(--card-bg);
       border-color: rgba(58, 184, 168, 0.3);
       color: var(--accent);
@@ -469,7 +490,11 @@
     }
 
 
-    /* ── Oval buttons ── */
+    /* ── Oval buttons ──
+       Outline by default (not solid) so this secondary nav row doesn't
+       out-compete the primary CTA above it; each fills to its brand color
+       on hover, which also reinforces "cards/buttons feel interactive"
+       without adding any new color to the palette. */
     .hero-nav {
       display: flex;
       gap: 14px;
@@ -480,44 +505,53 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 13px 28px;
+      padding: 12px 27px;
       border-radius: 100px;
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      color: #fff;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: transparent;
+      border: 1.5px solid;
+      transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast);
       letter-spacing: 0.01em;
     }
 
     .oval-btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(var(--lift-sm));
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      color: #fff;
     }
 
     .oval-btn:active {
       transform: translateY(0) scale(0.97);
     }
 
-    .oval-about    { background: var(--green); }
-    .oval-exp      { background: var(--orange); }
-    .oval-projects { background: var(--teal); }
-    .oval-writing  { background: var(--slate); }
-    .oval-recs     { background: var(--indigo); }
-    .oval-contact  { background: var(--brown); }
+    .oval-about    { color: var(--green);    border-color: var(--green); }
+    .oval-exp      { color: var(--orange);   border-color: var(--orange); }
+    .oval-projects { color: var(--teal);     border-color: var(--teal); }
+    .oval-writing  { color: var(--slate);    border-color: var(--slate); }
+    .oval-recs     { color: var(--indigo);   border-color: var(--indigo); }
+    .oval-contact  { color: var(--brown);    border-color: var(--brown); }
+
+    .oval-about:hover    { background: var(--green); }
+    .oval-exp:hover      { background: var(--orange); }
+    .oval-projects:hover { background: var(--teal); }
+    .oval-writing:hover  { background: var(--slate); }
+    .oval-recs:hover     { background: var(--indigo); }
+    .oval-contact:hover  { background: var(--brown); }
 
     /* ── Fade animations ── */
     .fade-up {
       opacity: 0;
-      transform: translateY(24px);
-      animation: fadeUp 0.7s ease forwards;
+      transform: translateY(18px);
+      animation: fadeUp 0.6s var(--ease-standard) forwards;
     }
 
-    .fade-up:nth-child(1) { animation-delay: 0.1s; }
-    .fade-up:nth-child(2) { animation-delay: 0.25s; }
-    .fade-up:nth-child(3) { animation-delay: 0.4s; }
-    .fade-up:nth-child(4) { animation-delay: 0.5s; }
-    .fade-up:nth-child(5) { animation-delay: 0.6s; }
+    .fade-up:nth-child(1) { animation-delay: 0.05s; }
+    .fade-up:nth-child(2) { animation-delay: 0.15s; }
+    .fade-up:nth-child(3) { animation-delay: 0.25s; }
+    .fade-up:nth-child(4) { animation-delay: 0.32s; }
+    .fade-up:nth-child(5) { animation-delay: 0.38s; }
 
     @keyframes fadeUp { to { opacity:1; transform:none; } }
 
@@ -526,8 +560,8 @@
        load for the hero. Triggered by assets/js/interactions.js. ── */
     .fade-in {
       opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
+      transform: translateY(10px);
+      transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard);
     }
     .fade-in.is-visible { opacity: 1; transform: none; }
 
@@ -585,11 +619,11 @@
       font-size: 0.92rem;
       font-weight: 600;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+      transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast);
       letter-spacing: 0.01em;
     }
 
-    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn:hover { transform: translateY(var(--lift-sm)); }
     .cta-btn:active { transform: translateY(0) scale(0.97); }
 
     .cta-primary {
@@ -614,14 +648,14 @@
     .cta-ghost:hover { color: var(--text); }
 
     /* Extra fade-up stagger slots for the added hero children */
-    .fade-up:nth-child(6) { animation-delay: 0.7s; }
-    .fade-up:nth-child(7) { animation-delay: 0.8s; }
+    .fade-up:nth-child(6) { animation-delay: 0.44s; }
+    .fade-up:nth-child(7) { animation-delay: 0.5s; }
 
     /* ═══════════════════════════════════
        HOMEPAGE SECTIONS (Featured Work / Testimonial)
     ═══════════════════════════════════ */
     .home-section {
-      padding: 72px 48px;
+      padding: var(--space-section) 48px;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -661,6 +695,12 @@
       border-radius: 20px;
       padding: 32px;
       box-shadow: 0 4px 16px var(--card-shadow);
+      transition: transform var(--ease-standard), box-shadow var(--ease-standard);
+    }
+
+    .featured-card:hover {
+      transform: translateY(var(--lift-sm));
+      box-shadow: 0 12px 32px var(--card-shadow);
     }
 
     .featured-card-icon {
@@ -803,11 +843,8 @@
     </a>
     <div class="theme-switcher">
       <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span class="theme-toggle-track" aria-hidden="true">
-          <span class="theme-toggle-icon theme-toggle-icon-sun">☀️</span>
-          <span class="theme-toggle-icon theme-toggle-icon-moon">🌙</span>
-          <span class="theme-toggle-thumb"></span>
-        </span>
+        <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀️</span>
+        <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">🌙</span>
       </button>
     </div>
   </div>

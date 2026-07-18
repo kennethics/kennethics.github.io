@@ -64,21 +64,38 @@
     domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
-  /* ---------- Nav auto-hide on scroll ---------- */
+  /* ---------- Nav auto-hide + solidify on scroll ---------- */
   function initNavAutoHide() {
     var nav = document.querySelector('nav');
-    if (!nav || reduceMotion) return;
+    if (!nav) return;
 
-    var lastY = window.scrollY;
-    var ticking = false;
     var revealThreshold = 80; // stay visible near the top regardless of direction
+    var solidifyThreshold = 8; // pick up the nav surface just after leaving the very top
 
     function isDrawerOpen() {
       return document.body.style.overflow === 'hidden';
     }
 
+    function updateSolidify(y) {
+      nav.classList.toggle('nav-scrolled', y > solidifyThreshold);
+    }
+
+    if (reduceMotion) {
+      // Skip the hide/reappear animation, but keep the solidify state in
+      // sync so the nav still reads correctly against page content.
+      updateSolidify(window.scrollY);
+      window.addEventListener('scroll', function () {
+        updateSolidify(window.scrollY);
+      }, { passive: true });
+      return;
+    }
+
+    var lastY = window.scrollY;
+    var ticking = false;
+
     function onScroll() {
       var y = window.scrollY;
+      updateSolidify(y);
 
       if (!isDrawerOpen()) {
         if (y <= revealThreshold) {
@@ -93,6 +110,8 @@
       lastY = y;
       ticking = false;
     }
+
+    updateSolidify(lastY);
 
     window.addEventListener('scroll', function () {
       if (!ticking) {
