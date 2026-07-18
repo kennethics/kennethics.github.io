@@ -30,6 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="assets/js/theme.js"></script>
+  <script src="assets/js/interactions.js" defer></script>
   <link rel="stylesheet" href="assets/css/hero-card.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
@@ -92,6 +93,14 @@
     html { scroll-behavior: smooth; }
     html, body { overflow-x: hidden; }
     * { -webkit-tap-highlight-color: transparent; }
+
+    /* Applied to <html> for ~320ms during a theme toggle only (see theme.js),
+       so every themed element crossfades together instead of body alone. */
+    .theme-transitioning,
+    .theme-transitioning * {
+      transition: background-color 0.28s ease, border-color 0.28s ease,
+                  color 0.28s ease, box-shadow 0.28s ease !important;
+    }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -187,6 +196,13 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    /* Tucked away while scrolling down past the top of the page; reappears
+       on scroll-up or near the top. Toggled by assets/js/interactions.js. */
+    nav.nav-hidden {
+      transform: translateY(-100%);
     }
 
     /* Brand: dot + name + animated role */
@@ -479,6 +495,10 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
+    .oval-btn:active {
+      transform: translateY(0) scale(0.97);
+    }
+
     .oval-about    { background: var(--green); }
     .oval-exp      { background: var(--orange); }
     .oval-projects { background: var(--teal); }
@@ -500,6 +520,16 @@
     .fade-up:nth-child(5) { animation-delay: 0.6s; }
 
     @keyframes fadeUp { to { opacity:1; transform:none; } }
+
+    /* ── Scroll reveal for below-the-fold sections (Featured Work,
+       Testimonial). Distinct from .fade-up above, which plays once on
+       load for the hero. Triggered by assets/js/interactions.js. ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-in.is-visible { opacity: 1; transform: none; }
 
     /* ── Hero skills strip ── */
     .hero-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
@@ -560,6 +590,7 @@
     }
 
     .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn:active { transform: translateY(0) scale(0.97); }
 
     .cta-primary {
       background: var(--accent);
@@ -720,8 +751,11 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-wave {
-        animation: none;
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -889,9 +923,9 @@
 
 <section class="home-section" aria-labelledby="featured-work-heading">
   <div class="home-section-inner">
-    <div class="section-eyebrow">Featured Work</div>
-    <h2 id="featured-work-heading">AI Automation</h2>
-    <div class="featured-card">
+    <div class="section-eyebrow fade-in">Featured Work</div>
+    <h2 id="featured-work-heading" class="fade-in">AI Automation</h2>
+    <div class="featured-card fade-in">
       <div class="featured-card-icon" aria-hidden="true">🤖</div>
       <div class="featured-card-body">
         <h3>Agentic Sales Lead Generation & AI-Powered Cold Outreach</h3>
@@ -913,9 +947,9 @@
 
 <section class="home-section home-section-muted" aria-labelledby="testimonial-heading">
   <div class="home-section-inner">
-    <div class="section-eyebrow">What People Say</div>
+    <div class="section-eyebrow fade-in">What People Say</div>
     <h2 id="testimonial-heading" class="sr-only">Testimonial</h2>
-    <blockquote class="home-quote">
+    <blockquote class="home-quote fade-in">
       <span class="quote-mark" aria-hidden="true">&ldquo;</span>
       <p>
   I had the pleasure to work with Ken for two months before we restructured the team to adapt more agentic workflows: he is extremely hard working and competent, adaptable to the different environment and with a deep business acumen making him effective at a high variety of tasks. I would definitely recommend hiring him and try to work with him again in the future
