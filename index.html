@@ -90,11 +90,15 @@
     }
 
     html { scroll-behavior: smooth; }
+    html, body { overflow-x: hidden; }
+    * { -webkit-tap-highlight-color: transparent; }
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      min-height: 100dvh;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
@@ -326,6 +330,7 @@
     ═══════════════════════════════════ */
     .hero {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -720,6 +725,31 @@
       }
     }
   </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Kenneth Soriano",
+  "jobTitle": "AI Automation Specialist",
+  "description": "AI Automation Specialist, Business Analyst, and Customer Success professional with 10+ years across fintech, BPO, and freelance operations.",
+  "url": "https://kennethics.github.io",
+  "image": "https://kennethics.github.io/assets/images/og-image.jpg",
+  "email": "mailto:nethxkensoriano@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Klang, Selangor",
+    "addressCountry": "MY"
+  },
+  "sameAs": [
+    "https://linkedin.com/in/kennethsorianova",
+    "https://github.com/kennethics",
+    "https://x.com/nethxkensoriano",
+    "https://www.threads.com/@keenneeth13",
+    "https://substack.com/@kennethsoriano"
+  ]
+}
+</script>
 </head>
 <body>
 
