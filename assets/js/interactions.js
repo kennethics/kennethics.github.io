@@ -10,26 +10,58 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Scroll reveal (animate once) ---------- */
-  function initScrollReveal() {
-    var items = document.querySelectorAll('.fade-in');
-    if (!items.length) return;
+  var revealObserver = null;
 
-    // No motion preference or no observer support: just show everything.
+  function revealImmediately(el) {
+    el.classList.add('is-visible');
+  }
+
+  function observeForReveal(el) {
+    if (el.classList.contains('is-visible')) return;
+
     if (reduceMotion || typeof IntersectionObserver === 'undefined') {
-      items.forEach(function (el) { el.classList.add('is-visible'); });
+      revealImmediately(el);
       return;
     }
 
-    var observer = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          obs.unobserve(entry.target); // reveal once, don't re-animate on re-scroll
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target); // reveal once, don't re-animate on re-scroll
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }
 
-    items.forEach(function (el) { observer.observe(el); });
+    revealObserver.observe(el);
+  }
+
+  function initScrollReveal() {
+    document.querySelectorAll('.fade-in').forEach(observeForReveal);
+
+    // Content added after initial load (e.g. cards fetched from an API,
+    // like the recommendations list) won't exist yet during the scan
+    // above. Watch for it so it still gets revealed instead of staying
+    // stuck at opacity: 0 forever.
+    if (typeof MutationObserver === 'undefined') return;
+
+    var domObserver = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType !== 1) return; // element nodes only
+          if (node.classList && node.classList.contains('fade-in')) {
+            observeForReveal(node);
+          }
+          if (node.querySelectorAll) {
+            node.querySelectorAll('.fade-in').forEach(observeForReveal);
+          }
+        });
+      });
+    });
+
+    domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
   /* ---------- Nav auto-hide on scroll ---------- */
