@@ -39,9 +39,23 @@
     applyTheme(theme);
   }
 
+  // Briefly enables a color transition on every element while the theme
+  // swaps, so cards, nav, borders, etc. fade together instead of the
+  // background/text fading (via body's own transition) while everything
+  // else snaps instantly.
+  function withTransition(fn) {
+    root.classList.add('theme-transitioning');
+    fn();
+    window.setTimeout(function () {
+      root.classList.remove('theme-transitioning');
+    }, 320);
+  }
+
   function toggleTheme() {
     var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    setTheme(current === 'dark' ? 'light' : 'dark');
+    withTransition(function () {
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
   }
 
   function bindToggles() {
