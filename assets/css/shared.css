@@ -345,6 +345,19 @@ nav.nav-hidden {
   transition: all 0.25s ease;
 }
 
+/* Morphs the 3 bars into an X when the drawer is open (aria-expanded is
+   already toggled by toggleDrawer() in every page) — replaces the old
+   separate drawer-close button so there's one control, not two. */
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 /* ── MOBILE DRAWER ── full screen overlay */
 .nav-drawer {
   display: flex;
@@ -380,24 +393,6 @@ nav.nav-hidden {
 
 .nav-drawer a:hover,
 .nav-drawer a.active { color: var(--accent); }
-
-.nav-drawer-close {
-  position: absolute;
-  top: 20px; right: 20px;
-  width: 44px; height: 44px;
-  background: none;
-  border: none;
-  font-size: 1.6rem;
-  cursor: pointer;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: color 0.2s;
-}
-
-.nav-drawer-close:hover { color: var(--text); }
 
 /* PAGE SHELL */
 .page {
