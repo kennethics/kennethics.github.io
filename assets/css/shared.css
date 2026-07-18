@@ -56,11 +56,16 @@
 
 html { scroll-behavior: smooth; }
 
+html, body { overflow-x: hidden; }
+
+* { -webkit-tap-highlight-color: transparent; }
+
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  min-height: 100dvh;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -267,8 +272,8 @@ nav {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   background: none;
   border: none;
