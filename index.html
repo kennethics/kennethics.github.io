@@ -377,10 +377,8 @@
       flex-shrink: 0;
       position: relative;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
       width: min(100%, 320px);
     }
 
@@ -393,138 +391,8 @@
       filter: grayscale(8%);
     }
 
-    /* ── Hero profile card (flip: photo <> AI avatar) ── */
-    .hero-profile-card {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      perspective: 1600px;
-      cursor: pointer;
-      transition: transform var(--ease-standard);
-    }
-
-    .hero-profile-card:hover,
-    .hero-profile-card:focus-visible {
-      transform: translateY(var(--lift-sm));
-    }
-
-    .hero-profile-card:focus-visible {
-      outline: none;
-    }
-
-    .hero-profile-card:focus-visible .hero-profile-card__inner {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-      border-radius: 26px;
-    }
-
-    .hero-profile-card__inner {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .hero-profile-card.is-flipped .hero-profile-card__inner {
-      transform: rotateY(180deg);
-    }
-
-    .hero-profile-card.is-reduced-motion .hero-profile-card__inner {
-      transition: none;
-    }
-
-    .hero-profile-card__face {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 32px var(--card-shadow);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .hero-profile-card__face--front {
-      transform: rotateY(0deg);
-    }
-
-    .hero-profile-card__face--back {
-      transform: rotateY(180deg);
-      background: var(--card-bg);
-    }
-
-    .hero-avatar {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .hero-avatar-hand-wave,
-    .hero-avatar-blink-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
-
-    .hero-avatar-hand-wave { opacity: 1; }
-
-    .hero-avatar-blink-img {
-      opacity: 0;
-      animation: avatarBlink 4.5s ease-in-out infinite;
-    }
-
-    .hero-profile-card.is-reduced-motion .hero-avatar-blink-img {
-      animation: none;
-    }
-
-    @keyframes avatarBlink {
-      0%, 92%, 100% { opacity: 0; }
-      94%, 97% { opacity: 1; }
-    }
-
-    .hero-profile-card__ring {
-      position: absolute;
-      z-index: 1;
-      inset: -8px;
-      border-radius: 28px;
-      border: 1.5px solid var(--accent);
-      opacity: 0.3;
-      pointer-events: none;
-      transition: opacity var(--ease-standard), inset var(--ease-standard);
-    }
-
-    .hero-profile-card:hover .hero-profile-card__ring,
-    .hero-profile-card:focus-visible .hero-profile-card__ring {
-      opacity: 0.6;
-      inset: -12px;
-    }
-
-    .hero-profile-card__glow {
-      position: absolute;
-      z-index: 0;
-      inset: 12%;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.16;
-      filter: blur(48px);
-      pointer-events: none;
-    }
-
-    .hero-profile-card-hint {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      letter-spacing: 0.02em;
-      color: var(--muted);
-      opacity: 0.75;
-      text-align: center;
+    .hero-photo-ring {
+      display: none;
     }
 
     .hero-text { flex: 1; }
@@ -1045,7 +913,6 @@
       </div>
       <div class="hero-profile-card__ring" aria-hidden="true"></div>
       <div class="hero-profile-card__glow" aria-hidden="true"></div>
-      <p class="hero-profile-card-hint" aria-hidden="true">&#8635; Click to flip</p>
     </div>
 
     <div class="hero-text">
