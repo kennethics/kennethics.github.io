@@ -220,7 +220,7 @@ nav {
   background: transparent;
   border-bottom: 1px solid transparent;
   transition: background var(--ease-standard), border-color var(--ease-standard),
-              box-shadow var(--ease-standard), transform 0.3s ease;
+              box-shadow var(--ease-standard);
 }
 
 /* Once the page scrolls past the top, the nav picks up its surface —
@@ -240,12 +240,6 @@ nav.nav-scrolled {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom-color: var(--border);
-}
-
-/* Tucked away while scrolling down past the top of the page; reappears on
-   scroll-up or near the top. Toggled by assets/js/interactions.js. */
-nav.nav-hidden {
-  transform: translateY(-100%);
 }
 
 .nav-brand {
@@ -319,7 +313,8 @@ nav.nav-hidden {
 .nav-links a.active::after { transform: scaleX(1); }
 .nav-links a.active { color: var(--text); }
 
-/* ── HAMBURGER ── always visible */
+/* ── HAMBURGER ── doubles as the close control; morphs into an X while
+   the drawer is open instead of showing a second close icon on top of it. */
 .nav-hamburger {
   display: flex;
   flex-direction: column;
@@ -342,19 +337,18 @@ nav.nav-hidden {
   width: 100%;
   background: var(--text);
   border-radius: 2px;
-  transition: all 0.25s ease;
+  transition: transform var(--ease-standard), opacity var(--ease-fast);
 }
 
-/* Morphs the 3 bars into an X when the drawer is open (aria-expanded is
-   already toggled by toggleDrawer() in every page) — replaces the old
-   separate drawer-close button so there's one control, not two. */
-.nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+.nav-hamburger.is-open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
-.nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+
+.nav-hamburger.is-open span:nth-child(2) {
   opacity: 0;
 }
-.nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+
+.nav-hamburger.is-open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
@@ -595,6 +589,56 @@ nav.nav-hidden {
 
 @media (max-width: 768px) {
   .contact-cta-row { justify-content: center; }
+}
+
+/* ═══════════════════════════════════
+   BACK TO TOP
+   Generated on every page by assets/js/interactions.js so it's always
+   present once the user has scrolled past the fold — no per-page markup.
+═══════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--card-shadow);
+  z-index: 150;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity var(--ease-standard), transform var(--ease-standard),
+              visibility var(--ease-standard), border-color var(--ease-fast), color var(--ease-fast);
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  border-color: rgba(58, 184, 168, 0.3);
+  color: var(--accent);
+  transform: translateY(var(--lift-md));
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* ═══════════════════════════════════

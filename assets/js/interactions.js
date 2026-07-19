@@ -2,8 +2,10 @@
   Shared site-wide micro-interactions.
   - Scroll reveal: elements with class "fade-in" animate into view once,
     the first time they cross into the viewport (not on every re-scroll).
-  - Nav auto-hide: the fixed nav tucks away on scroll-down, reappears on
-    scroll-up, and always stays visible near the top of the page.
+  - Nav: stays visible ("floating") at all times while scrolling; it only
+    picks up its background/blur/border once the page leaves the very top,
+    so it never competes with a hero image but is never hidden from the
+    user either.
   Both respect prefers-reduced-motion.
 */
 (function () {
@@ -64,66 +66,74 @@
     domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
-  /* ---------- Nav auto-hide + solidify on scroll ---------- */
-  function initNavAutoHide() {
+  /* ---------- Nav: float + solidify on scroll ---------- */
+  function initNavScrollState() {
     var nav = document.querySelector('nav');
     if (!nav) return;
 
-    var revealThreshold = 80; // stay visible near the top regardless of direction
     var solidifyThreshold = 8; // pick up the nav surface just after leaving the very top
 
-    function isDrawerOpen() {
-      return document.body.style.overflow === 'hidden';
+    function updateSolidify() {
+      nav.classList.toggle('nav-scrolled', window.scrollY > solidifyThreshold);
     }
 
-    function updateSolidify(y) {
-      nav.classList.toggle('nav-scrolled', y > solidifyThreshold);
-    }
+    updateSolidify();
 
     if (reduceMotion) {
-      // Skip the hide/reappear animation, but keep the solidify state in
-      // sync so the nav still reads correctly against page content.
-      updateSolidify(window.scrollY);
-      window.addEventListener('scroll', function () {
-        updateSolidify(window.scrollY);
-      }, { passive: true });
+      window.addEventListener('scroll', updateSolidify, { passive: true });
       return;
     }
 
-    var lastY = window.scrollY;
     var ticking = false;
-
-    function onScroll() {
-      var y = window.scrollY;
-      updateSolidify(y);
-
-      if (!isDrawerOpen()) {
-        if (y <= revealThreshold) {
-          nav.classList.remove('nav-hidden');
-        } else if (y > lastY) {
-          nav.classList.add('nav-hidden');    // scrolling down -> tuck away
-        } else if (y < lastY) {
-          nav.classList.remove('nav-hidden'); // scrolling up -> reappear
-        }
-      }
-
-      lastY = y;
-      ticking = false;
-    }
-
-    updateSolidify(lastY);
-
     window.addEventListener('scroll', function () {
       if (!ticking) {
-        window.requestAnimationFrame(onScroll);
+        window.requestAnimationFrame(function () {
+          updateSolidify();
+          ticking = false;
+        });
         ticking = true;
       }
     }, { passive: true });
   }
 
+  /* ---------- Back to top (site-wide) ---------- */
+  function initBackToTop() {
+    var SHOW_AFTER = 400;
+    var btn = document.getElementById('back-to-top');
+
+    // Create it once if the page doesn't already have one, so every page
+    // gets the same control without needing to hand-copy markup into it.
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'back-to-top';
+      btn.className = 'back-to-top';
+      btn.setAttribute('aria-label', 'Back to top');
+      btn.title = 'Back to top';
+      btn.innerHTML =
+        '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<line x1="12" y1="19" x2="12" y2="5"></line>' +
+        '<polyline points="5 12 12 5 19 12"></polyline></svg>';
+      document.body.appendChild(btn);
+    }
+
+    function updateVisibility() {
+      btn.classList.toggle('show', window.scrollY > SHOW_AFTER);
+    }
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    updateVisibility();
+  }
+
   function init() {
     initScrollReveal();
-    initNavAutoHide();
+    initNavScrollState();
+    initBackToTop();
   }
 
   if (document.readyState === 'loading') {

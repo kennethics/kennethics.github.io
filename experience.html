@@ -111,52 +111,6 @@
       transform: rotate(180deg);
     }
 
-    /* ── Back to top button ── */
-    .back-to-top {
-      position: fixed;
-      right: 28px;
-      bottom: 28px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 8px 24px var(--card-shadow);
-      z-index: 150;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(12px);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease,
-                  border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .back-to-top:hover,
-    .back-to-top:focus-visible {
-      border-color: rgba(58, 184, 168, 0.3);
-      color: var(--accent);
-      transform: translateY(-3px);
-    }
-
-    @media (max-width: 768px) {
-      .back-to-top {
-        right: 16px;
-        bottom: 16px;
-        width: 44px;
-        height: 44px;
-      }
-    }
-
     /* Animated role ticker */
     .nav-roles {
       overflow: hidden;
@@ -229,7 +183,6 @@
 
 <!-- Mobile drawer -->
 <div class="nav-drawer" id="nav-drawer">
-  <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu" aria-expanded="false"></button>
   <a href="about.html">About</a>
   <a href="experience.html" class="active">Experience</a>
   <a href="projects.html">Projects</a>
@@ -242,23 +195,31 @@
   const navDrawer = document.getElementById('nav-drawer');
   const hamburger = document.querySelector('.nav-hamburger');
 
+  // Hamburger doubles as the close control: it morphs into an X while the
+  // drawer is open (see .nav-hamburger.is-open in shared.css), so there is
+  // only ever one visible toggle instead of two icons stacking on top of
+  // each other.
   function toggleDrawer() {
     const isOpen = navDrawer.classList.contains('open');
     if (isOpen) {
-      navDrawer.classList.remove('open');
-      document.body.style.overflow = '';
-      hamburger.setAttribute('aria-expanded', 'false');
+      closeDrawer();
     } else {
       navDrawer.classList.add('open');
+      hamburger.classList.add('is-open');
       document.body.style.overflow = 'hidden';
       hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.setAttribute('aria-label', 'Close menu');
     }
   }
 
   function closeDrawer() {
     navDrawer.classList.remove('open');
     document.body.style.overflow = '';
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+    if (hamburger) {
+      hamburger.classList.remove('is-open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+    }
   }
 
   // Close when tapping the backdrop
@@ -269,6 +230,11 @@
   // Close when a nav link is tapped
   navDrawer.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', closeDrawer);
+  });
+
+  // Close on Escape so keyboard users are never stuck in the drawer
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && navDrawer.classList.contains('open')) closeDrawer();
   });
 </script>
 
@@ -463,14 +429,6 @@
   
 </main>
 
-<!-- Back to top -->
-<button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <line x1="12" y1="19" x2="12" y2="5"></line>
-    <polyline points="5 12 12 5 19 12"></polyline>
-  </svg>
-</button>
-
 <script>
   // ── Collapsible experience cards ──
   // Cards load collapsed (title/subtitle/work-type/date only). Toggling
@@ -483,24 +441,6 @@
     btn.classList.toggle('is-open', expanded);
     btn.querySelector('.exp-toggle-label').textContent = expanded ? 'Hide details' : 'Show details';
   }
-
-  // ── Back to top ──
-  (function () {
-    const backToTop = document.getElementById('back-to-top');
-    if (!backToTop) return;
-    const SHOW_AFTER = 400;
-
-    function updateVisibility() {
-      backToTop.classList.toggle('show', window.scrollY > SHOW_AFTER);
-    }
-
-    backToTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    window.addEventListener('scroll', updateVisibility, { passive: true });
-    updateVisibility();
-  })();
 </script>
 </body>
 </html>
