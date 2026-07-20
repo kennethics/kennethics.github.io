@@ -219,9 +219,20 @@ body {
    pixels of scroll. Scrolling back up past the sentinel removes the class
    again, returning nav to its original in-flow position.
 
+   FIX: previously this base rule carried the pill's card styling
+   (background/blur/border/shadow) unconditionally, so the navbar LOOKED
+   like a floating card even while position was still "relative" and it
+   was sitting inline in the flow — that's what read as "floating on
+   load." The base rule below is now visually flush/flat (transparent,
+   no shadow, no blur) — all of the card look now lives ONLY on
+   .nav-floating, so the two states are visually distinct and the
+   transition between them reads as a smooth fade/slide rather than a
+   hard cut.
+
    The inline and floating states share identical inset math so the pill
    never visibly resizes when the state flips — only position (instant)
-   plus opacity/transform (animated via .nav-floating's keyframe below)
+   plus background/border/shadow/opacity/transform (all animated via the
+   transition list below, plus .nav-floating's own entrance keyframe)
    change, which is what keeps the transition feeling smooth instead of a
    hard jump. A same-height .nav-spacer (inserted by JS immediately after
    <nav>) reserves the vertical space nav vacates once it goes fixed, so
@@ -252,22 +263,28 @@ nav {
   padding: clamp(8px, 1.4vw, 10px) clamp(14px, 3vw, 22px);
   border-radius: 100px;
   overflow: hidden;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 24px var(--card-shadow);
+
+  /* Flush/flat by default — no card look until it actually floats */
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+
   opacity: 1;
   transform: translateY(0);
   transition: background var(--ease-standard), border-color var(--ease-standard),
               box-shadow var(--ease-standard), padding var(--ease-standard),
+              backdrop-filter var(--ease-standard),
               opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Floating state — see JS logic above. Same pill, same insets (fixed
-   left/right of clamp(10px,2vw,16px) reproduce the exact width the
-   inline rule computes via calc()), just pinned to the viewport. The
-   entrance is a one-shot fade + drop-in rather than a hard cut. */
+/* Floating state — see JS logic above. This is now the ONLY place the
+   pill's card visuals (background/blur/border/shadow) are applied. Same
+   insets as before (fixed left/right of clamp(10px,2vw,16px) reproduce
+   the exact width the inline rule computes via calc()), just pinned to
+   the viewport. The entrance is a one-shot fade + drop-in rather than a
+   hard cut. */
 nav.nav-floating {
   position: fixed;
   top: clamp(10px, 2vw, 16px);
@@ -275,6 +292,13 @@ nav.nav-floating {
   right: clamp(10px, 2vw, 16px);
   width: auto;
   margin: 0 auto;
+
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--border);
+  box-shadow: 0 8px 24px var(--card-shadow);
+
   animation: navFloatIn 0.35s var(--ease-standard) both;
 }
 
@@ -293,10 +317,15 @@ nav.nav-floating {
 
 /* Subtle depth cue + slight shrink once scrolled past the very top — the
    navbar itself never changes background, hides, or disappears. Applies
-   in both the inline and floating states. */
+   in both the inline and floating states. The deeper shadow bump is
+   scoped to the floating state only so a flush/inline navbar scrolling
+   down the page doesn't pick up a shadow before it's actually floating. */
 nav.nav-scrolled {
   padding-top: clamp(6px, 1vw, 8px);
   padding-bottom: clamp(6px, 1vw, 8px);
+}
+
+nav.nav-floating.nav-scrolled {
   box-shadow: 0 12px 30px var(--card-shadow);
 }
 
@@ -352,7 +381,7 @@ nav.nav-scrolled {
 .nav-roles-inner {
   display: flex;
   flex-direction: column;
-  animation: roleTick 6s steps(3, end) infinite;
+  animation: roleTick 4s steps(2, end) infinite;
 }
 
 .nav-roles-inner span {
@@ -365,10 +394,9 @@ nav.nav-scrolled {
 }
 
 @keyframes roleTick {
-  0%      { transform: translateY(0); }
-  33.333% { transform: translateY(-1.2em); }
-  66.666% { transform: translateY(-2.4em); }
-  100%    { transform: translateY(0); }
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-1.2em); }
+  100% { transform: translateY(0); }
 }
 
 /* Desktop: pill nav links live in the floating navbar. Mobile/tablet:
