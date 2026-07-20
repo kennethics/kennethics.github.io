@@ -146,7 +146,8 @@ body {
 .theme-switcher {
   display: flex;
   align-items: center;
-  margin-left: 22px;
+  flex-shrink: 0;
+  margin-left: clamp(8px, 3vw, 22px);
 }
 
 /* Theme toggle: a quiet utility, not a feature. No track, no pill — just
@@ -212,32 +213,50 @@ body {
 /* ── NAV ── */
 /* Floating, sticky, rounded pill navbar — same on every page (hero or
    inner). Always visible while scrolling (no hide-on-scroll-down anymore);
-   assets/js/interactions.js only toggles .nav-scrolled for a subtle
-   deeper shadow once the page leaves the very top. */
+   assets/js/interactions.js toggles .nav-scrolled for a subtle deeper
+   shadow + slight shrink once the page leaves the very top.
+
+   Sizing is fluid (clamp()) rather than fixed so the pill scales smoothly
+   from small phones up to ultrawide monitors instead of jumping at a
+   handful of breakpoints:
+   - top/left/right margins shrink slightly on narrow screens, giving
+     content more usable width, and stay at a comfortable 16px on desktop.
+   - max-width + auto margins keep the pill from stretching edge-to-edge
+     on ultrawide displays, in line with the site's ~900-1100px content
+     width elsewhere.
+   - overflow: hidden is a safety net: nav-brand content is sized/truncated
+     to fit (see .nav-brand/.nav-name/.nav-roles below), but this ensures
+     nothing can ever visually spill past the pill's rounded edges and
+     overlap the content underneath, even at extreme viewport widths. */
 nav {
   position: fixed;
-  top: 16px;
-  left: 16px;
-  right: 16px;
+  top: clamp(10px, 2vw, 16px);
+  left: clamp(10px, 2vw, 16px);
+  right: clamp(10px, 2vw, 16px);
+  max-width: 1400px;
+  margin: 0 auto;
   z-index: 200;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 10px 22px;
+  gap: clamp(10px, 2vw, 20px);
+  padding: clamp(8px, 1.4vw, 10px) clamp(14px, 3vw, 22px);
   border-radius: 100px;
+  overflow: hidden;
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   box-shadow: 0 8px 24px var(--card-shadow);
   transition: background var(--ease-standard), border-color var(--ease-standard),
-              box-shadow var(--ease-standard);
+              box-shadow var(--ease-standard), padding var(--ease-standard);
 }
 
-/* Subtle depth cue once scrolled past the very top — the navbar itself
-   never changes background or disappears. */
+/* Subtle depth cue + slight shrink once scrolled past the very top — the
+   navbar itself never changes background, hides, or disappears. */
 nav.nav-scrolled {
+  padding-top: clamp(6px, 1vw, 8px);
+  padding-bottom: clamp(6px, 1vw, 8px);
   box-shadow: 0 12px 30px var(--card-shadow);
 }
 
@@ -246,7 +265,8 @@ nav.nav-scrolled {
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-  flex-shrink: 0;
+  min-width: 0;
+  flex-shrink: 1;
   z-index: 201;
 }
 
@@ -254,6 +274,7 @@ nav.nav-scrolled {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   text-decoration: none;
   color: var(--text);
 }
@@ -262,7 +283,11 @@ nav.nav-scrolled {
 
 .nav-name {
   font-family: 'DM Serif Display', serif;
-  font-size: 1.05rem;
+  font-size: clamp(0.92rem, 2.6vw, 1.05rem);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .nav-title {
@@ -274,10 +299,13 @@ nav.nav-scrolled {
 
 /* Animated role ticker — previously duplicated inside every page's own
    embedded <style> block; centralized here since it's part of the shared
-   nav-brand component. */
+   nav-brand component. Decorative, so it's the first thing to go on very
+   small phones (see media query) rather than letting it force overflow. */
 .nav-roles {
   overflow: hidden;
   height: 1.2em;
+  min-width: 0;
+  flex-shrink: 1;
   margin-left: 6px;
 }
 
@@ -593,9 +621,8 @@ nav.nav-scrolled {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  nav {
-    padding: 14px 20px;
-  }
+  /* nav padding is already fluid via clamp() in the base rule above —
+     no fixed override needed here. */
 
   /* Hide subtitle text on mobile */
   .nav-title { display: none; }
@@ -604,6 +631,56 @@ nav.nav-scrolled {
   .card { padding: 20px; }
 }
 
+/* Smallest phones: the animated role ticker is decorative, so it's the
+   first thing to drop rather than letting it force any overflow next to
+   the logo, name, and theme toggle. */
+@media (max-width: 420px) {
+  .nav-roles { display: none; }
+}
+
+
+/* ═══════════════════════════════════
+   BACK TO TOP (shared across pages)
+   Appears after scrolling past a threshold (see assets/js/interactions.js).
+   Sizing/placement use clamp() so it scales down slightly on narrow
+   phones rather than crowding the corner, and stays at its current size
+   on desktop.
+═══════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(14px, 3vw, 28px);
+  width: clamp(42px, 6vw, 48px);
+  height: clamp(42px, 6vw, 48px);
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--card-shadow);
+  z-index: 150;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease,
+              border-color 0.2s ease, color 0.2s ease;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  border-color: rgba(58, 184, 168, 0.3);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
 
 /* ═══════════════════════════════════
    CTA BUTTONS (shared across pages)

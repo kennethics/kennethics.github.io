@@ -2,9 +2,11 @@
   Shared site-wide micro-interactions.
   - Scroll reveal: elements with class "fade-in" animate into view once,
     the first time they cross into the viewport (not on every re-scroll).
-  - Nav auto-hide: the fixed nav tucks away on scroll-down, reappears on
-    scroll-up, and always stays visible near the top of the page.
-  Both respect prefers-reduced-motion.
+  - Nav solidify: the floating navbar deepens its shadow and shrinks
+    slightly once the page scrolls past the very top (it never hides).
+  - Back to top: a single reusable #back-to-top button, shown after the
+    page scrolls past a threshold, on any page that includes the markup.
+  All three respect prefers-reduced-motion.
 */
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -85,9 +87,33 @@
     }, { passive: true });
   }
 
+  /* ---------- Back to top ---------- */
+  /* Reusable across every page: looks for #back-to-top in the DOM (see
+     .back-to-top in shared.css) and wires up show/hide-on-scroll plus the
+     smooth-scroll click handler. No-ops on pages that don't include the
+     button markup. */
+  function initBackToTop() {
+    var backToTop = document.getElementById('back-to-top');
+    if (!backToTop) return;
+
+    var SHOW_AFTER = 400;
+
+    function updateVisibility() {
+      backToTop.classList.toggle('show', window.scrollY > SHOW_AFTER);
+    }
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    updateVisibility();
+  }
+
   function init() {
     initScrollReveal();
     initNavSolidify();
+    initBackToTop();
   }
 
   if (document.readyState === 'loading') {
