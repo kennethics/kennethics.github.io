@@ -211,10 +211,21 @@ body {
 }
 
 /* ── NAV ── */
-/* Floating, sticky, rounded pill navbar — same on every page (hero or
-   inner). Always visible while scrolling (no hide-on-scroll-down anymore);
-   assets/js/interactions.js toggles .nav-scrolled for a subtle deeper
-   shadow + slight shrink once the page leaves the very top.
+/* Starts INLINE, in normal document flow, at the top of the page — not
+   floating on load. assets/js/interactions.js watches a sentinel element
+   (.hero on the homepage, .page-header on inner pages) via
+   IntersectionObserver and adds .nav-floating only once that sentinel has
+   FULLY left the viewport (isIntersecting: false), never after a few
+   pixels of scroll. Scrolling back up past the sentinel removes the class
+   again, returning nav to its original in-flow position.
+
+   The inline and floating states share identical inset math so the pill
+   never visibly resizes when the state flips — only position (instant)
+   plus opacity/transform (animated via .nav-floating's keyframe below)
+   change, which is what keeps the transition feeling smooth instead of a
+   hard jump. A same-height .nav-spacer (inserted by JS immediately after
+   <nav>) reserves the vertical space nav vacates once it goes fixed, so
+   surrounding content never jumps either.
 
    Sizing is fluid (clamp()) rather than fixed so the pill scales smoothly
    from small phones up to ultrawide monitors instead of jumping at a
@@ -229,12 +240,10 @@ body {
      nothing can ever visually spill past the pill's rounded edges and
      overlap the content underneath, even at extreme viewport widths. */
 nav {
-  position: fixed;
-  top: clamp(10px, 2vw, 16px);
-  left: clamp(10px, 2vw, 16px);
-  right: clamp(10px, 2vw, 16px);
+  position: relative;
+  width: calc(100% - clamp(20px, 4vw, 32px));
   max-width: 1400px;
-  margin: 0 auto;
+  margin: clamp(10px, 2vw, 16px) auto 0;
   z-index: 200;
   display: flex;
   align-items: center;
@@ -248,12 +257,43 @@ nav {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   box-shadow: 0 8px 24px var(--card-shadow);
+  opacity: 1;
+  transform: translateY(0);
   transition: background var(--ease-standard), border-color var(--ease-standard),
-              box-shadow var(--ease-standard), padding var(--ease-standard);
+              box-shadow var(--ease-standard), padding var(--ease-standard),
+              opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Floating state — see JS logic above. Same pill, same insets (fixed
+   left/right of clamp(10px,2vw,16px) reproduce the exact width the
+   inline rule computes via calc()), just pinned to the viewport. The
+   entrance is a one-shot fade + drop-in rather than a hard cut. */
+nav.nav-floating {
+  position: fixed;
+  top: clamp(10px, 2vw, 16px);
+  left: clamp(10px, 2vw, 16px);
+  right: clamp(10px, 2vw, 16px);
+  width: auto;
+  margin: 0 auto;
+  animation: navFloatIn 0.35s var(--ease-standard) both;
+}
+
+@keyframes navFloatIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Reserves the space <nav> vacates once it becomes position: fixed, so
+   the page never jumps. Height is set/cleared in JS to nav's own
+   measured offsetHeight — never a hardcoded value — and stays 0 while
+   nav is inline. */
+.nav-spacer {
+  height: 0;
 }
 
 /* Subtle depth cue + slight shrink once scrolled past the very top — the
-   navbar itself never changes background, hides, or disappears. */
+   navbar itself never changes background, hides, or disappears. Applies
+   in both the inline and floating states. */
 nav.nav-scrolled {
   padding-top: clamp(6px, 1vw, 8px);
   padding-bottom: clamp(6px, 1vw, 8px);
@@ -279,7 +319,7 @@ nav.nav-scrolled {
   color: var(--text);
 }
 
-.nav-logo { width:22px; height:22px; border-radius:6px; flex-shrink:0; display:block; }
+.nav-logo { width:clamp(18px, 4vw, 22px); height:clamp(18px, 4vw, 22px); border-radius:6px; flex-shrink:0; display:block; }
 
 .nav-name {
   font-family: 'DM Serif Display', serif;
@@ -404,8 +444,8 @@ nav.nav-scrolled {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 44px;
-  height: 44px;
+  width: clamp(40px, 10vw, 44px);
+  height: clamp(40px, 10vw, 44px);
   cursor: pointer;
   background: none;
   border: none;
@@ -450,7 +490,7 @@ nav.nav-scrolled {
 
 .nav-drawer a {
   font-family: 'DM Serif Display', serif;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 6vw, 2rem);
   text-decoration: none;
   color: var(--text);
   transition: color 0.2s;
@@ -482,19 +522,10 @@ nav.nav-scrolled {
 .page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 120px 48px 80px;
+  padding: clamp(32px, 6vw, 56px) 48px 80px;
 }
 
 .page-header { margin-bottom: 56px; }
-
-.page-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--accent);
-  font-weight: 500;
-  margin-bottom: 10px;
-}
 
 .page-title {
   font-family: 'DM Serif Display', serif;
@@ -627,7 +658,7 @@ nav.nav-scrolled {
   /* Hide subtitle text on mobile */
   .nav-title { display: none; }
 
-  .page { padding: 80px 20px 60px; }
+  .page { padding: clamp(24px, 8vw, 40px) 20px 60px; }
   .card { padding: 20px; }
 }
 
