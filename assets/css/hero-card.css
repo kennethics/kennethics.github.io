@@ -274,19 +274,5 @@
   transform-origin: 22% 145%;
 }
 
-.hero-profile-card.is-flipped .hero-avatar-hand-wave {
-  animation: avatarHandWaveSubtle 2.8s ease-in-out 0.5s 2 both;
-}
-
-/* Amplitude reduced further (max ~1.5deg vs. the previous ~3deg) because
-   the pivot is now much farther away — the same visible arc length at
-   the hand (angle × radius) is preserved with a smaller angle, avoiding
-   an unnaturally wide swing now that the WHOLE hand moves by this much,
-   not just the fingertips. */
-@keyframes avatarHandWaveSubtle {
-  0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(-1.5deg); }
-  50%  { transform: rotate(1.2deg); }
-  75%  { transform: rotate(-0.7deg); }
-  100% { transform: rotate(0deg); }
-}
+/* Wave animation removed — hand overlay now stays static at rest (0deg),
+   which stays seamless with the base image per the mask/pivot notes above. */

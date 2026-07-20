@@ -39,6 +39,10 @@
        reduced-motion) now live in assets/css/shared.css — this page no
        longer keeps its own duplicate copies of them. */
 
+    /* Override just the outer nav padding for extra breathing room on
+       this page (nav itself still comes from shared.css). */
+    nav { padding: 26px 56px; }
+
     /* ═══════════════════════════════════
        HERO
     ═══════════════════════════════════ */
@@ -48,7 +52,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 100px 48px 60px;
+      padding: 160px 64px 140px;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -56,8 +60,8 @@
     .hero-main {
       display: flex;
       align-items: center;
-      gap: 80px;
-      margin-bottom: 64px;
+      gap: 110px;
+      margin-bottom: 96px;
     }
 
     .hero-photo-wrap {
@@ -89,7 +93,7 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
-      margin-bottom: 20px;
+      margin-bottom: 28px;
       font-weight: 500;
     }
 
@@ -98,7 +102,7 @@
       font-size: clamp(2.8rem, 5vw, 4rem);
       line-height: 1.05;
       letter-spacing: -0.02em;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
 
     .hero-text h1 em {
@@ -124,19 +128,20 @@
 
     .hero-bio {
       font-size: 1.05rem;
-      line-height: 1.75;
+      line-height: 1.85;
       color: var(--text);
       opacity: 0.82;
       max-width: 460px;
       font-weight: 300;
+      margin-top: 8px;
     }
 
     /* ── Logo links (Gmail + LinkedIn only) ── */
     .hero-logo-links {
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-top: 30px;
+      gap: 22px;
+      margin-top: 44px;
     }
 
     .hero-logo-link {
@@ -184,7 +189,7 @@
     @keyframes fadeUp { to { opacity:1; transform:none; } }
 
     /* ── Hero skills strip ── */
-    .hero-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
+    .hero-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:32px; }
     .hero-skills .tag {
       font-size: 0.75rem;
       padding: 4px 12px;
@@ -202,8 +207,8 @@
       color: var(--text);
       max-width: 520px;
       font-weight: 500;
-      margin-top: 4px;
-      margin-bottom: 14px;
+      margin-top: 8px;
+      margin-bottom: 24px;
     }
 
     /* ── Credibility strip ── */
@@ -211,8 +216,8 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 22px;
+      gap: 12px;
+      margin-top: 32px;
       font-size: 0.82rem;
       color: var(--muted);
     }
@@ -225,15 +230,15 @@
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
+      gap: 18px;
+      margin-top: 40px;
     }
 
     /* ═══════════════════════════════════
        HOMEPAGE SECTIONS (Featured Work / Testimonial)
     ═══════════════════════════════════ */
     .home-section {
-      padding: var(--space-section) 48px;
+      padding: 160px 64px;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -253,7 +258,7 @@
       letter-spacing: 0.12em;
       color: var(--accent);
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
 
     .home-section h2 {
@@ -261,17 +266,17 @@
       font-size: clamp(1.6rem, 3vw, 2.2rem);
       line-height: 1.2;
       letter-spacing: -0.01em;
-      margin-bottom: 32px;
+      margin-bottom: 48px;
       max-width: 640px;
     }
 
     .featured-card {
       display: flex;
-      gap: 28px;
+      gap: 40px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 32px;
+      padding: 48px;
       box-shadow: 0 4px 16px var(--card-shadow);
       transition: transform var(--ease-standard), box-shadow var(--ease-standard);
     }
@@ -296,13 +301,13 @@
     .featured-card-body h3 {
       font-family: 'DM Serif Display', serif;
       font-size: 1.35rem;
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
 
-    .featured-tag-row { margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .featured-tag-row { margin-bottom: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
 
-    .featured-card-body p { line-height: 1.7; margin-bottom: 12px; font-size: 0.96rem; }
-    .featured-card-body p:last-of-type { margin-bottom: 20px; }
+    .featured-card-body p { line-height: 1.8; margin-bottom: 18px; font-size: 0.96rem; }
+    .featured-card-body p:last-of-type { margin-bottom: 28px; }
 
     .text-link {
       font-size: 0.92rem;
@@ -315,7 +320,7 @@
     .home-quote {
       position: relative;
       max-width: 760px;
-      margin: 0 auto 20px;
+      margin: 0 auto 32px;
       text-align: center;
     }
 
@@ -326,7 +331,7 @@
       opacity: 0.35;
       line-height: 1;
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 10px;
     }
 
     .home-quote p {
@@ -335,7 +340,7 @@
       font-style: italic;
       line-height: 1.5;
       color: var(--text);
-      margin-bottom: 18px;
+      margin-bottom: 26px;
     }
 
     .home-quote footer {
@@ -352,8 +357,9 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      .hero { padding: 90px 24px 48px; }
-      .hero-main { flex-direction: column; gap: 36px; text-align: center; }
+      nav { padding: 18px 24px; }
+      .hero { padding: 120px 28px 80px; }
+      .hero-main { flex-direction: column; gap: 56px; text-align: center; }
       .hero-photo-wrap { width: min(100%, 280px); }
       .hero-bio { max-width: 100%; }
       .hero-logo-links { justify-content: center; }
@@ -361,7 +367,7 @@
       .hero-subhead { max-width: 100%; }
       .hero-credibility { justify-content: center; }
       .hero-cta { justify-content: center; }
-      .home-section { padding: 56px 24px; }
+      .home-section { padding: 88px 28px; }
       .featured-card { flex-direction: column; }
       .home-section h2 { max-width: 100%; }
     }
