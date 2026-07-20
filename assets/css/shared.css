@@ -11,6 +11,7 @@
   --teal: #3ab8a8;
   --slate: #8b9baa;
   --indigo: #7a82c4;
+  --brown: #a07850;
   --border: rgba(0,0,0,0.08);
   --nav-bg: rgba(240, 238, 235, 0.97);
   --drawer-bg: rgba(240, 238, 235, 0.99);
@@ -209,37 +210,35 @@ body {
 }
 
 /* ── NAV ── */
+/* Floating, sticky, rounded pill navbar — same on every page (hero or
+   inner). Always visible while scrolling (no hide-on-scroll-down anymore);
+   assets/js/interactions.js only toggles .nav-scrolled for a subtle
+   deeper shadow once the page leaves the very top. */
 nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 16px;
+  left: 16px;
+  right: 16px;
   z-index: 200;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 48px;
-  background: transparent;
-  border-bottom: 1px solid transparent;
+  gap: 20px;
+  padding: 10px 22px;
+  border-radius: 100px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px var(--card-shadow);
   transition: background var(--ease-standard), border-color var(--ease-standard),
               box-shadow var(--ease-standard);
 }
 
-/* Once the page scrolls past the top, the nav picks up its surface —
-   until then it stays invisible so it never competes with the hero. */
+/* Subtle depth cue once scrolled past the very top — the navbar itself
+   never changes background or disappears. */
 nav.nav-scrolled {
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: var(--border);
-  box-shadow: 0 1px 0 var(--border);
-}
-
-/* Inner pages (About, Projects, etc.) have no hero to sit over, so the
-   nav should read as present from the first frame rather than fading in. */
-.inner-page nav {
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: var(--border);
+  box-shadow: 0 12px 30px var(--card-shadow);
 }
 
 .nav-brand {
@@ -273,50 +272,107 @@ nav.nav-scrolled {
   margin-left: 4px;
 }
 
-/* Nav links: hidden on index (hamburger-only), visible on inner pages */
-.nav-links {
-  display: none !important;
-}
-/* Inner pages show horizontal nav on desktop */
-.inner-page .nav-links {
-  display: flex !important;
-  gap: 20px;
-  list-style: none;
-  align-items: center;
-}
-/* Inner pages hide hamburger on desktop */
-.inner-page .nav-hamburger {
-  display: none !important;
+/* Animated role ticker — previously duplicated inside every page's own
+   embedded <style> block; centralized here since it's part of the shared
+   nav-brand component. */
+.nav-roles {
+  overflow: hidden;
+  height: 1.2em;
+  margin-left: 6px;
 }
 
-.nav-links a {
+.nav-roles-inner {
+  display: flex;
+  flex-direction: column;
+  animation: roleTick 6s steps(3, end) infinite;
+}
+
+.nav-roles-inner span {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
+  height: 1.2em;
+  line-height: 1.2em;
+}
+
+@keyframes roleTick {
+  0%      { transform: translateY(0); }
+  33.333% { transform: translateY(-1.2em); }
+  66.666% { transform: translateY(-2.4em); }
+  100%    { transform: translateY(0); }
+}
+
+/* Desktop: pill nav links live in the floating navbar. Mobile/tablet:
+   hidden in favor of the hamburger + full-screen drawer. This uses its
+   own breakpoint (see media query near the bottom of this file) rather
+   than the site's usual 768px, because six pill buttons need noticeably
+   more horizontal room than the plain text links they replaced. */
+.nav-links {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* ── Oval pill nav buttons (moved in from the old below-hero button row
+   on index.html; identical styling/colors/hover behavior, just relocated
+   into the navbar and reused on every page). ── */
+.oval-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 27px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 500;
   text-decoration: none;
-  color: var(--muted);
-  font-size: 0.82rem;
-  transition: color 0.2s;
-  position: relative;
+  background: transparent;
+  border: 1.5px solid;
+  transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast);
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left:0; right:0;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transition: transform 0.2s;
+.oval-btn:hover {
+  transform: translateY(var(--lift-sm));
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  color: #fff;
 }
 
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after,
-.nav-links a.active::after { transform: scaleX(1); }
-.nav-links a.active { color: var(--text); }
+.oval-btn:active {
+  transform: translateY(0) scale(0.97);
+}
 
-/* ── HAMBURGER ── doubles as the close control; morphs into an X while
-   the drawer is open instead of showing a second close icon on top of it. */
+.oval-about    { color: var(--green);    border-color: var(--green); }
+.oval-exp      { color: var(--orange);   border-color: var(--orange); }
+.oval-projects { color: var(--teal);     border-color: var(--teal); }
+.oval-writing  { color: var(--slate);    border-color: var(--slate); }
+.oval-recs     { color: var(--indigo);   border-color: var(--indigo); }
+.oval-contact  { color: var(--brown);    border-color: var(--brown); }
+
+.oval-about:hover    { background: var(--green); }
+.oval-exp:hover      { background: var(--orange); }
+.oval-projects:hover { background: var(--teal); }
+.oval-writing:hover  { background: var(--slate); }
+.oval-recs:hover     { background: var(--indigo); }
+.oval-contact:hover  { background: var(--brown); }
+
+/* Current-page pill: reuses the exact same hover fill/color, just applied
+   permanently, so there's still a "you are here" indicator like the old
+   underline treatment gave the text links. */
+.oval-btn.active { color: #fff; }
+.oval-about.active    { background: var(--green); }
+.oval-exp.active      { background: var(--orange); }
+.oval-projects.active { background: var(--teal); }
+.oval-writing.active  { background: var(--slate); }
+.oval-recs.active     { background: var(--indigo); }
+.oval-contact.active  { background: var(--brown); }
+
+/* ── HAMBURGER ── shown only below the pill-nav breakpoint */
 .nav-hamburger {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
@@ -337,19 +393,7 @@ nav.nav-scrolled {
   width: 100%;
   background: var(--text);
   border-radius: 2px;
-  transition: transform var(--ease-standard), opacity var(--ease-fast);
-}
-
-.nav-hamburger.is-open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.nav-hamburger.is-open span:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-hamburger.is-open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transition: all 0.25s ease;
 }
 
 /* ── MOBILE DRAWER ── full screen overlay */
@@ -387,6 +431,24 @@ nav.nav-scrolled {
 
 .nav-drawer a:hover,
 .nav-drawer a.active { color: var(--accent); }
+
+.nav-drawer-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 44px; height: 44px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: color 0.2s;
+}
+
+.nav-drawer-close:hover { color: var(--text); }
 
 /* PAGE SHELL */
 .page {
@@ -522,6 +584,13 @@ nav.nav-scrolled {
   100% { transform: rotate(0deg); }
 }
 
+/* Pill nav ↔ hamburger swap. See note on .nav-links above for why this
+   uses its own breakpoint instead of the site's usual 768px. */
+@media (max-width: 1250px) {
+  .nav-links     { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   nav {
@@ -530,10 +599,6 @@ nav.nav-scrolled {
 
   /* Hide subtitle text on mobile */
   .nav-title { display: none; }
-
-  /* On mobile: inner pages revert to hamburger-only */
-  .inner-page .nav-links    { display: none !important; }
-  .inner-page .nav-hamburger { display: flex !important; }
 
   .page { padding: 80px 20px 60px; }
   .card { padding: 20px; }
@@ -589,56 +654,6 @@ nav.nav-scrolled {
 
 @media (max-width: 768px) {
   .contact-cta-row { justify-content: center; }
-}
-
-/* ═══════════════════════════════════
-   BACK TO TOP
-   Generated on every page by assets/js/interactions.js so it's always
-   present once the user has scrolled past the fold — no per-page markup.
-═══════════════════════════════════ */
-.back-to-top {
-  position: fixed;
-  right: 28px;
-  bottom: 28px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 8px 24px var(--card-shadow);
-  z-index: 150;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: opacity var(--ease-standard), transform var(--ease-standard),
-              visibility var(--ease-standard), border-color var(--ease-fast), color var(--ease-fast);
-}
-
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.back-to-top:hover,
-.back-to-top:focus-visible {
-  border-color: rgba(58, 184, 168, 0.3);
-  color: var(--accent);
-  transform: translateY(var(--lift-md));
-}
-
-@media (max-width: 768px) {
-  .back-to-top {
-    right: 16px;
-    bottom: 16px;
-    width: 44px;
-    height: 44px;
-  }
 }
 
 /* ═══════════════════════════════════

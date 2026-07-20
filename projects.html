@@ -55,31 +55,6 @@
     .status-soon    { background: rgba(232,146,74,0.12); color: var(--orange); }
     .status-soon::before    { content:''; width:5px; height:5px; background:var(--orange); border-radius:50%; }
 
-    /* Animated role ticker */
-    .nav-roles {
-      overflow: hidden;
-      height: 1.2em;
-      margin-left: 6px;
-    }
-    .nav-roles-inner {
-      display: flex;
-      flex-direction: column;
-      animation: roleTick 6s steps(3, end) infinite;
-    }
-    .nav-roles-inner span {
-      font-size: 0.75rem;
-      color: var(--accent);
-      font-weight: 500;
-      white-space: nowrap;
-      height: 1.2em;
-      line-height: 1.2em;
-    }
-    @keyframes roleTick {
-      0%   { transform: translateY(0); }
-      33.333%  { transform: translateY(-1.2em); }
-      66.666%  { transform: translateY(-2.4em); }
-      100% { transform: translateY(0); }
-    }
 
     /* n8n workflow repository list */
     .workflow-list {
@@ -173,12 +148,12 @@
     </div>
   </div>
   <ul class="nav-links">
-    <li><a href="about.html">About</a></li>
-    <li><a href="experience.html">Experience</a></li>
-    <li><a href="projects.html" class="active">Projects</a></li>
-    <li><a href="writing.html">Writing</a></li>
-    <li><a href="recommendations.html">Recommendations</a></li>
-    <li><a href="contact.html">Contact</a></li>
+    <li><a class="oval-btn oval-about" href="about.html">About</a></li>
+    <li><a class="oval-btn oval-exp" href="experience.html">Experience</a></li>
+    <li><a class="oval-btn oval-projects active" href="projects.html">Projects</a></li>
+    <li><a class="oval-btn oval-writing" href="writing.html">Writing</a></li>
+    <li><a class="oval-btn oval-recs" href="recommendations.html">Recommendations</a></li>
+    <li><a class="oval-btn oval-contact" href="contact.html">Contact</a></li>
   </ul>
   <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -187,6 +162,7 @@
 
 <!-- Mobile drawer -->
 <div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
   <a href="about.html">About</a>
   <a href="experience.html">Experience</a>
   <a href="projects.html" class="active">Projects</a>
@@ -199,31 +175,23 @@
   const navDrawer = document.getElementById('nav-drawer');
   const hamburger = document.querySelector('.nav-hamburger');
 
-  // Hamburger doubles as the close control: it morphs into an X while the
-  // drawer is open (see .nav-hamburger.is-open in shared.css), so there is
-  // only ever one visible toggle instead of two icons stacking on top of
-  // each other.
   function toggleDrawer() {
     const isOpen = navDrawer.classList.contains('open');
     if (isOpen) {
-      closeDrawer();
+      navDrawer.classList.remove('open');
+      document.body.style.overflow = '';
+      hamburger.setAttribute('aria-expanded', 'false');
     } else {
       navDrawer.classList.add('open');
-      hamburger.classList.add('is-open');
       document.body.style.overflow = 'hidden';
       hamburger.setAttribute('aria-expanded', 'true');
-      hamburger.setAttribute('aria-label', 'Close menu');
     }
   }
 
   function closeDrawer() {
     navDrawer.classList.remove('open');
     document.body.style.overflow = '';
-    if (hamburger) {
-      hamburger.classList.remove('is-open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.setAttribute('aria-label', 'Open menu');
-    }
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
   }
 
   // Close when tapping the backdrop
@@ -234,11 +202,6 @@
   // Close when a nav link is tapped
   navDrawer.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', closeDrawer);
-  });
-
-  // Close on Escape so keyboard users are never stuck in the drawer
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && navDrawer.classList.contains('open')) closeDrawer();
   });
 </script>
 
@@ -259,10 +222,10 @@
       <span class="status-badge status-active">Active</span>
     </div>
     <div class="card-body" style="margin-top:14px;">
-      <p><strong>Problem:</strong> Repetitive manual work across business operations like lead generation, cold outreach, research, email management, and other day-to-day tasks was eating hours that should have gone to higher-value work.</p>
-      <p><strong>Solution:</strong> A set of n8n workflows connected to Claude, Gemini, and OpenAI that handle the repeatable parts of each process end-to-end from data gathering to first-draft outreach, with a human reviewing before anything goes out. Includes AI agents that browse, extract, and act on web data using Apify.</p>
-      <p><strong>Outcome:</strong> Hours of manual, repetitive work reclaimed every week across workflows, time redirected back into the parts of the job that actually matters.</p>
-      <p><strong>Key learning:</strong> The highest-value automations aren't the flashiest ones, they're the ones that quietly remove a task someone dreads doing every day.</p>
+      <p><strong>Problem:</strong> Repetitive manual work across lead generation, cold outreach, research, email management, and job applications was eating hours that should have gone to higher-value work.</p>
+      <p><strong>Solution:</strong> A set of n8n workflows connected to Claude, Gemini, and OpenAI that handle the repeatable parts of each process end-to-end — from data gathering to first-draft outreach — with a human reviewing before anything goes out. Includes AI agents that browse, extract, and act on web data using Apify.</p>
+      <p><strong>Outcome:</strong> Hours of manual, repetitive work reclaimed every week across five separate workflows — time redirected back into the parts of the job that actually need a person.</p>
+      <p><strong>Key learning:</strong> The highest-value automations aren't the flashiest ones — they're the ones that quietly remove a task someone dreads doing every day.</p>
     </div>
     <div class="tags">
       <span class="tag tag-accent">n8n</span>

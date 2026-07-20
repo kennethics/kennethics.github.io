@@ -2,10 +2,8 @@
   Shared site-wide micro-interactions.
   - Scroll reveal: elements with class "fade-in" animate into view once,
     the first time they cross into the viewport (not on every re-scroll).
-  - Nav: stays visible ("floating") at all times while scrolling; it only
-    picks up its background/blur/border once the page leaves the very top,
-    so it never competes with a hero image but is never hidden from the
-    user either.
+  - Nav auto-hide: the fixed nav tucks away on scroll-down, reappears on
+    scroll-up, and always stays visible near the top of the page.
   Both respect prefers-reduced-motion.
 */
 (function () {
@@ -66,74 +64,30 @@
     domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
-  /* ---------- Nav: float + solidify on scroll ---------- */
-  function initNavScrollState() {
+  /* ---------- Nav solidify on scroll ---------- */
+  /* The floating navbar is always visible (position: fixed, no hide-on-
+     scroll-down). This just deepens its shadow slightly once the page
+     has scrolled past the very top, as a subtle depth cue. */
+  function initNavSolidify() {
     var nav = document.querySelector('nav');
     if (!nav) return;
 
-    var solidifyThreshold = 8; // pick up the nav surface just after leaving the very top
+    var solidifyThreshold = 8;
 
-    function updateSolidify() {
-      nav.classList.toggle('nav-scrolled', window.scrollY > solidifyThreshold);
+    function updateSolidify(y) {
+      nav.classList.toggle('nav-scrolled', y > solidifyThreshold);
     }
 
-    updateSolidify();
+    updateSolidify(window.scrollY);
 
-    if (reduceMotion) {
-      window.addEventListener('scroll', updateSolidify, { passive: true });
-      return;
-    }
-
-    var ticking = false;
     window.addEventListener('scroll', function () {
-      if (!ticking) {
-        window.requestAnimationFrame(function () {
-          updateSolidify();
-          ticking = false;
-        });
-        ticking = true;
-      }
+      updateSolidify(window.scrollY);
     }, { passive: true });
-  }
-
-  /* ---------- Back to top (site-wide) ---------- */
-  function initBackToTop() {
-    var SHOW_AFTER = 400;
-    var btn = document.getElementById('back-to-top');
-
-    // Create it once if the page doesn't already have one, so every page
-    // gets the same control without needing to hand-copy markup into it.
-    if (!btn) {
-      btn = document.createElement('button');
-      btn.type = 'button';
-      btn.id = 'back-to-top';
-      btn.className = 'back-to-top';
-      btn.setAttribute('aria-label', 'Back to top');
-      btn.title = 'Back to top';
-      btn.innerHTML =
-        '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
-        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<line x1="12" y1="19" x2="12" y2="5"></line>' +
-        '<polyline points="5 12 12 5 19 12"></polyline></svg>';
-      document.body.appendChild(btn);
-    }
-
-    function updateVisibility() {
-      btn.classList.toggle('show', window.scrollY > SHOW_AFTER);
-    }
-
-    btn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-
-    window.addEventListener('scroll', updateVisibility, { passive: true });
-    updateVisibility();
   }
 
   function init() {
     initScrollReveal();
-    initNavScrollState();
-    initBackToTop();
+    initNavSolidify();
   }
 
   if (document.readyState === 'loading') {

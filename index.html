@@ -30,327 +30,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="assets/js/theme.js"></script>
-  <script src="assets/js/interactions.js" defer></script>
+  <link rel="stylesheet" href="assets/css/shared.css">
   <link rel="stylesheet" href="assets/css/hero-card.css">
+  <script src="assets/js/interactions.js" defer></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-
-    :root {
-      --bg:     #f0eeeb;
-      --text:   #1a1a18;
-      --muted:  #6b6b67;
-      --accent: #3ab8a8;
-      --card:   #e8e5e0;
-      --green:  #8eba5c;
-      --orange: #e8924a;
-      --teal:   #3ab8a8;
-      --slate:  #8b9baa;
-      --indigo: #7a82c4;
-      --brown:  #a07850;
-      --border: rgba(0,0,0,0.08);
-      --nav-bg: rgba(240,238,235,0.95);
-      --drawer-bg: rgba(240,238,235,0.99);
-      --card-bg: #ffffff;
-      --card-shadow: rgba(0,0,0,0.07);
-
-      /* Shared interaction tokens — same timing/easing language as the
-         rest of the site (see assets/css/shared.css). */
-      --ease-standard: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-fast: 0.15s ease;
-      --lift-sm: -2px;
-      --lift-md: -3px;
-      --space-section: clamp(48px, 7vw, 88px);
-    }
-
-    :root[data-theme="dark"] {
-      --bg: #111315;
-      --text: #f2f2ea;
-      --muted: #a8a8a0;
-      --accent: #4fd1c5;
-      --card: #1b1e22;
-      --green: #8eba5c;
-      --orange: #e8924a;
-      --teal: #4fd1c5;
-      --slate: #8b9baa;
-      --indigo: #7a82c4;
-      --border: rgba(255,255,255,0.12);
-      --nav-bg: rgba(17,19,21,0.94);
-      --drawer-bg: rgba(17,19,21,0.98);
-      --card-bg: #1b1e22;
-      --card-shadow: rgba(0,0,0,0.35);
-    }
-
-    :root[data-theme="light"] {
-      --bg: #f0eeeb;
-      --text: #1a1a18;
-      --muted: #6b6b67;
-      --accent: #3ab8a8;
-      --card: #e8e5e0;
-      --green: #8eba5c;
-      --orange: #e8924a;
-      --teal: #3ab8a8;
-      --slate: #8b9baa;
-      --indigo: #7a82c4;
-      --border: rgba(0,0,0,0.08);
-      --nav-bg: rgba(240,238,235,0.95);
-      --drawer-bg: rgba(240,238,235,0.99);
-      --card-bg: #ffffff;
-      --card-shadow: rgba(0,0,0,0.07);
-    }
-
-    html { scroll-behavior: smooth; }
-    html, body { overflow-x: hidden; }
-    * { -webkit-tap-highlight-color: transparent; }
-
-    /* Applied to <html> for ~320ms during a theme toggle only (see theme.js),
-       so every themed element crossfades together instead of body alone. */
-    .theme-transitioning,
-    .theme-transitioning * {
-      transition: background-color 0.28s ease, border-color 0.28s ease,
-                  color 0.28s ease, box-shadow 0.28s ease !important;
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      min-height: 100dvh;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-
-    .theme-switcher {
-      display: flex;
-      align-items: center;
-      margin-left: 22px;
-    }
-
-    .theme-toggle {
-      position: relative;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border: none;
-      border-radius: 10px;
-      background: transparent;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--ease-fast);
-    }
-
-    .theme-toggle:hover {
-      background: var(--card);
-    }
-
-    .theme-toggle:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .theme-toggle:active {
-      transform: scale(0.93);
-    }
-
-    .theme-toggle-icon {
-      position: absolute;
-      font-size: 0.9rem;
-      line-height: 1;
-      transition: opacity var(--ease-standard), transform var(--ease-standard);
-    }
-
-    .theme-toggle-icon-sun {
-      opacity: 1;
-      transform: rotate(0deg) scale(1);
-    }
-
-    .theme-toggle-icon-moon {
-      opacity: 0;
-      transform: rotate(-90deg) scale(0.6);
-    }
-
-    .theme-toggle[aria-checked="true"] .theme-toggle-icon-sun {
-      opacity: 0;
-      transform: rotate(90deg) scale(0.6);
-    }
-
-    .theme-toggle[aria-checked="true"] .theme-toggle-icon-moon {
-      opacity: 1;
-      transform: rotate(0deg) scale(1);
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* ═══════════════════════════════════
-       NAV  –  floats above content; stays visible while scrolling
-    ═══════════════════════════════════ */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 32px;
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      transition: background var(--ease-standard), border-color var(--ease-standard),
-                  box-shadow var(--ease-standard);
-    }
-
-    /* Stays invisible over the hero; only picks up its surface once the
-       page has scrolled past the top, so it never competes with the photo. */
-    nav.nav-scrolled {
-      background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom-color: var(--border);
-      box-shadow: 0 1px 0 var(--border);
-    }
-
-    /* Brand: dot + name + animated role */
-    .nav-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-
-    .nav-brand-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text);
-      overflow: hidden;
-    }
-
-    .nav-logo {
-      width: 22px; height: 22px;
-      border-radius: 6px;
-      flex-shrink: 0;
-      display: block;
-    }
-
-    .nav-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.05rem;
-      white-space: nowrap;
-    }
-
-    /* Animated role ticker */
-    .nav-roles {
-      overflow: hidden;
-      height: 1.2em;
-      margin-left: 6px;
-    }
-
-    .nav-roles-inner {
-      display: flex;
-      flex-direction: column;
-      animation: roleTick 6s steps(3, end) infinite;
-    }
-
-    .nav-roles-inner span {
-      font-size: 0.78rem;
-      color: var(--accent);
-      font-weight: 500;
-      white-space: nowrap;
-      height: 1.2em;
-      line-height: 1.2em;
-    }
-
-    @keyframes roleTick {
-      0% { transform: translateY(0); }
-      33.333% { transform: translateY(-1.2em); }
-      66.666% { transform: translateY(-2.4em); }
-      100% { transform: translateY(0); }
-    }
-
-    /* Hamburger button — doubles as the close control. Morphs into an X
-       while the drawer is open instead of showing a second close icon
-       on top of it. */
-    .nav-hamburger {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 40px; height: 40px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 8px;
-      flex-shrink: 0;
-      z-index: 201;
-    }
-
-    .nav-hamburger span {
-      display: block;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: transform var(--ease-standard), opacity var(--ease-fast);
-    }
-
-    .nav-hamburger.is-open span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-
-    .nav-hamburger.is-open span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .nav-hamburger.is-open span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
-    /* Full-screen drawer */
-    .nav-drawer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      position: fixed;
-      inset: 0;
-      z-index: 199;
-      background: var(--drawer-bg);
-      overflow: hidden;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
-      pointer-events: none;
-    }
-
-    .nav-drawer.open {
-      visibility: visible;
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .nav-drawer a {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
-      text-decoration: none;
-      color: var(--text);
-      transition: color 0.2s;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-drawer a:hover { color: var(--accent); }
+    /* Homepage-only styles. Site-wide styles (variables, theme, nav,
+       drawer, cards, CTA buttons, fade-in reveal, oval pill buttons,
+       reduced-motion) now live in assets/css/shared.css — this page no
+       longer keeps its own duplicate copies of them. */
 
     /* ═══════════════════════════════════
        HERO
@@ -479,58 +166,7 @@
       display: block;
     }
 
-
-    /* ── Oval buttons ──
-       Outline by default (not solid) so this secondary nav row doesn't
-       out-compete the primary CTA above it; each fills to its brand color
-       on hover, which also reinforces "cards/buttons feel interactive"
-       without adding any new color to the palette. */
-    .hero-nav {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .oval-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 27px;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      background: transparent;
-      border: 1.5px solid;
-      transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast);
-      letter-spacing: 0.01em;
-    }
-
-    .oval-btn:hover {
-      transform: translateY(var(--lift-sm));
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      color: #fff;
-    }
-
-    .oval-btn:active {
-      transform: translateY(0) scale(0.97);
-    }
-
-    .oval-about    { color: var(--green);    border-color: var(--green); }
-    .oval-exp      { color: var(--orange);   border-color: var(--orange); }
-    .oval-projects { color: var(--teal);     border-color: var(--teal); }
-    .oval-writing  { color: var(--slate);    border-color: var(--slate); }
-    .oval-recs     { color: var(--indigo);   border-color: var(--indigo); }
-    .oval-contact  { color: var(--brown);    border-color: var(--brown); }
-
-    .oval-about:hover    { background: var(--green); }
-    .oval-exp:hover      { background: var(--orange); }
-    .oval-projects:hover { background: var(--teal); }
-    .oval-writing:hover  { background: var(--slate); }
-    .oval-recs:hover     { background: var(--indigo); }
-    .oval-contact:hover  { background: var(--brown); }
-
-    /* ── Fade animations ── */
+    /* ── Fade-up: hero entrance animation (plays once on load) ── */
     .fade-up {
       opacity: 0;
       transform: translateY(18px);
@@ -542,18 +178,10 @@
     .fade-up:nth-child(3) { animation-delay: 0.25s; }
     .fade-up:nth-child(4) { animation-delay: 0.32s; }
     .fade-up:nth-child(5) { animation-delay: 0.38s; }
+    .fade-up:nth-child(6) { animation-delay: 0.44s; }
+    .fade-up:nth-child(7) { animation-delay: 0.5s; }
 
     @keyframes fadeUp { to { opacity:1; transform:none; } }
-
-    /* ── Scroll reveal for below-the-fold sections (Featured Work,
-       Testimonial). Distinct from .fade-up above, which plays once on
-       load for the hero. Triggered by assets/js/interactions.js. ── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard);
-    }
-    .fade-in.is-visible { opacity: 1; transform: none; }
 
     /* ── Hero skills strip ── */
     .hero-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
@@ -592,54 +220,14 @@
     .credibility-item { white-space: nowrap; }
     .credibility-dot { color: var(--border); }
 
-    /* ── Hero CTA row ── */
+    /* ── Hero CTA row (buttons themselves use .cta-btn/.cta-primary/etc.
+       from shared.css) ── */
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
       margin-top: 28px;
     }
-
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 30px;
-      border-radius: 100px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform var(--ease-standard), box-shadow var(--ease-standard), background var(--ease-fast), color var(--ease-fast);
-      letter-spacing: 0.01em;
-    }
-
-    .cta-btn:hover { transform: translateY(var(--lift-sm)); }
-    .cta-btn:active { transform: translateY(0) scale(0.97); }
-
-    .cta-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(58,184,168,0.25);
-    }
-    .cta-primary:hover { box-shadow: 0 10px 24px rgba(58,184,168,0.35); }
-
-    .cta-secondary {
-      background: var(--card-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .cta-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-    .cta-ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid transparent;
-    }
-    .cta-ghost:hover { color: var(--text); }
-
-    /* Extra fade-up stagger slots for the added hero children */
-    .fade-up:nth-child(6) { animation-delay: 0.44s; }
-    .fade-up:nth-child(7) { animation-delay: 0.5s; }
 
     /* ═══════════════════════════════════
        HOMEPAGE SECTIONS (Featured Work / Testimonial)
@@ -762,75 +350,23 @@
       text-align: center;
     }
 
-    /* ═══════════════════════════════════
-       BACK TO TOP
-       Generated by assets/js/interactions.js so it's present once the
-       user has scrolled past the fold — same as every other page.
-    ═══════════════════════════════════ */
-    .back-to-top {
-      position: fixed;
-      right: 28px;
-      bottom: 28px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 8px 24px var(--card-shadow);
-      z-index: 150;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(12px);
-      transition: opacity var(--ease-standard), transform var(--ease-standard),
-                  visibility var(--ease-standard), border-color var(--ease-fast), color var(--ease-fast);
-    }
-
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .back-to-top:hover,
-    .back-to-top:focus-visible {
-      border-color: rgba(58, 184, 168, 0.3);
-      color: var(--accent);
-      transform: translateY(var(--lift-md));
-    }
-
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      nav { padding: 14px 20px; }
       .hero { padding: 90px 24px 48px; }
       .hero-main { flex-direction: column; gap: 36px; text-align: center; }
       .hero-photo-wrap { width: min(100%, 280px); }
       .hero-bio { max-width: 100%; }
       .hero-logo-links { justify-content: center; }
       .hero-skills { justify-content: center; }
-      .hero-nav { justify-content: center; }
       .hero-subhead { max-width: 100%; }
       .hero-credibility { justify-content: center; }
       .hero-cta { justify-content: center; }
       .home-section { padding: 56px 24px; }
       .featured-card { flex-direction: column; }
       .home-section h2 { max-width: 100%; }
-      .back-to-top { right: 16px; bottom: 16px; width: 44px; height: 44px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-      }
     }
   </style>
+
 
 <script type="application/ld+json">
 {
@@ -859,7 +395,7 @@
 </head>
 <body>
 
-<!-- NAV: hamburger only -->
+<!-- NAV: floating pill navbar (pills on desktop, hamburger below 1250px) -->
 <nav>
   <div class="nav-brand">
     <a class="nav-brand-link" href="index.html">
@@ -880,6 +416,14 @@
       </button>
     </div>
   </div>
+  <ul class="nav-links">
+    <li><a class="oval-btn oval-about" href="about.html">About</a></li>
+    <li><a class="oval-btn oval-exp" href="experience.html">Experience</a></li>
+    <li><a class="oval-btn oval-projects" href="projects.html">Projects</a></li>
+    <li><a class="oval-btn oval-writing" href="writing.html">Writing</a></li>
+    <li><a class="oval-btn oval-recs" href="recommendations.html">Recommendations</a></li>
+    <li><a class="oval-btn oval-contact" href="contact.html">Contact</a></li>
+  </ul>
   <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -887,6 +431,7 @@
 
 <!-- Full-screen drawer -->
 <div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
   <a href="about.html">About</a>
   <a href="experience.html">Experience</a>
   <a href="projects.html">Projects</a>
@@ -976,16 +521,6 @@
 
       </div>
     </div>
-  </div>
-
-  <!-- Oval navigation buttons — now includes Recommendations -->
-  <div class="hero-nav fade-up">
-    <a class="oval-btn oval-about"    href="about.html">About</a>
-    <a class="oval-btn oval-exp"      href="experience.html">Experience</a>
-    <a class="oval-btn oval-projects" href="projects.html">Projects</a>
-    <a class="oval-btn oval-writing"  href="writing.html">Writing</a>
-    <a class="oval-btn oval-recs"     href="recommendations.html">Recommendations</a>
-    <a class="oval-btn oval-contact"  href="contact.html">Contact</a>
   </div>
 </main>
 
