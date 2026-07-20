@@ -2,11 +2,20 @@
   Shared site-wide micro-interactions.
   - Scroll reveal: elements with class "fade-in" animate into view once,
     the first time they cross into the viewport (not on every re-scroll).
-  - Nav solidify: the floating navbar deepens its shadow and shrinks
-    slightly once the page scrolls past the very top (it never hides).
+  - Nav scroll behavior: <nav> starts in the normal document flow (not
+    floating). Once its sentinel (.hero on the homepage, .page-header on
+    inner pages) has fully left the viewport, nav switches to
+    position: fixed with a soft fade + drop-in (.nav-floating, see
+    shared.css). Scrolling back up past the sentinel returns nav to its
+    original in-flow spot. A JS-measured .nav-spacer keeps the page from
+    jumping when nav leaves/re-enters the flow.
+  - Nav solidify: the navbar deepens its shadow and shrinks slightly once
+    the page scrolls past the very top (it never hides), independent of
+    whether it's currently inline or floating.
   - Back to top: a single reusable #back-to-top button, shown after the
     page scrolls past a threshold, on any page that includes the markup.
-  All three respect prefers-reduced-motion.
+  All of the above respect prefers-reduced-motion (see the global
+  "animation/transition duration: 0.001ms" override in shared.css).
 */
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -66,10 +75,76 @@
     domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
+  /* ---------- Nav: inline → floating on scroll past hero ---------- */
+  /* nav starts in the normal document flow (see shared.css — no more
+     position: fixed by default). This watches a sentinel element via
+     IntersectionObserver and toggles .nav-floating on <nav> only once
+     that sentinel has COMPLETELY left the viewport, never after a few
+     pixels of scroll (threshold: 0 + isIntersecting: false means 0% of
+     the sentinel is visible). Scrolling back up past the sentinel
+     removes the class again, so nav returns to its original position. */
+  function initNavFloat() {
+    var nav = document.querySelector('nav');
+    if (!nav) return;
+
+    // Homepage uses .hero as the reference section; inner pages use
+    // their .page-header intro block. Whichever exists on this page.
+    var sentinel = document.querySelector('.hero') || document.querySelector('.page-header');
+    if (!sentinel || typeof IntersectionObserver === 'undefined') return;
+
+    var spacer = null;
+
+    function getSpacer() {
+      if (spacer) return spacer;
+      spacer = document.createElement('div');
+      spacer.className = 'nav-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      nav.insertAdjacentElement('afterend', spacer);
+      return spacer;
+    }
+
+    function setFloating(shouldFloat) {
+      var isFloating = nav.classList.contains('nav-floating');
+      if (shouldFloat === isFloating) return;
+
+      if (shouldFloat) {
+        // Measure nav's own height right before pulling it out of the
+        // flow, so the spacer left behind matches exactly (never a
+        // hardcoded value).
+        var h = nav.offsetHeight;
+        getSpacer().style.height = h + 'px';
+        nav.classList.add('nav-floating');
+      } else {
+        nav.classList.remove('nav-floating');
+        if (spacer) spacer.style.height = '0px';
+      }
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        // Only float once the sentinel has fully exited ABOVE the
+        // viewport (scrolled past it) — not merely out of view below,
+        // and not on initial load when it's still on screen.
+        var scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        setFloating(scrolledPast);
+      });
+    }, { threshold: 0 });
+
+    observer.observe(sentinel);
+
+    // Keep the spacer height accurate if nav's own height changes
+    // (font load, orientation change, hamburger swap at 1250px, etc.).
+    window.addEventListener('resize', function () {
+      if (nav.classList.contains('nav-floating') && spacer) {
+        spacer.style.height = nav.offsetHeight + 'px';
+      }
+    }, { passive: true });
+  }
+
   /* ---------- Nav solidify on scroll ---------- */
-  /* The floating navbar is always visible (position: fixed, no hide-on-
-     scroll-down). This just deepens its shadow slightly once the page
-     has scrolled past the very top, as a subtle depth cue. */
+  /* Deepens the navbar's shadow slightly once the page has scrolled past
+     the very top, as a subtle depth cue. Works whether nav is currently
+     inline or floating. */
   function initNavSolidify() {
     var nav = document.querySelector('nav');
     if (!nav) return;
@@ -112,6 +187,7 @@
 
   function init() {
     initScrollReveal();
+    initNavFloat();
     initNavSolidify();
     initBackToTop();
   }
