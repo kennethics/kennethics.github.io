@@ -212,12 +212,11 @@ body {
 
 /* ── NAV ── */
 /* Starts INLINE, in normal document flow, at the top of the page — not
-   floating on load. assets/js/interactions.js watches a sentinel element
-   (.hero on the homepage, .page-header on inner pages) via
-   IntersectionObserver and adds .nav-floating only once that sentinel has
-   FULLY left the viewport (isIntersecting: false), never after a few
-   pixels of scroll. Scrolling back up past the sentinel removes the class
-   again, returning nav to its original in-flow position.
+   floating on load. assets/js/interactions.js watches actual scroll
+   distance and adds .nav-floating once the page scrolls past ~16px,
+   never staying "floating-looking" while inline. Scrolling back up past
+   that same threshold removes the class again, returning nav to its
+   original in-flow position.
 
    FIX: previously this base rule carried the pill's card styling
    (background/blur/border/shadow) unconditionally, so the navbar LOOKED
@@ -481,6 +480,21 @@ nav.nav-floating.nav-scrolled {
   border-radius: 8px;
   flex-shrink: 0;
   z-index: 201;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+/* When the drawer is open, each page's existing toggle script already
+   sets aria-expanded="true" on this button (no new JS needed). The
+   hamburger button's z-index (201) sits above the drawer overlay (199),
+   so without this rule its 3 bars stay visible on top of the drawer's
+   own dedicated close (✕) button — showing two icons at once. Fading
+   the bars out here means only the drawer's ✕ is visible while it's
+   open; pointer-events is also disabled since the ✕ button already
+   handles closing. */
+.nav-hamburger[aria-expanded="true"] {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .nav-hamburger span {

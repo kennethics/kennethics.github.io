@@ -3,12 +3,13 @@
   - Scroll reveal: elements with class "fade-in" animate into view once,
     the first time they cross into the viewport (not on every re-scroll).
   - Nav scroll behavior: <nav> starts in the normal document flow (not
-    floating). Once its sentinel (.hero on the homepage, .page-header on
-    inner pages) has fully left the viewport, nav switches to
-    position: fixed with a soft fade + drop-in (.nav-floating, see
-    shared.css). Scrolling back up past the sentinel returns nav to its
-    original in-flow spot. A JS-measured .nav-spacer keeps the page from
-    jumping when nav leaves/re-enters the flow.
+    floating). As soon as the page scrolls past a small threshold
+    (~16px), nav switches to position: fixed with a soft fade + drop-in
+    (.nav-floating, see shared.css). It stays floating and visible for
+    the rest of the scroll (no hide-on-scroll-down). Scrolling back up
+    past that same threshold returns nav to its original in-flow spot.
+    A JS-measured .nav-spacer keeps the page from jumping when nav
+    leaves/re-enters the flow.
   - Nav solidify: the navbar deepens its shadow and shrinks slightly once
     the page scrolls past the very top (it never hides), independent of
     whether it's currently inline or floating.
@@ -75,22 +76,23 @@
     domObserver.observe(document.body, { childList: true, subtree: true });
   }
 
-  /* ---------- Nav: inline → floating on scroll past hero ---------- */
+  /* ---------- Nav: inline → floating almost immediately on scroll ---------- */
   /* nav starts in the normal document flow (see shared.css — no more
-     position: fixed by default). This watches a sentinel element via
-     IntersectionObserver and toggles .nav-floating on <nav> only once
-     that sentinel has COMPLETELY left the viewport, never after a few
-     pixels of scroll (threshold: 0 + isIntersecting: false means 0% of
-     the sentinel is visible). Scrolling back up past the sentinel
-     removes the class again, so nav returns to its original position. */
+     position: fixed by default). This now watches actual scroll distance
+     (window.scrollY) rather than waiting for a hero/page-header sentinel
+     to fully leave the viewport — as soon as the page scrolls past
+     FLOAT_THRESHOLD, nav switches to .nav-floating. Scrolling back up
+     past that same threshold returns nav to its original in-flow spot.
+     Once floating, nav stays visible for the rest of the scroll (no
+     hide-on-scroll-down behavior) — floating is purely a function of
+     scroll position, so it's consistent on every page regardless of
+     hero/header height. */
   function initNavFloat() {
     var nav = document.querySelector('nav');
     if (!nav) return;
 
-    // Homepage uses .hero as the reference section; inner pages use
-    // their .page-header intro block. Whichever exists on this page.
-    var sentinel = document.querySelector('.hero') || document.querySelector('.page-header');
-    if (!sentinel || typeof IntersectionObserver === 'undefined') return;
+    // How far the page must scroll before nav switches to floating mode.
+    var FLOAT_THRESHOLD = 16;
 
     var spacer = null;
 
@@ -120,17 +122,16 @@
       }
     }
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        // Only float once the sentinel has fully exited ABOVE the
-        // viewport (scrolled past it) — not merely out of view below,
-        // and not on initial load when it's still on screen.
-        var scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-        setFloating(scrolledPast);
-      });
-    }, { threshold: 0 });
+    function updateFloating(y) {
+      setFloating(y > FLOAT_THRESHOLD);
+    }
 
-    observer.observe(sentinel);
+    // Set correct state on load too (e.g. page refreshed mid-scroll).
+    updateFloating(window.scrollY);
+
+    window.addEventListener('scroll', function () {
+      updateFloating(window.scrollY);
+    }, { passive: true });
 
     // Keep the spacer height accurate if nav's own height changes
     // (font load, orientation change, hamburger swap at 1250px, etc.).
