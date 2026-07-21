@@ -154,20 +154,22 @@
     <li><a class="oval-btn oval-recs" href="recommendations.html">Recommendations</a></li>
     <li><a class="oval-btn oval-contact" href="contact.html">Contact</a></li>
   </ul>
-  <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
+  <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- Mobile drawer -->
-<div class="nav-drawer" id="nav-drawer">
-  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
-  <a href="about.html">About</a>
-  <a href="experience.html">Experience</a>
-  <a href="projects.html" class="active">Projects</a>
-  <a href="writing.html">Writing</a>
-  <a href="recommendations.html">Recommendations</a>
-  <a href="contact.html">Contact</a>
+<div class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Site navigation" aria-hidden="true">
+  <div class="nav-drawer-panel">
+    <button class="nav-drawer-close" aria-label="Close menu">✕</button>
+    <a href="about.html">About</a>
+    <a href="experience.html">Experience</a>
+    <a href="projects.html">Projects</a>
+    <a href="writing.html">Writing</a>
+    <a href="recommendations.html">Recommendations</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </div>
 
 <script>

@@ -186,11 +186,98 @@
     updateVisibility();
   }
 
+  /* ---------- Nav drawer (hamburger + slide-in panel) ----------
+     Centralized here instead of duplicated inline on every page (and a
+     second copy in hero-card.js for index.html), so there's one place to
+     fix drawer behavior going forward. */
+  function initNavDrawer() {
+    var navDrawer = document.getElementById('nav-drawer');
+    var hamburger = document.querySelector('.nav-hamburger');
+    if (!navDrawer || !hamburger) return;
+
+    var closeBtn = navDrawer.querySelector('.nav-drawer-close');
+    var lastFocused = null;
+
+    function openDrawer() {
+      lastFocused = document.activeElement;
+      navDrawer.classList.add('open');
+      navDrawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      hamburger.classList.add('is-open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.setAttribute('aria-label', 'Close menu');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeDrawer() {
+      navDrawer.classList.remove('open');
+      navDrawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      hamburger.classList.remove('is-open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+      if (lastFocused && typeof lastFocused.focus === 'function') {
+        lastFocused.focus();
+      } else {
+        hamburger.focus();
+      }
+    }
+
+    function toggleDrawer() {
+      if (navDrawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    }
+
+    hamburger.addEventListener('click', toggleDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+    // Click on the backdrop (anywhere outside the sliding panel) closes it
+    navDrawer.addEventListener('click', function (e) {
+      if (e.target === navDrawer) closeDrawer();
+    });
+
+    // Esc closes, only while actually open
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navDrawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    // Basic focus trap: keep Tab cycling inside the drawer while open
+    navDrawer.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || !navDrawer.classList.contains('open')) return;
+      var focusables = navDrawer.querySelectorAll('a, button');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Tapping a nav link closes the drawer
+    navDrawer.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    // Exposed globally in case anything still references these by name
+    window.toggleDrawer = toggleDrawer;
+    window.closeDrawer = closeDrawer;
+  }
+  
   function init() {
     initScrollReveal();
     initNavFloat();
     initNavSolidify();
     initBackToTop();
+    initNavDrawer();
   }
 
   if (document.readyState === 'loading') {

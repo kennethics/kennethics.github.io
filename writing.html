@@ -108,19 +108,21 @@
     <li><a class="oval-btn oval-recs" href="recommendations.html">Recommendations</a></li>
     <li><a class="oval-btn oval-contact" href="contact.html">Contact</a></li>
   </ul>
-  <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Open menu">
+  <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<div class="nav-drawer" id="nav-drawer">
-  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
-  <a href="about.html">About</a>
-  <a href="experience.html">Experience</a>
-  <a href="projects.html">Projects</a>
-  <a href="writing.html" class="active">Writing</a>
-  <a href="recommendations.html">Recommendations</a>
-  <a href="contact.html">Contact</a>
+<div class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Site navigation" aria-hidden="true">
+  <div class="nav-drawer-panel">
+    <button class="nav-drawer-close" aria-label="Close menu">✕</button>
+    <a href="about.html">About</a>
+    <a href="experience.html">Experience</a>
+    <a href="projects.html">Projects</a>
+    <a href="writing.html">Writing</a>
+    <a href="recommendations.html">Recommendations</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </div>
 
 <main class="page">
@@ -195,39 +197,6 @@
 
 </main>
 
-<script>
-  const navDrawer = document.getElementById('nav-drawer');
-  const hamburger = document.querySelector('.nav-hamburger');
-
-  function toggleDrawer() {
-    const isOpen = navDrawer.classList.contains('open');
-    if (isOpen) {
-      navDrawer.classList.remove('open');
-      document.body.style.overflow = '';
-      hamburger.setAttribute('aria-expanded', 'false');
-    } else {
-      navDrawer.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      hamburger.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  function closeDrawer() {
-    navDrawer.classList.remove('open');
-    document.body.style.overflow = '';
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-  }
-
-  // Close when tapping the backdrop
-  navDrawer.addEventListener('click', function(e) {
-    if (e.target === this) closeDrawer();
-  });
-
-  // Close when a nav link is tapped
-  navDrawer.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', closeDrawer);
-  });
-</script>
 
 <!-- Back to top -->
 <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">

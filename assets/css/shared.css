@@ -506,22 +506,27 @@ nav.nav-floating.nav-scrolled {
   transition: all 0.25s ease;
 }
 
-/* ── MOBILE DRAWER ── full screen overlay */
+/* ── MOBILE DRAWER ── backdrop + sliding side panel ──
+   .nav-drawer is a full-viewport backdrop (click on it closes the menu).
+   Its z-index (260) is deliberately ABOVE nav's (200) so the drawer — and
+   the close button nested inside it — always render and receive clicks
+   above the floating navbar, even where the two visually overlap near the
+   top-right corner. Previously .nav-drawer sat at z-index 199, BELOW nav's
+   200, so nav silently intercepted clicks meant for the close button —
+   that was the root cause of the unresponsive X. */
 .nav-drawer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
   position: fixed;
   inset: 0;
-  z-index: 199;
-  background: var(--drawer-bg);
-  overflow: hidden;
+  z-index: 260;
+  background: rgba(10, 10, 10, 0.4);
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   pointer-events: none;
+}
+
+:root[data-theme="dark"] .nav-drawer {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .nav-drawer.open {
@@ -530,9 +535,36 @@ nav.nav-floating.nav-scrolled {
   pointer-events: all;
 }
 
+/* The actual sliding panel — anchored to the right edge, fluid width
+   (70-85% of viewport) with a sensible cap on larger screens. */
+.nav-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80vw;
+  max-width: 400px;
+  min-width: 280px;
+  background: var(--drawer-bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 28px;
+  padding: 100px 44px 60px;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-drawer.open .nav-drawer-panel {
+  transform: translateX(0);
+}
+
 .nav-drawer a {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-size: 1.7rem;
   text-decoration: none;
   color: var(--text);
   transition: color 0.2s;
@@ -542,23 +574,36 @@ nav.nav-floating.nav-scrolled {
 .nav-drawer a:hover,
 .nav-drawer a.active { color: var(--accent); }
 
+/* Close (X) — fixed inside the panel, so its position never moves and it
+   always renders above nav thanks to the backdrop's higher z-index. */
 .nav-drawer-close {
   position: absolute;
-  top: 20px; right: 20px;
-  width: 44px; height: 44px;
-  background: none;
-  border: none;
-  font-size: 1.6rem;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 1.4rem;
   cursor: pointer;
   color: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: color 0.2s;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-drawer-close:hover { color: var(--text); }
+.nav-drawer-close:hover,
+.nav-drawer-close:focus-visible {
+  color: var(--text);
+  background: var(--border);
+}
+
+@media (max-width: 480px) {
+  .nav-drawer-panel { padding: 90px 32px 48px; gap: 24px; }
+  .nav-drawer a { font-size: 1.5rem; }
+}
 
 /* PAGE SHELL */
 .page {
