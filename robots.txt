@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kennethics.github.io/sitemap.xml
