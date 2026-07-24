@@ -1960,36 +1960,69 @@
     });
   }
 
-  // ── Scroll-spy: highlight the nav pill for whichever section is
-  // currently in view. Single-page equivalent of the old per-page
-  // "active" class (each page used to hardcode which pill was active;
-  // now every section lives on index.html, so this watches scroll
-  // position instead). Applies to both the desktop pill nav and the
-  // mobile drawer links. No-ops gracefully if a section/link is missing.
-  (function () {
-    var sectionIds = ['about', 'experience', 'projects', 'writing', 'recommendations', 'contact'];
-    var sections = sectionIds
-      .map(function (id) { return document.getElementById(id); })
-      .filter(Boolean);
-    if (!sections.length || typeof IntersectionObserver === 'undefined') return;
+  // ── Scroll-spy: sync nav active state AND the URL hash with whichever
+// section is currently in view, using IntersectionObserver only (no
+// scroll listeners). history.replaceState() means scrolling never adds
+// new browser history entries. Existing anchor-link clicks and smooth
+// scrolling are untouched — this only observes and reacts, it doesn't
+// intercept clicks.
+(function () {
+  // 'hero' is included so scrolling back to the top clears the hash
+  // entirely (back to a clean "/"), rather than leaving a stale
+  // #contact (or whatever) sitting in the address bar.
+  var sectionIds = ['hero', 'about', 'experience', 'projects', 'writing', 'recommendations', 'contact'];
+  var sections = sectionIds
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!sections.length || typeof IntersectionObserver === 'undefined') return;
 
-    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a, .nav-drawer a'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a, .nav-drawer a'));
 
-    function setActive(id) {
-      navLinks.forEach(function (link) {
-        var isMatch = link.getAttribute('href') === '#' + id;
-        link.classList.toggle('active', isMatch);
-      });
-    }
+  // Remembers which section is currently "active" so we skip redundant
+  // DOM/URL updates when nothing has actually changed (avoids
+  // unnecessary replaceState calls, per requirement).
+  var currentActiveId = null;
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  function setActiveNav(id) {
+    navLinks.forEach(function (link) {
+      // Hero has no nav pill of its own, so no link should be marked
+      // active while it's in view — all pills simply go inactive.
+      var isMatch = id !== 'hero' && link.getAttribute('href') === '#' + id;
+      link.classList.toggle('active', isMatch);
+    });
+  }
 
-    sections.forEach(function (section) { observer.observe(section); });
-  })();
+  // Updates the URL hash in place (no new history entry) and only when
+  // it actually needs to change. Hero maps to "no hash" (clean URL).
+  function syncUrlHash(id) {
+    var targetHash = id === 'hero' ? '' : '#' + id;
+    if (window.location.hash === targetHash) return; // already correct — skip
+    var newUrl = window.location.pathname + window.location.search + targetHash;
+    history.replaceState(null, '', newUrl);
+  }
+
+  function setActiveSection(id) {
+    if (id === currentActiveId) return; // no-op if section hasn't changed
+    currentActiveId = id;
+    setActiveNav(id);
+    syncUrlHash(id);
+  }
+
+  // rootMargin carves out a thin horizontal "detection band" around the
+  // vertical middle of the viewport (45% down from the top, 50% up from
+  // the bottom) instead of firing the instant any edge of a section
+  // appears. threshold: 0 fires as soon as a pixel crosses that band.
+  // Together, a section only becomes "active" once it's genuinely the
+  // one being read — this is what stops rapid flicker right at section
+  // boundaries.
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) setActiveSection(entry.target.id);
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(function (section) { observer.observe(section); });
+})();
 </script>
 
 <!-- Back to top -->
