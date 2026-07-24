@@ -186,6 +186,15 @@
     updateVisibility();
   }
 
+  /* ---------- Footer year ---------- */
+  /* Auto-fills the copyright year so it never needs a manual annual
+     update. No-ops if the footer markup isn't present on the page. */
+  function initFooterYear() {
+    var yearEl = document.getElementById('footer-year');
+    if (!yearEl) return;
+    yearEl.textContent = new Date().getFullYear();
+  }
+
   /* ---------- Nav drawer (hamburger + slide-in panel) ----------
      Centralized here instead of duplicated inline on every page (and a
      second copy in hero-card.js for index.html), so there's one place to
@@ -278,6 +287,7 @@
     initNavSolidify();
     initBackToTop();
     initNavDrawer();
+    initFooterYear();
   }
 
   if (document.readyState === 'loading') {
