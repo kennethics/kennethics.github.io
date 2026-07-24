@@ -20,11 +20,27 @@
 
   /* Shared interaction tokens — one timing/easing language for every
      hover, lift, and reveal on the site (nav, cards, buttons, toggle). */
-  --ease-standard: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+--ease-standard: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   --ease-fast: 0.15s ease;
   --lift-sm: -2px;
   --lift-md: -3px;
   --space-section: clamp(48px, 7vw, 88px);
+
+  /* "-ink" variants: same hues, darkened just enough to clear WCAG AA
+     (4.5:1) as small text/icons on the light cream background. The plain
+     --green/--orange/--teal/etc tokens stay untouched for backgrounds,
+     borders, glows, and dots — only text/icon color switches to these. */
+  --accent-ink: var(--teal-ink);
+  --green-ink: #587339;
+  --orange-ink: #965e30;
+  --teal-ink: #26776d;
+  --slate-ink: #616c77;
+  --indigo-ink: #61679c;
+  --brown-ink: #866543;
+  /* Fixed near-black used as text/icon color on top of a solid bright
+     fill (buttons, active/hover pill state) — passes contrast against
+     every hue in the palette, in both themes. */
+  --on-accent-text: #1a1a18;
 }
 
 :root[data-theme="dark"] {
@@ -38,11 +54,18 @@
   --teal: #4fd1c5;
   --slate: #8b9baa;
   --indigo: #7a82c4;
-  --border: rgba(255,255,255,0.12);
+--border: rgba(255,255,255,0.12);
   --nav-bg: rgba(17, 19, 21, 0.94);
   --drawer-bg: rgba(17, 19, 21, 0.98);
   --card-bg: #1b1e22;
   --card-shadow: rgba(0,0,0,0.35);
+
+  --green-ink: var(--green);
+  --orange-ink: var(--orange);
+  --teal-ink: var(--teal);
+  --slate-ink: var(--slate);
+  --indigo-ink: var(--indigo);
+  --brown-ink: var(--brown);
 }
 
 :root[data-theme="light"] {
@@ -125,7 +148,7 @@ body {
   transform: translateY(var(--lift-md));
   background: var(--card-bg);
   border-color: rgba(58, 184, 168, 0.3);
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .icon-link:active {
@@ -385,7 +408,7 @@ nav.nav-floating.nav-scrolled {
 
 .nav-roles-inner span {
   font-size: 0.75rem;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-weight: 500;
   white-space: nowrap;
   height: 1.2em;
@@ -433,19 +456,19 @@ nav.nav-floating.nav-scrolled {
 .oval-btn:hover {
   transform: translateY(var(--lift-sm));
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  color: #fff;
+  color: var(--on-accent-text);
 }
 
 .oval-btn:active {
   transform: translateY(0) scale(0.97);
 }
 
-.oval-about    { color: var(--green);    border-color: var(--green); }
-.oval-exp      { color: var(--orange);   border-color: var(--orange); }
-.oval-projects { color: var(--teal);     border-color: var(--teal); }
-.oval-writing  { color: var(--slate);    border-color: var(--slate); }
-.oval-recs     { color: var(--indigo);   border-color: var(--indigo); }
-.oval-contact  { color: var(--brown);    border-color: var(--brown); }
+.oval-about    { color: var(--green-ink);    border-color: var(--green); }
+.oval-exp      { color: var(--orange-ink);   border-color: var(--orange); }
+.oval-projects { color: var(--teal-ink);     border-color: var(--teal); }
+.oval-writing  { color: var(--slate-ink);    border-color: var(--slate); }
+.oval-recs     { color: var(--indigo-ink);   border-color: var(--indigo); }
+.oval-contact  { color: var(--brown-ink);    border-color: var(--brown); }
 
 .oval-about:hover    { background: var(--green); }
 .oval-exp:hover      { background: var(--orange); }
@@ -457,7 +480,7 @@ nav.nav-floating.nav-scrolled {
 /* Current-page pill: reuses the exact same hover fill/color, just applied
    permanently, so there's still a "you are here" indicator like the old
    underline treatment gave the text links. */
-.oval-btn.active { color: #fff; }
+.oval-btn.active { color: var(--on-accent-text); }
 .oval-about.active    { background: var(--green); }
 .oval-exp.active      { background: var(--orange); }
 .oval-projects.active { background: var(--teal); }
@@ -572,7 +595,7 @@ nav.nav-floating.nav-scrolled {
 }
 
 .nav-drawer a:hover,
-.nav-drawer a.active { color: var(--accent); }
+.nav-drawer a.active { color: var(--accent-ink); }
 
 /* Close (X) — fixed inside the panel, so its position never moves and it
    always renders above nav thanks to the backdrop's higher z-index. */
@@ -621,7 +644,7 @@ nav.nav-floating.nav-scrolled {
   letter-spacing: -0.02em;
 }
 
-.page-title em { font-style: italic; color: var(--accent); }
+.page-title em { font-style: italic; color: var(--accent-ink); }
 
 /* CARD */
 .card {
@@ -686,7 +709,7 @@ nav.nav-floating.nav-scrolled {
   font-weight: 500;
 }
 
-.tag-accent { background: rgba(58,184,168,0.12); color: var(--teal); }
+.tag-accent { background: rgba(58,184,168,0.12); color: var(--teal-ink); }
 
 /* FADE IN — reveals once when the element scrolls into view (see
    assets/js/interactions.js). Starts hidden so there's no flash of
@@ -796,7 +819,7 @@ nav.nav-floating.nav-scrolled {
 .back-to-top:hover,
 .back-to-top:focus-visible {
   border-color: rgba(58, 184, 168, 0.3);
-  color: var(--accent);
+  color: var(--accent-ink);
   transform: translateY(-3px);
 }
 
@@ -821,7 +844,7 @@ nav.nav-floating.nav-scrolled {
 
 .cta-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent-text);
   box-shadow: 0 8px 20px rgba(58,184,168,0.25);
 }
 .cta-primary:hover { box-shadow: 0 10px 24px rgba(58,184,168,0.35); }
@@ -831,7 +854,7 @@ nav.nav-floating.nav-scrolled {
   color: var(--text);
   border: 1px solid var(--border);
 }
-.cta-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.cta-secondary:hover { border-color: var(--accent); color: var(--accent-ink); }
 
 .cta-ghost {
   background: transparent;
