@@ -17,6 +17,7 @@
    4. Section motifs (added in later phases) will live at the bottom of
       this file, one block per section, each scoped to its own section
       id so nothing here ever needs to touch shared.css.
+   5. Mobile visibility boost — see note at bottom of file.
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── 1. TOKENS ──
@@ -200,4 +201,44 @@
 #contact {
   position: relative;
   z-index: 0;
+}
+
+/* ── MOBILE VISIBILITY BOOST ──
+   Confirmed via real-device testing (iPhone 13 Pro Max): the canvas
+   opacity tokens above were tuned on a desktop monitor and read as
+   nearly invisible on a phone — smaller physical pixels, more ambient
+   glare, and a narrower viewport that shows fewer grid cells at once
+   all compound against a 2–5% opacity effect. Two levers here, both
+   mobile-only, both leaving desktop completely untouched:
+     1. Roughly 2x line opacity (still faint — this is a correction for
+        viewing conditions, not a redesign of the effect).
+     2. Smaller grid cells (64px → 40px) so the pattern still reads as
+        a "grid" on a narrow screen instead of one or two stray lines.
+   Breakpoint matches shared.css's existing 768px convention. Placed
+   last so it wins the cascade (same selector specificity, later source
+   order) over the :root / :root[data-theme="dark"] blocks above,
+   without needing !important. */
+@media (max-width: 768px) {
+  :root {
+    --canvas-line: rgba(26, 26, 24, 0.07);
+    --canvas-line-strong: rgba(26, 26, 24, 0.12);
+  }
+
+  :root[data-theme="dark"] {
+    --canvas-line: rgba(242, 242, 234, 0.075);
+    --canvas-line-strong: rgba(242, 242, 234, 0.13);
+  }
+
+  .bg-grid {
+    background-size: 40px 40px;
+  }
+
+  /* Slightly thicker strokes on the section motifs (node/path SVGs) —
+     at mobile viewport widths a 1.5px stroke on high-density screens
+     anti-aliases down further than the same stroke on desktop. */
+  .section-motif path,
+  .section-motif circle,
+  .section-motif rect {
+    stroke-width: 2;
+  }
 }
