@@ -559,9 +559,17 @@ nav.nav-floating.nav-scrolled {
   pointer-events: none;
 
   display: flex;
-  align-items: center;
+  /* CHANGED: was align-items: center — that centered the panel in the
+     full viewport height, disconnected from the nav pill above it.
+     flex-start + a calculated top padding tucks it in right under the
+     pill instead, so the two read as one connected system. */
+  align-items: flex-start;
   justify-content: flex-end;
-  padding: clamp(16px, 4vw, 32px);
+  /* Top padding approximates the floating nav pill's own offset + height
+     + a small gap (nav sits at top: clamp(10px,2vw,16px) with ~44-64px
+     of content/padding depending on viewport — see nav.nav-floating in
+     this file). Side/bottom padding unchanged from before. */
+  padding: clamp(78px, 15vw, 92px) clamp(16px, 4vw, 32px) clamp(16px, 4vw, 32px);
 }
 
 :root[data-theme="dark"] .nav-drawer {
@@ -589,7 +597,7 @@ nav.nav-floating.nav-scrolled {
   width: min(88vw, 340px);
   max-width: 340px;
   min-width: 260px;
-  max-height: calc(100vh - clamp(32px, 8vw, 64px));
+  max-height: calc(100vh - clamp(78px, 15vw, 92px) - clamp(16px, 4vw, 32px));
 
   /* Matches nav.nav-floating's surface exactly (see shared.css nav
      section) — same background token, same blur, same shadow value —

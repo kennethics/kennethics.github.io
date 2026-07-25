@@ -248,12 +248,35 @@
       if (e.target === navDrawer) closeDrawer();
     });
 
-    // Esc closes, only while actually open
+   // Esc closes, only while actually open
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && navDrawer.classList.contains('open')) {
         closeDrawer();
       }
     });
+
+    // Auto-close if the viewport grows past the pill-nav breakpoint
+    // (1250px — must match the @media (max-width: 1250px) rule in
+    // shared.css) while the drawer is open. Past that width the pill
+    // nav takes over and the hamburger hides, so a still-open drawer
+    // becomes an orphaned overlay with no visible trigger.
+    //
+    // Debounced (~100ms): resize fires continuously while a user drags
+    // a window border, not just on maximize. Without debouncing,
+    // closeDrawer() would re-run on every pixel of that drag once past
+    // 1250px — harmless since it's idempotent, but wasteful. Waiting
+    // until resizing pauses for 100ms means it only runs once per
+    // actual resize gesture.
+    var DRAWER_BREAKPOINT = 1250;
+    var resizeCloseTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeCloseTimer);
+      resizeCloseTimer = setTimeout(function () {
+        if (window.innerWidth > DRAWER_BREAKPOINT && navDrawer.classList.contains('open')) {
+          closeDrawer();
+        }
+      }, 100);
+    }, { passive: true });
 
     // Basic focus trap: keep Tab cycling inside the drawer while open
     navDrawer.addEventListener('keydown', function (e) {
