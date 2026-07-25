@@ -33,6 +33,7 @@
   <script src="assets/js/theme.js"></script>
   <link rel="stylesheet" href="assets/css/shared.css">
   <link rel="stylesheet" href="assets/css/hero-card.css">
+  <link rel="stylesheet" href="assets/css/background.css">
   <script src="assets/js/interactions.js" defer></script>
   <style>
     /* Homepage-only styles. Site-wide styles (variables, theme, nav,
@@ -948,6 +949,13 @@
 </head>
 <body>
 
+<!-- Business Intelligence Canvas: decorative, non-interactive background layer.
+     See assets/css/background.css. Safe to remove this div + its CSS link
+     in <head> to fully revert the background system. -->
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-grid"></div>
+</div>
+
 <!-- NAV: floating pill navbar (pills on desktop, hamburger below 1250px) -->
 <nav>
   <div class="nav-brand">
@@ -1011,6 +1019,31 @@
 </div>
 
 <main class="hero" id="hero">
+  <div class="section-motif motif-hero" aria-hidden="true">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Upper-right node cluster -->
+      <path d="M 980 120 L 1080 180" />
+      <path d="M 1080 180 L 1080 280" />
+      <path d="M 1080 180 L 1160 140" />
+      <circle cx="980" cy="120" r="5" />
+      <circle cx="1080" cy="180" r="5" />
+      <circle cx="1080" cy="280" r="5" />
+      <circle cx="1160" cy="140" r="4" />
+
+      <!-- Lower-left node cluster -->
+      <path d="M 90 640 L 190 700" />
+      <path d="M 190 700 L 310 660" />
+      <path d="M 190 700 L 210 780" />
+      <circle cx="90" cy="640" r="5" />
+      <circle cx="190" cy="700" r="5" />
+      <circle cx="310" cy="660" r="4" />
+      <circle cx="210" cy="780" r="4" />
+
+      <!-- Slow drifting connector line running across the hero -->
+      <path class="motif-flow" d="M 60 90 C 400 40, 800 220, 1150 620" />
+    </svg>
+  </div>
+
   <div class="hero-main">
     <div class="hero-photo-wrap fade-up">
       <div class="hero-profile-card" data-flip-card role="button" tabindex="0" aria-label="Flip profile card">
@@ -1130,6 +1163,18 @@
 </section>
 
 <section id="about" class="page" aria-labelledby="about-heading">
+  <div class="section-motif motif-about" aria-hidden="true">
+    <svg viewBox="0 0 900 700" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Concentric arcs, off-center toward the top-right -->
+      <circle cx="760" cy="90" r="60" />
+      <circle cx="760" cy="90" r="110" />
+      <circle cx="760" cy="90" r="160" />
+      <!-- A second, smaller echo lower-left -->
+      <circle cx="60" cy="640" r="40" />
+      <circle cx="60" cy="640" r="80" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="about-heading">About<br><em>ME</em></h2>
   </div>
@@ -1224,6 +1269,23 @@
 
 </section>
 <section id="experience" class="page" aria-labelledby="experience-heading">
+  <div class="section-motif motif-experience" aria-hidden="true">
+    <svg viewBox="0 0 900 1400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- A single long timeline path with evenly spaced tick marks -->
+      <path class="motif-flow" d="M 780 40 L 780 1360" />
+      <path d="M 750 200 L 810 200" />
+      <path d="M 750 420 L 810 420" />
+      <path d="M 750 640 L 810 640" />
+      <path d="M 750 860 L 810 860" />
+      <path d="M 750 1080 L 810 1080" />
+      <circle cx="780" cy="200" r="4" />
+      <circle cx="780" cy="420" r="4" />
+      <circle cx="780" cy="640" r="4" />
+      <circle cx="780" cy="860" r="4" />
+      <circle cx="780" cy="1080" r="4" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="experience-heading">My<br><em>Journey</em></h2>
   </div>
@@ -1413,6 +1475,20 @@
   
 </section>
 <section id="projects" class="page" aria-labelledby="projects-heading">
+  <div class="section-motif motif-projects" aria-hidden="true">
+    <svg viewBox="0 0 900 900" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Small workflow diagram: square nodes joined by right-angle connectors -->
+      <path d="M 730 80 L 790 80 L 790 160 L 850 160" />
+      <path d="M 790 160 L 790 260" />
+      <path d="M 730 340 L 790 340 L 790 260" />
+      <path class="motif-flow" d="M 850 160 L 850 420" />
+      <rect x="700" y="60" width="30" height="30" rx="4" />
+      <rect x="700" y="320" width="30" height="30" rx="4" />
+      <rect x="836" y="146" width="28" height="28" rx="4" />
+      <rect x="836" y="406" width="28" height="28" rx="4" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="projects-heading">Things I'm<br><em>Building</em></h2>
   </div>
@@ -1523,6 +1599,20 @@
 
 </section>
 <section id="writing" class="page" aria-labelledby="writing-heading">
+  <div class="section-motif motif-writing" aria-hidden="true">
+    <svg viewBox="0 0 900 900" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Editorial column guides, upper-right, plus short baseline ticks -->
+      <path d="M 640 40 L 640 380" />
+      <path d="M 720 40 L 720 380" />
+      <path d="M 800 40 L 800 380" />
+      <path d="M 640 120 L 690 120" />
+      <path d="M 640 180 L 700 180" />
+      <path d="M 640 240 L 680 240" />
+      <path d="M 720 150 L 780 150" />
+      <path d="M 720 210 L 770 210" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="writing-heading">I Write<br><em>Regularly</em></h2>
   </div>
@@ -1594,6 +1684,25 @@
 
 </section>
 <section id="recommendations" class="page" aria-labelledby="recommendations-heading">
+  <div class="section-motif motif-recommendations" aria-hidden="true">
+    <svg viewBox="0 0 900 900" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Loose mesh: nodes cross-connected with no single hierarchy/direction -->
+      <path d="M 700 60 L 800 140" />
+      <path d="M 700 60 L 640 180" />
+      <path d="M 800 140 L 640 180" />
+      <path d="M 800 140 L 850 260" />
+      <path d="M 640 180 L 720 300" />
+      <path d="M 850 260 L 720 300" />
+      <path d="M 720 300 L 660 400" />
+      <circle cx="700" cy="60" r="5" />
+      <circle cx="800" cy="140" r="5" />
+      <circle cx="640" cy="180" r="5" />
+      <circle cx="850" cy="260" r="4" />
+      <circle cx="720" cy="300" r="5" />
+      <circle cx="660" cy="400" r="4" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="recommendations-heading">What Others<br><em>Say</em></h2>
   </div>
@@ -1677,6 +1786,21 @@
 
 </section>
 <section id="contact" class="page" aria-labelledby="contact-heading">
+  <div class="section-motif motif-contact" aria-hidden="true">
+    <svg viewBox="0 0 900 900" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Several lines converging on one point: the "reach me" visual argument -->
+      <path d="M 620 60 L 780 420" />
+      <path d="M 760 100 L 780 420" />
+      <path d="M 880 200 L 780 420" />
+      <path class="motif-flow" d="M 700 480 L 780 420" />
+      <circle cx="620" cy="60" r="4" />
+      <circle cx="760" cy="100" r="4" />
+      <circle cx="880" cy="200" r="4" />
+      <circle cx="700" cy="480" r="4" />
+      <circle cx="780" cy="420" r="6" />
+    </svg>
+  </div>
+
   <div class="page-header fade-in">
     <h2 class="page-title" id="contact-heading">Let's<br><em>Connect</em></h2>
   </div>
