@@ -377,6 +377,15 @@
   margin-top: 20px;
 }
 
+/* Reserve horizontal clearance on mobile so the fixed back-to-top
+   button (bottom-right) never overlaps the centered copyright line. */
+@media (max-width: 768px) {
+  .site-footer {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
     /* ── Single-page anchor nav: offset scroll targets so the floating
        nav pill never covers a section's heading when jumping via #links ── */
     #hero, #about, #experience, #projects, #writing, #recommendations, #contact {
@@ -1710,12 +1719,14 @@
 </section>
 
 <footer class="site-footer">
-  <p>&copy; <span id="footer-year"></span> Kenneth Soriano — Tech VA | AI Automation Specialist</p>
+  <p>&copy; <span id="footer-year"></span> Kenneth S. — Tech VA | AI Automation Specialist</p>
 </footer>
 
 <script src="assets/js/hero-card.js"></script>
 
 <script>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+  
   // ── About: bio card collapse/expand (from about.html) ──
 
   // Bio card collapse/expand. Starts expanded; "Minimize" shrinks the card
