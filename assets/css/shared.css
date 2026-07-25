@@ -536,14 +536,18 @@ nav.nav-floating.nav-scrolled {
   transition: all 0.25s ease;
 }
 
-/* ── MOBILE DRAWER ── backdrop + sliding side panel ──
+/* ── MOBILE DRAWER ── backdrop + floating panel ──
    .nav-drawer is a full-viewport backdrop (click on it closes the menu).
    Its z-index (260) is deliberately ABOVE nav's (200) so the drawer — and
    the close button nested inside it — always render and receive clicks
    above the floating navbar, even where the two visually overlap near the
-   top-right corner. Previously .nav-drawer sat at z-index 199, BELOW nav's
-   200, so nav silently intercepted clicks meant for the close button —
-   that was the root cause of the unresponsive X. */
+   top-right corner.
+
+   UPDATED: .nav-drawer is now a flex container (align-items/justify-
+   content + padding) instead of just a backdrop, so the panel can be
+   positioned as a floating card via normal flow rather than pinned
+   edge-to-edge with position:absolute. This is what makes it "float"
+   with margin on all sides instead of spanning the full height/width. */
 .nav-drawer {
   position: fixed;
   inset: 0;
@@ -553,6 +557,11 @@ nav.nav-floating.nav-scrolled {
   opacity: 0;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: clamp(16px, 4vw, 32px);
 }
 
 :root[data-theme="dark"] .nav-drawer {
@@ -565,25 +574,41 @@ nav.nav-floating.nav-scrolled {
   pointer-events: all;
 }
 
-/* The actual sliding panel — anchored to the right edge, fluid width
-   (70-85% of viewport) with a sensible cap on larger screens. */
+/* The floating panel itself. Sizing is fully fluid:
+   - width: min(88vw, 340px) → uses most of the viewport width on small
+     phones (with the backdrop's clamp() padding as breathing room),
+     caps at 340px so it never stretches wide on tablet/desktop/ultrawide.
+   - max-height: calc(100vh - matching margin) → never exceeds the
+     viewport; if the link list ever grows taller than that, overflow-y:
+     auto lets the panel scroll internally instead of growing past the
+     screen edge.
+   - Rounded on all four corners + full box-shadow (not just a left-edge
+     shadow) since it's no longer flush against the viewport edge. */
 .nav-drawer-panel {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 80vw;
-  max-width: 400px;
-  min-width: 280px;
-  background: var(--drawer-bg);
-  border-left: 1px solid var(--border);
-  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  width: min(88vw, 340px);
+  max-width: 340px;
+  min-width: 260px;
+  max-height: calc(100vh - clamp(32px, 8vw, 64px));
+
+  /* Matches nav.nav-floating's surface exactly (see shared.css nav
+     section) — same background token, same blur, same shadow value —
+     so the drawer and the floating pill nav read as one consistent
+     "floating surface" component instead of two different treatments. */
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px var(--card-shadow);
+
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 28px;
-  padding: 100px 44px 60px;
+  gap: 22px;
+  padding: 72px 36px 36px;
+  overflow-y: auto;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -604,8 +629,10 @@ nav.nav-floating.nav-scrolled {
 .nav-drawer a:hover,
 .nav-drawer a.active { color: var(--accent-ink); }
 
-/* Close (X) — fixed inside the panel, so its position never moves and it
-   always renders above nav thanks to the backdrop's higher z-index. */
+/* Close (X) — absolute inside the panel (panel is now position:relative
+   instead of position:absolute), so its position never moves regardless
+   of panel size, and it always renders above nav thanks to the
+   backdrop's higher z-index. */
 .nav-drawer-close {
   position: absolute;
   top: 20px;
@@ -631,7 +658,11 @@ nav.nav-floating.nav-scrolled {
 }
 
 @media (max-width: 480px) {
-  .nav-drawer-panel { padding: 90px 32px 48px; gap: 24px; }
+  .nav-drawer-panel {
+    width: min(92vw, 320px);
+    padding: 68px 28px 32px;
+    gap: 18px;
+  }
   .nav-drawer a { font-size: 1.5rem; }
 }
 
