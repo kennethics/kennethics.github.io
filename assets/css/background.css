@@ -3,30 +3,22 @@
    Isolated from shared.css on purpose: this file only ever touches the
    decorative layer behind the site, never typography/layout/nav/cards.
    Safe to delete this file + its <link> in index.html to fully revert.
-
-   Structure:
-   1. Tokens        — line color per theme, tuned separately from --border
-                       so the canvas can be tuned without touching the
-                       rest of the design system.
-   2. Base canvas   — a single fixed, full-viewport blueprint grid that
-                       sits behind ALL content on every page/section.
-   3. Motion        — one slow, subtle ambient drift on the grid so the
-                       canvas doesn't feel static/dead. Respects
-                       prefers-reduced-motion via the global rule already
-                       in shared.css (animation-duration forced to ~0).
-   4. Section motifs (added in later phases) will live at the bottom of
-      this file, one block per section, each scoped to its own section
-      id so nothing here ever needs to touch shared.css.
-   5. Mobile visibility boost — see note at bottom of file.
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── 1. TOKENS ──
-   Kept intentionally faint: 2–5% opacity per the brief. Using dedicated
-   rgba tokens (not var(--border)) so canvas opacity can be tuned
-   independently of the card/border system elsewhere on the site. */
+   IMPORTANT — light vs dark are NOT the same alpha value, on purpose.
+   An earlier version used 0.035 for both themes, which produced a
+   massive visibility gap: the same alpha blends to a ~3% relative
+   luminance shift on a light background but a ~46% shift on a dark
+   background (Weber's Law — human contrast perception is relative to
+   background brightness, not the raw pixel delta). Confirmed via
+   DevTools (Jul 2026): light mode was rendering correctly the whole
+   time, just below the threshold of visibility. Light-mode alpha is
+   therefore set ~2.5x higher than dark-mode's, calibrated so both
+   themes read as "quiet but present" rather than one being invisible. */
 :root {
-  --canvas-line: rgba(26, 26, 24, 0.035);   /* grid hairlines */
-  --canvas-line-strong: rgba(26, 26, 24, 0.06); /* node/path strokes, section motifs */
+  --canvas-line: rgba(26, 26, 24, 0.09);
+  --canvas-line-strong: rgba(26, 26, 24, 0.14);
 }
 
 :root[data-theme="dark"] {
@@ -34,14 +26,7 @@
   --canvas-line-strong: rgba(242, 242, 234, 0.055);
 }
 
-/* ── 2. BASE CANVAS ──
-   A single fixed div, inserted as the first child of <body> (see
-   index.html). Fixed + negative z-index + first-in-DOM is the standard,
-   well-supported pattern for a decorative backdrop: it paints behind
-   the body's own background and behind every normal-flow sibling that
-   follows it, without requiring z-index changes anywhere else on the
-   site (nav/back-to-top/drawer all keep their existing stacking values
-   of 150–260, comfortably above this layer). */
+/* ── 2. BASE CANVAS ── */
 .bg-canvas {
   position: fixed;
   inset: 0;
@@ -52,7 +37,7 @@
 
 .bg-grid {
   position: absolute;
-  inset: -64px; /* overshoot so the slow drift never reveals a hard edge */
+  inset: -64px;
   background-image:
     linear-gradient(var(--canvas-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--canvas-line) 1px, transparent 1px);
@@ -60,10 +45,7 @@
   background-position: 0 0;
 }
 
-/* ── 3. MOTION ──
-   A ~28s ambient drift, translate-only (GPU-cheap, no layout thrash).
-   Distance is capped at one grid cell (64px) so the pattern always
-   re-aligns seamlessly with zero visible jump/loop-seam. */
+/* ── 3. MOTION ── */
 @media (prefers-reduced-motion: no-preference) {
   .bg-grid {
     animation: canvas-drift 28s ease-in-out infinite;
@@ -78,9 +60,6 @@
 
 /* ═══════════════════════════════════════════════════════════════════
    SECTION MOTIFS
-   One quiet, section-specific SVG sits absolutely behind each section's
-   content (not fixed — it scrolls with the page like normal content).
-   Shared rules first, then one block per section below.
    ═══════════════════════════════════════════════════════════════════ */
 
 .section-motif {
@@ -109,23 +88,11 @@
   stroke-width: 1.5;
 }
 
-/* ── HERO — "strategy overview" ──
-   A handful of connected nodes with one drifting flow-line, reading as
-   a system being mapped out. Kept toward the outer edges of the hero so
-   it never competes with the photo/text column. */
 #hero {
   position: relative;
-  z-index: 0; /* establishes a local stacking context so the motif's
-                 negative z-index stays contained inside #hero instead of
-                 escaping to compete with unrelated page-level elements */
+  z-index: 0;
 }
 
-/* ── Shared "flow" utility ──
-   Opt-in class any section motif can put on one of its paths to get the
-   same slow drifting connector-line treatment as the hero. Kept as one
-   shared rule (not duplicated per section) so every animated line on the
-   site moves at the exact same speed — part of what makes the sections
-   read as one visual language instead of separate decorations. */
 .motif-flow {
   stroke-dasharray: 6 10;
   animation: motif-flow-drift 24s linear infinite;
@@ -141,29 +108,16 @@
   }
 }
 
-/* ── ABOUT — "human-centered" ──
-   Soft concentric arcs instead of hard grid/node geometry — the one
-   deliberately organic shape in the system, echoing the shift from
-   "process" (hero) to "person" (about). Positioned off to one side so
-   it never sits under the bio text column. */
 #about {
   position: relative;
   z-index: 0;
 }
 
-/* ── EXPERIENCE — "career timeline" ──
-   One long horizontal path with tick marks, literally a timeline —
-   the most direct/legible motif on the site, matching the section's own
-   subject (a chronological career history). */
 #experience {
   position: relative;
   z-index: 0;
 }
 
-/* ── PROJECTS — "engineering + automation" ──
-   Right-angle connectors between small square nodes — the most literal
-   "workflow diagram" reference on the site (n8n/automation-adjacent),
-   reserved for the one section where that reference is exactly on-topic. */
 #projects {
   position: relative;
   z-index: 0;
@@ -175,67 +129,42 @@
   stroke-width: 1.5;
 }
 
-/* ── WRITING — "editorial" ──
-   Not nodes/paths at all — faint column guides and baseline ticks, the
-   same structural language a print/editorial grid uses. Deliberately
-   the quietest, most typographic motif on the site. */
 #writing {
   position: relative;
   z-index: 0;
 }
 
-/* ── RECOMMENDATIONS — "relationships" ──
-   A loose mesh of nodes with crossing connectors and no single
-   hierarchy or direction — distinct from hero/projects' tree-like
-   structure, reading as a peer network rather than a process. */
 #recommendations {
   position: relative;
   z-index: 0;
 }
 
-/* ── CONTACT — "network convergence" ──
-   Several lines from different points converging on one node — the
-   visual argument for the section itself: multiple paths, one point of
-   contact. The convergence line carries the drift animation so the
-   "conversation" feels like it's actively arriving, not static. */
 #contact {
   position: relative;
   z-index: 0;
 }
 
 /* ── MOBILE VISIBILITY BOOST ──
-   Confirmed via real-device testing (iPhone 13 Pro Max): the canvas
-   opacity tokens above were tuned on a desktop monitor and read as
-   nearly invisible on a phone — smaller physical pixels, more ambient
-   glare, and a narrower viewport that shows fewer grid cells at once
-   all compound against a 2–5% opacity effect. Two levers here, both
-   mobile-only, both leaving desktop completely untouched:
-     1. Roughly 2x line opacity (still faint — this is a correction for
-        viewing conditions, not a redesign of the effect).
-     2. Smaller grid cells (64px → 40px) so the pattern still reads as
-        a "grid" on a narrow screen instead of one or two stray lines.
-   Breakpoint matches shared.css's existing 768px convention. Placed
-   last so it wins the cascade (same selector specificity, later source
-   order) over the :root / :root[data-theme="dark"] blocks above,
-   without needing !important. */
+   Supplementary, smaller boost on top of the corrected base tokens
+   above. This is no longer doing the heavy lifting (the light-mode fix
+   above is) — it just compensates for smaller physical pixels / more
+   ambient glare on phones for BOTH themes. Breakpoint matches
+   shared.css's existing 768px convention. */
 @media (max-width: 768px) {
   :root {
-    --canvas-line: rgba(26, 26, 24, 0.07);
-    --canvas-line-strong: rgba(26, 26, 24, 0.12);
+    --canvas-line: rgba(26, 26, 24, 0.12);
+    --canvas-line-strong: rgba(26, 26, 24, 0.18);
   }
 
   :root[data-theme="dark"] {
-    --canvas-line: rgba(242, 242, 234, 0.075);
-    --canvas-line-strong: rgba(242, 242, 234, 0.13);
+    --canvas-line: rgba(242, 242, 234, 0.06);
+    --canvas-line-strong: rgba(242, 242, 234, 0.10);
   }
 
   .bg-grid {
     background-size: 40px 40px;
   }
 
-  /* Slightly thicker strokes on the section motifs (node/path SVGs) —
-     at mobile viewport widths a 1.5px stroke on high-density screens
-     anti-aliases down further than the same stroke on desktop. */
   .section-motif path,
   .section-motif circle,
   .section-motif rect {
