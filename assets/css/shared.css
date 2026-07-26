@@ -12,6 +12,7 @@
   --slate: #8b9baa;
   --indigo: #7a82c4;
   --brown: #a07850;
+  --gold: #c9a13c;
   --border: rgba(0,0,0,0.08);
   --nav-bg: rgba(240, 238, 235, 0.97);
   --drawer-bg: rgba(240, 238, 235, 0.99);
@@ -37,6 +38,7 @@
   --slate-ink: #616c77;
   --indigo-ink: #61679c;
   --brown-ink: #866543;
+  --gold-ink: #8a6a1e;
   /* Fixed near-black used as text/icon color on top of a solid bright
      fill (buttons, active/hover pill state) — passes contrast against
      every hue in the palette, in both themes. */
@@ -66,6 +68,7 @@
   --slate-ink: var(--slate);
   --indigo-ink: var(--indigo);
   --brown-ink: var(--brown);
+  --gold-ink: var(--gold);
 }
 
 :root[data-theme="light"] {
@@ -79,6 +82,8 @@
   --teal: #3ab8a8;
   --slate: #8b9baa;
   --indigo: #7a82c4;
+  --brown: #a07850;
+  --gold: #c9a13c;
   --border: rgba(0,0,0,0.08);
   --nav-bg: rgba(240, 238, 235, 0.97);
   --drawer-bg: rgba(240, 238, 235, 0.99);
@@ -475,6 +480,7 @@ nav.nav-floating.nav-scrolled {
 .oval-projects { color: var(--teal-ink);     border-color: var(--teal); }
 .oval-writing  { color: var(--slate-ink);    border-color: var(--slate); }
 .oval-recs     { color: var(--indigo-ink);   border-color: var(--indigo); }
+.oval-services { color: var(--gold-ink);     border-color: var(--gold); }
 .oval-contact  { color: var(--brown-ink);    border-color: var(--brown); }
 
 .oval-about:hover    { background: var(--green); }
@@ -482,6 +488,7 @@ nav.nav-floating.nav-scrolled {
 .oval-projects:hover { background: var(--teal); }
 .oval-writing:hover  { background: var(--slate); }
 .oval-recs:hover     { background: var(--indigo); }
+.oval-services:hover { background: var(--gold); }
 .oval-contact:hover  { background: var(--brown); }
 
 /* Current-page pill: reuses the exact same hover fill/color, just applied
@@ -493,7 +500,8 @@ nav.nav-floating.nav-scrolled {
 .oval-projects.active { background: var(--teal); }
 .oval-writing.active  { background: var(--slate); }
 .oval-recs.active     { background: var(--indigo); }
-.oval-contact.active  { background: var(--brown); }
+.oval-services.active  { background: var(--gold); }
+.oval-contact.active   { background: var(--brown); }
 
 /* ── HAMBURGER ── shown only below the pill-nav breakpoint */
 .nav-hamburger {
