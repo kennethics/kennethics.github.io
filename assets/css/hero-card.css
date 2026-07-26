@@ -4,8 +4,6 @@
   --hero-card-border: rgba(255, 255, 255, 0.7);
   --hero-card-surface: rgba(255,255,255,0.9);
   --hero-card-surface-alt: rgba(255,255,255,0.65);
-  --hero-card-surface: rgba(255,255,255,0.9);
-  --hero-card-surface-alt: rgba(255,255,255,0.65);
   --hero-card-backface: #b5cfe0;
   --avatar-image: url("../images/ai-avatar-cartoon.jpg");
 }
@@ -176,24 +174,6 @@
   }
 }
 
-/* ── HERO WAVE EMOJI ── */
-.wave {
-  display: inline-block;
-  transform-origin: 70% 70%;
-  animation: wave-animation 6s infinite;
-}
-
-@keyframes wave-animation {
-  0%   { transform: rotate(0deg); }
-  2%   { transform: rotate(14deg); }
-  4%   { transform: rotate(-8deg); }
-  6%   { transform: rotate(14deg); }
-  8%   { transform: rotate(-4deg); }
-  10%  { transform: rotate(10deg); }
-  12%  { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-}
-
 /* ── Avatar blink: real eyes-closed image crossfade (plays when flipped) ── */
 
 .hero-avatar-blink-img {
@@ -218,61 +198,3 @@
   97%           { opacity: 0.15; }
   98%           { opacity: 1; }
 }
-
-/* ── Hand wave: same source image, soft-masked to the hand region ──
-
-   MEASURED, NOT GUESSED: coordinates below were sampled directly from
-   the actual ai-avatar-cartoon.jpg pixels (900x900 source). The real
-   hand+fingers occupy roughly x: 8%–25%, y: 40%–70% of the image.
-
-   Why only the fingertips looked like they were moving (2nd bug):
-   Rotational displacement of any point equals angle × distance-from-
-   pivot. The previous version pivoted at the wrist, which sits INSIDE
-   the masked hand region — so the palm/wrist (near the pivot) barely
-   moved while the fingertips (farthest from that same pivot) swept
-   the most. The whole hand was technically rotating, but the visible
-   motion was wildly uneven across it, reading as "only some fingers
-   move." Fix: move the pivot OUTSIDE the hand entirely, out past the
-   bottom of the image toward where the forearm/elbow would be. With
-   the pivot that far away, every part of the hand — palm, wrist,
-   fingertips — sits at roughly the same distance from it, so they all
-   get roughly the same displacement and swing together as one rigid
-   unit. The rotation angle is reduced to compensate, since arc length
-   ≈ angle × radius — a small angle at a large radius still produces a
-   natural amount of visible movement without an exaggerated swing.
-
-   Why the ghosting/seam risk (1st bug, still relevant): this technique
-   layers a rotating cutout directly on top of an IDENTICAL static copy
-   of the same image underneath. At rest (0deg) the pixels line up
-   perfectly and the seam is invisible. The instant it rotates, the
-   soft-fade ring of the mask can show a blend of the moved (rotated)
-   pixels and the stationary pixels still visible from the layer below.
-   The opaque core below is sized to comfortably contain the entire
-   measured hand (with margin), and the fade ring is pushed outward so
-   it falls mostly over the plain wall background surrounding the hand
-   instead of over hand detail — a blend over flat background is
-   effectively invisible; a blend over fingers is not. */
-
-.hero-avatar-hand-wave {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  pointer-events: none;
-  z-index: 6; /* above blink crossfade, below border ring */
-  -webkit-mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
-          mask-image: radial-gradient(ellipse 15% 21% at 16% 52%, #000 0%, #000 62%, transparent 100%);
-  /* Off-canvas pivot, well below and slightly right of the hand —
-     an estimate of where the forearm/elbow would be off-frame, since
-     the actual elbow isn't visible in the source image. This is a
-     rotation-pivot design choice, not a pixel measurement: nudge the
-     Y value further down (e.g. 160%, 180%) for even more uniform,
-     whole-hand movement, or back up (e.g. 110%) for a bit more
-     differential motion if the wave starts feeling too stiff/robotic. */
-  transform-origin: 22% 145%;
-}
-
-/* Wave animation removed — hand overlay now stays static at rest (0deg),
-   which stays seamless with the base image per the mask/pivot notes above. */
