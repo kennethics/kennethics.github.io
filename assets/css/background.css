@@ -6,24 +6,34 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── 1. TOKENS ──
-   IMPORTANT — light vs dark are NOT the same alpha value, on purpose.
-   An earlier version used 0.035 for both themes, which produced a
-   massive visibility gap: the same alpha blends to a ~3% relative
-   luminance shift on a light background but a ~46% shift on a dark
-   background (Weber's Law — human contrast perception is relative to
-   background brightness, not the raw pixel delta). Confirmed via
-   DevTools (Jul 2026): light mode was rendering correctly the whole
-   time, just below the threshold of visibility. Light-mode alpha is
-   therefore set ~2.5x higher than dark-mode's, calibrated so both
-   themes read as "quiet but present" rather than one being invisible. */
+   Recolored to the site's teal brand accent per direct feedback: the
+   original neutral gray system read as "not noticeable" even after the
+   Weber's-Law alpha correction below. Values are now deliberately bold
+   enough to register as an intentional design choice, not a rounding
+   error — while still resolving through the existing calm/editorial
+   palette (this is the same teal already used on tags/buttons/nav
+   pills elsewhere on the site, so it reads as brand, not decoration).
+
+   Light vs dark are still NOT symmetric alpha values, on purpose: the
+   same alpha blends to a much smaller relative-luminance shift on a
+   light background than a dark one (Weber's Law), so light-mode alpha
+   stays proportionally higher than dark-mode's throughout this file. */
 :root {
-  --canvas-line: rgba(26, 26, 24, 0.09);
-  --canvas-line-strong: rgba(26, 26, 24, 0.14);
+  --canvas-line: rgba(58, 184, 168, 0.16);
+  --canvas-line-strong: rgba(58, 184, 168, 0.30);
+  --glow-rgb: 58, 184, 168;
+  --glow-alpha-1: 0.18;
+  --glow-alpha-2: 0.14;
+  --glow-alpha-3: 0.12;
 }
 
 :root[data-theme="dark"] {
-  --canvas-line: rgba(242, 242, 234, 0.035);
-  --canvas-line-strong: rgba(242, 242, 234, 0.055);
+  --canvas-line: rgba(79, 209, 197, 0.11);
+  --canvas-line-strong: rgba(79, 209, 197, 0.22);
+  --glow-rgb: 79, 209, 197;
+  --glow-alpha-1: 0.14;
+  --glow-alpha-2: 0.11;
+  --glow-alpha-3: 0.09;
 }
 
 /* ── 2. BASE CANVAS ── */
@@ -43,6 +53,34 @@
     linear-gradient(90deg, var(--canvas-line) 1px, transparent 1px);
   background-size: 64px 64px;
   background-position: 0 0;
+}
+
+/* ── AMBIENT GLOW ──
+   Three soft, large radial-gradient blobs in the brand teal — the
+   "premium SaaS" ingredient (the kind of ambient depth you see behind
+   Linear/Stripe/Vercel marketing pages), layered under the grid+motifs.
+   Pure CSS gradients with a soft falloff, not `filter: blur()` — this
+   is meaningfully cheaper to paint/composite, especially on mobile GPUs,
+   and needs no extra oversized/blurred asset to avoid edge artifacts. */
+.bg-glow {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(50% 40% at 18% 12%, rgba(var(--glow-rgb), var(--glow-alpha-1)), transparent 70%),
+    radial-gradient(45% 38% at 85% 22%, rgba(var(--glow-rgb), var(--glow-alpha-2)), transparent 70%),
+    radial-gradient(55% 45% at 50% 92%, rgba(var(--glow-rgb), var(--glow-alpha-3)), transparent 70%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-glow {
+    animation: glow-drift 42s ease-in-out infinite;
+  }
+}
+
+@keyframes glow-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-3%, 2%) scale(1.06); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
 /* ── 3. MOTION ── */
@@ -79,13 +117,15 @@
 .section-motif path {
   fill: none;
   stroke: var(--canvas-line-strong);
-  stroke-width: 1.5;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
 .section-motif circle {
   fill: var(--bg);
   stroke: var(--canvas-line-strong);
-  stroke-width: 1.5;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
 #hero {
@@ -126,7 +166,8 @@
 .section-motif rect {
   fill: var(--bg);
   stroke: var(--canvas-line-strong);
-  stroke-width: 1.5;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
 #writing {
@@ -144,30 +185,34 @@
   z-index: 0;
 }
 
-/* ── MOBILE VISIBILITY BOOST ──
-   Supplementary, smaller boost on top of the corrected base tokens
-   above. This is no longer doing the heavy lifting (the light-mode fix
-   above is) — it just compensates for smaller physical pixels / more
-   ambient glare on phones for BOTH themes. Breakpoint matches
-   shared.css's existing 768px convention. */
+/* ── MOBILE EXTRA BOOST ──
+   Small additional boost on top of the base tokens above, to compensate
+   for smaller physical pixels / more ambient glare on phones. The real
+   fix for motifs going invisible on mobile is `vector-effect:
+   non-scaling-stroke` above — without it, stroke-width was being scaled
+   down by the SVG's own viewBox-to-container ratio on narrow screens
+   (a 2px stroke drawn in an SVG scaled to ~0.4x renders at <1 physical
+   pixel and effectively disappears under anti-aliasing, independent of
+   how high its opacity is). This block only handles the smaller,
+   separate issue of phone screens generally needing more contrast. */
 @media (max-width: 768px) {
   :root {
-    --canvas-line: rgba(26, 26, 24, 0.12);
-    --canvas-line-strong: rgba(26, 26, 24, 0.18);
+    --canvas-line: rgba(58, 184, 168, 0.20);
+    --canvas-line-strong: rgba(58, 184, 168, 0.36);
+    --glow-alpha-1: 0.22;
+    --glow-alpha-2: 0.17;
+    --glow-alpha-3: 0.14;
   }
 
   :root[data-theme="dark"] {
-    --canvas-line: rgba(242, 242, 234, 0.06);
-    --canvas-line-strong: rgba(242, 242, 234, 0.10);
+    --canvas-line: rgba(79, 209, 197, 0.14);
+    --canvas-line-strong: rgba(79, 209, 197, 0.26);
+    --glow-alpha-1: 0.17;
+    --glow-alpha-2: 0.13;
+    --glow-alpha-3: 0.11;
   }
 
   .bg-grid {
     background-size: 40px 40px;
-  }
-
-  .section-motif path,
-  .section-motif circle,
-  .section-motif rect {
-    stroke-width: 2;
   }
 }
