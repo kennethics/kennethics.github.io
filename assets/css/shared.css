@@ -126,50 +126,29 @@ body {
   border: 0;
 }
 
-.icon-link-list {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.icon-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  transition: transform var(--ease-standard), background var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
-  text-decoration: none;
+/* ═══════════════════════════════════
+   PHOSPHOR ICONS — sitewide baseline
+   Every icon on the site is a Phosphor "Regular" weight glyph rendered via
+   <i class="ph ph-{name}"></i> (see the CDN <link> in <head>). This single
+   rule gives every icon on the site the same baseline alignment and line-
+   height regardless of where it's dropped in — buttons, links, badges,
+   inline text — so nothing needs per-instance alignment tweaks. Actual
+   size is set per usage-context below (nav/buttons/social/inline) per the
+   4 icon-size tiers; color is intentionally NOT set here so every icon
+   inherits `color` from its parent (per "icons inherit text color unless
+   intentionally accented"). ═══════════════════════════════════ */
+[class^="ph-"],
+[class*=" ph-"] {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: -0.125em;
   flex-shrink: 0;
 }
 
-.icon-link:hover,
-.icon-link:focus-visible {
-  transform: translateY(var(--lift-md));
-  background: var(--card-bg);
-  border-color: rgba(58, 184, 168, 0.3);
-  color: var(--accent-ink);
-}
-
-.icon-link:active {
-  transform: translateY(-1px) scale(0.96);
-}
-
-.icon-link svg {
-  width: 24px;
-  height: 24px;
-  display: block;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-}
+/* NOTE: a dead `.icon-link` / `.icon-link-list` component (unused by any
+   page in this repo — the site actually uses `.hero-logo-link` for its
+   icon-tile buttons, styled below and in index.html) lived here and has
+   been removed as unused CSS. */
 
 .theme-switcher {
   display: flex;
@@ -213,34 +192,39 @@ body {
 
 .theme-toggle-icon {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
   color: var(--text);
   transition: opacity var(--ease-standard), transform var(--ease-standard);
 }
 
-.theme-toggle-icon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+/* Navigation-tier icon size (22px) — see Design Rules. */
+.theme-toggle-icon [class^="ph-"] {
+  font-size: 22px;
 }
 
-.theme-toggle-icon-sun {
+/* Icon shown = the mode you'd SWITCH TO (not the current mode): moon
+   invites switching to dark while light is active; sun invites switching
+   to light while dark is active. */
+.theme-toggle-icon-moon {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
 
-.theme-toggle-icon-moon {
+.theme-toggle-icon-sun {
   opacity: 0;
   transform: rotate(-90deg) scale(0.6);
 }
 
-.theme-toggle[aria-checked="true"] .theme-toggle-icon-sun {
+.theme-toggle[aria-checked="true"] .theme-toggle-icon-moon {
   opacity: 0;
   transform: rotate(90deg) scale(0.6);
 }
 
-.theme-toggle[aria-checked="true"] .theme-toggle-icon-moon {
+.theme-toggle[aria-checked="true"] .theme-toggle-icon-sun {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
@@ -504,11 +488,24 @@ nav.nav-floating.nav-scrolled {
 .oval-contact.active   { background: var(--brown); }
 
 /* ── HAMBURGER ── shown only below the pill-nav breakpoint */
+.nav-mobile-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Hidden by default — this is the mobile-only toggle instance; the desktop
+   instance lives in .nav-brand and is hidden the other way (see the
+   1250px breakpoint below). theme.js already syncs every .theme-toggle
+   on the page, so having two in the DOM needs no JS changes. */
+.nav-mobile-controls .theme-toggle {
+  display: none;
+}
+
 .nav-hamburger {
   display: none;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 5px;
   width: clamp(40px, 10vw, 44px);
   height: clamp(40px, 10vw, 44px);
   cursor: pointer;
@@ -516,32 +513,29 @@ nav.nav-floating.nav-scrolled {
   border: none;
   padding: 6px;
   border-radius: 8px;
+  color: var(--text);
   flex-shrink: 0;
   z-index: 201;
   opacity: 1;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+/* Navigation-tier icon size (22px) — see Design Rules. */
+.nav-hamburger [class^="ph-"] {
+  font-size: 22px;
 }
 
 /* When the drawer is open, each page's existing toggle script already
    sets aria-expanded="true" on this button (no new JS needed). The
    hamburger button's z-index (201) sits above the drawer overlay (199),
-   so without this rule its 3 bars stay visible on top of the drawer's
-   own dedicated close (✕) button — showing two icons at once. Fading
-   the bars out here means only the drawer's ✕ is visible while it's
-   open; pointer-events is also disabled since the ✕ button already
+   so without this rule its icon stays visible on top of the drawer's
+   own dedicated close icon — showing two icons at once. Fading the
+   hamburger out here means only the drawer's close icon is visible while
+   it's open; pointer-events is also disabled since that button already
    handles closing. */
 .nav-hamburger[aria-expanded="true"] {
   opacity: 0;
   pointer-events: none;
-}
-
-.nav-hamburger span {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: var(--text);
-  border-radius: 2px;
-  transition: all 0.25s ease;
 }
 
 /* ── MOBILE DRAWER ── backdrop + floating panel ──
@@ -665,7 +659,6 @@ nav.nav-floating.nav-scrolled {
   height: clamp(40px, 10vw, 44px);
   background: var(--card);
   border: 1px solid var(--border);
-  font-size: 1.4rem;
   cursor: pointer;
   color: var(--muted);
   display: flex;
@@ -674,6 +667,11 @@ nav.nav-floating.nav-scrolled {
   border-radius: 50%;
   z-index: 1;
   transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+/* Navigation-tier icon size (22px) — see Design Rules. */
+.nav-drawer-close [class^="ph-"] {
+  font-size: 22px;
 }
 
 .nav-drawer-close:hover,
@@ -803,6 +801,11 @@ nav.nav-floating.nav-scrolled {
 @media (max-width: 1250px) {
   .nav-links     { display: none !important; }
   .nav-hamburger { display: flex !important; }
+  /* Theme toggle moves from the far-left logo area to sit right next to
+     the hamburger, so both controls that matter on a collapsed nav are
+     within one thumb's reach instead of opposite ends of the bar. */
+  .nav-brand .theme-switcher { display: none; }
+  .nav-mobile-controls .theme-toggle { display: inline-flex; }
 }
 
 /* ── MOBILE ── */
@@ -866,6 +869,22 @@ nav.nav-floating.nav-scrolled {
   border-color: rgba(58, 184, 168, 0.3);
   color: var(--accent-ink);
   transform: translateY(-3px);
+}
+
+/* Buttons-tier icon size, bumped from the standard 20px — back-to-top's
+   arrow was reading too faint at the base size, per feedback. */
+.back-to-top [class^="ph-"] {
+  font-size: 24px;
+}
+
+/* Light mode only: the button's default border/shadow (var(--border) /
+   var(--card-shadow)) are both very low-alpha, so a white circle over the
+   light page background (--bg: #f0eeeb) has weak edge definition. This
+   doesn't touch dark mode, where the same values already read fine
+   against a dark page. */
+:root:not([data-theme="dark"]) .back-to-top {
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 }
 
 /* ═══════════════════════════════════

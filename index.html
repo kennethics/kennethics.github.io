@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="assets/css/shared.css">
   <link rel="stylesheet" href="assets/css/hero-card.css">
   <link rel="stylesheet" href="assets/css/background.css">
+  <!-- Phosphor Icons (Regular weight only, per site icon standard) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
   <script src="assets/js/interactions.js" defer></script>
   <style>
     /* Homepage-only styles. Site-wide styles (variables, theme, nav,
@@ -45,6 +47,7 @@
        HERO
     ═══════════════════════════════════ */
     .hero {
+      position: relative;
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
@@ -162,10 +165,61 @@
       color: var(--accent-ink);
     }
 
-    .hero-logo-link svg {
-      width: 28px;
-      height: 28px;
-      display: block;
+    /* Social-tier icon size (28px) — see Design Rules. Applies sitewide:
+       Hero, Contact, and the recommendations-form LinkedIn badge all use
+       this same value (a Hero-only 32px bump was tried and reverted per
+       feedback — original size preferred). */
+    .hero-logo-link [class^="ph-"] {
+      font-size: 28px;
+    }
+
+    /* ── Hero scroll-down cue: invites visitors to keep scrolling straight
+       to Services. Absolutely positioned against .hero (see position:
+       relative added above), so it holds its spot regardless of hero
+       content height and disappears naturally once the user scrolls past
+       the hero (it's inside .hero, not position:fixed). ── */
+    .hero-scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(12px, 3vw, 28px);
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--ease-fast), border-color var(--ease-fast), transform var(--ease-fast);
+      animation: hero-scroll-cue-bounce 1.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+    }
+    .hero-scroll-cue:hover,
+    .hero-scroll-cue:focus-visible {
+      color: var(--accent-ink);
+      border-color: rgba(58, 184, 168, 0.3);
+    }
+    .hero-scroll-cue [class^="ph-"] { font-size: 20px; }
+
+    /* A snappier drop-and-rebound (not a smooth sine float) so it reads
+       as an actual "bounce" — quick fall, small rebound, brief pause,
+       repeat. */
+    @keyframes hero-scroll-cue-bounce {
+      0%   { transform: translateX(-50%) translateY(0); }
+      25%  { transform: translateX(-50%) translateY(10px); }
+      40%  { transform: translateX(-50%) translateY(0); }
+      55%  { transform: translateX(-50%) translateY(4px); }
+      70%, 100% { transform: translateX(-50%) translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-scroll-cue { animation: none; }
+    }
+    /* Out of the way on short/mobile viewports where it would otherwise
+       sit on top of the CTA row or logo links. */
+    @media (max-width: 768px), (max-height: 700px) {
+      .hero-scroll-cue { display: none; }
     }
 
     /* ── Fade-up: hero entrance animation (plays once on load) ── */
@@ -284,7 +338,6 @@
     }
 
     .featured-card-icon {
-      font-size: 2rem;
       flex-shrink: 0;
       width: 56px;
       height: 56px;
@@ -293,6 +346,20 @@
       justify-content: center;
       background: var(--card);
       border-radius: 14px;
+      color: var(--accent-ink);
+    }
+
+    /* Content-badge icon size (24px) — used for the Robot/Headset/ChartBar
+       category badges in Services, Featured Work, and Projects. Not one of
+       the 4 named UI-icon tiers (Navigation/Buttons/Social/Small inline)
+       since these are illustrative category badges rather than functional
+       controls, but kept to a single fixed size across every instance for
+       the same reason: one consistent icon language sitewide. (A
+       Services-only 27px bump was tried and reverted per feedback —
+       original size preferred across all three.) */
+    .featured-card-icon [class^="ph-"],
+    .project-icon [class^="ph-"] {
+      font-size: 24px;
     }
 
     .featured-card-body h3 {
@@ -324,8 +391,20 @@
       font-weight: 600;
       color: var(--accent-ink);
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .text-link:hover { text-decoration: underline; }
+
+    /* Small-inline icon size (18px) — see Design Rules. Same directional
+       hover nudge used on .submit-btn's arrow below, so every "arrow"
+       icon on the site moves the same way on hover. */
+    .text-link [class^="ph-"] {
+      font-size: 18px;
+      transition: transform var(--ease-fast);
+    }
+    .text-link:hover [class^="ph-"] { transform: translateX(3px); }
 
     .home-quote {
       position: relative;
@@ -493,6 +572,8 @@
       align-items: center;
       gap: 4px;
     }
+    /* Small-inline icon size (18px) — see Design Rules. */
+    .location-tag [class^="ph-"] { font-size: 18px; }
     .work-type {
       display: inline-flex;
       align-items: center;
@@ -609,8 +690,6 @@
       height: 34px;
       background: rgba(58,184,168,0.12);
       color: var(--teal-ink);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
       border-radius: 10px;
       text-decoration: none;
       flex-shrink: 0;
@@ -620,8 +699,9 @@
       background: rgba(58,184,168,0.2);
       transform: translateY(-1px);
     }
-    .workflow-repo-button span {
-      line-height: 1;
+    /* Buttons-tier icon size (20px) — see Design Rules. */
+    .workflow-repo-button [class^="ph-"] {
+      font-size: 20px;
     }
     @media (max-width: 480px) {
       .workflow-item {
@@ -652,6 +732,12 @@
       box-shadow:0 8px 20px rgba(0,0,0,0.08);
     }
 
+    /* Substack/X/Threads keep their official brand SVG shapes (Phosphor has
+       no Substack mark, and its only X/Twitter glyph is the old bird — see
+       project notes), but are recolored to the site's own palette instead
+       of each platform's brand color, so the three read as one consistent
+       family with every other icon tile on the site (same idea as
+       .hero-logo-link: neutral surface, text-color icon, accent on hover). */
     .platform-icon-wrap {
       width: 52px;
       height: 52px;
@@ -660,12 +746,19 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 12px;
+      background: var(--card);
+      color: var(--text);
+      transition: background var(--ease-fast), color var(--ease-fast);
     }
-    .platform-icon-wrap svg { width: 30px; height: 30px; }
-
-    .icon-substack { background: var(--orange); }
-    .icon-x        { background: #1a1a18; }
-    .icon-threads  { background: #1a1a18; }
+    .platform-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+    .platform-card:hover .platform-icon-wrap {
+      background: rgba(58, 184, 168, 0.12);
+      color: var(--accent-ink);
+    }
 
     .platform-name { font-family:'DM Serif Display',serif; font-size:1.1rem; margin-bottom:6px; }
     .platform-desc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
@@ -832,9 +925,19 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(58,184,168,0.3);
     }
+    /* Small-inline icon size (18px) — same directional hover nudge as
+       .text-link's arrow above, so every arrow icon on the site behaves
+       identically. */
+    .submit-btn [class^="ph-"] {
+      font-size: 18px;
+      transition: transform var(--ease-fast);
+    }
+    .submit-btn:hover [class^="ph-"] { transform: translate(2px, -2px); }
 
     .success-msg {
       display: none;
+      align-items: flex-start;
+      gap: 10px;
       background: rgba(142,186,92,0.12);
       border: 1px solid rgba(142,186,92,0.3);
       border-radius: 12px;
@@ -843,6 +946,15 @@
       color: #4a7a10;
       font-size: 0.95rem;
       line-height: 1.6;
+    }
+    /* Small-inline icon size (18px), nudged down to sit on the first line
+       of text rather than vertically centered against the whole block.
+       (JS sets this element's `display` to `flex` when shown — see the
+       script near the recommendation form — so this row-layout applies
+       whenever it's visible.) */
+    .success-msg [class^="ph-"] {
+      font-size: 18px;
+      margin-top: 3px;
     }
 
     .divider {
@@ -902,6 +1014,8 @@
 
     .error-msg {
       display: none;
+      align-items: flex-start;
+      gap: 10px;
       background: rgba(232,146,74,0.12);
       border: 1px solid rgba(232,146,74,0.3);
       border-radius: 12px;
@@ -911,12 +1025,18 @@
       font-size: 0.9rem;
       line-height: 1.6;
     }
+    /* Small-inline icon size (18px) — see .success-msg above. */
+    .error-msg [class^="ph-"] {
+      font-size: 18px;
+      margin-top: 3px;
+    }
 
     .submit-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
     }
+    .submit-btn:disabled [class^="ph-"] { display: none; }
   
     /* ── Contact section ── */
     /* .hero-logo-link(s) reuses the homepage hero's icon-button styles
@@ -998,22 +1118,10 @@
     <div class="theme-switcher">
       <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" title="Toggle dark mode">
         <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2"/>
-            <path d="M12 20v2"/>
-            <path d="m4.93 4.93 1.41 1.41"/>
-            <path d="m17.66 17.66 1.41 1.41"/>
-            <path d="M2 12h2"/>
-            <path d="M20 12h2"/>
-            <path d="m6.34 17.66-1.41 1.41"/>
-            <path d="m19.07 4.93-1.41 1.41"/>
-          </svg>
+          <i class="ph ph-sun"></i>
         </span>
         <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-          </svg>
+          <i class="ph ph-moon"></i>
         </span>
       </button>
     </div>
@@ -1027,14 +1135,24 @@
     <li><a class="oval-btn oval-recs" href="#recommendations">Recommendations</a></li>
     <li><a class="oval-btn oval-contact" href="#contact">Contact</a></li>
   </ul>
-  <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-mobile-controls">
+    <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
+        <i class="ph ph-sun"></i>
+      </span>
+      <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
+        <i class="ph ph-moon"></i>
+      </span>
+    </button>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+      <i class="ph ph-list" aria-hidden="true"></i>
+    </button>
+  </div>
 </nav>
 
 <!-- Full-screen drawer -->
 <div class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Site navigation" aria-hidden="true">
-  <button class="nav-drawer-close" aria-label="Close menu">✕</button>
+  <button class="nav-drawer-close" aria-label="Close menu"><i class="ph ph-x" aria-hidden="true"></i></button>
   <div class="nav-drawer-panel">
     <a href="#services">Services</a>
     <a href="#about">About</a>
@@ -1130,23 +1248,22 @@
       <!-- Gmail + LinkedIn logos only -->
       <div class="hero-logo-links fade-up">
 
-<!-- Email: Lucide "mail" icon -->
+<!-- Email -->
       <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-          <rect x="2" y="4" width="20" height="16" rx="2" />
-        </svg>
+        <i class="ph ph-envelope-simple" aria-hidden="true"></i>
       </a>
 
-      <!-- LinkedIn: brand logo (fill uses currentColor, so it still tracks var(--text)/var(--accent) like the rest of the set) -->
+      <!-- LinkedIn -->
       <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-        <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
-        </svg>
+        <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
       </a>
 
       </div>
     </div>
+
+    <a class="hero-scroll-cue" href="#services" aria-label="Scroll to services">
+      <i class="ph ph-arrow-down" aria-hidden="true"></i>
+    </a>
   </div>
 </main>
 
@@ -1170,7 +1287,7 @@
   <!-- Business Process Automation -->
   <div class="card fade-in">
     <div class="featured-card" style="box-shadow:none;border:none;padding:0;">
-      <div class="featured-card-icon icon-teal" aria-hidden="true">🤖</div>
+      <div class="featured-card-icon icon-teal" aria-hidden="true"><i class="ph ph-robot"></i></div>
       <div class="featured-card-body">
         <h3>Business Process Automation</h3>
         <div class="featured-tag-row">
@@ -1189,7 +1306,7 @@
   <!-- Technical Support -->
   <div class="card fade-in">
     <div class="featured-card" style="box-shadow:none;border:none;padding:0;">
-      <div class="featured-card-icon icon-orange" aria-hidden="true">🎧</div>
+      <div class="featured-card-icon icon-orange" aria-hidden="true"><i class="ph ph-headset"></i></div>
       <div class="featured-card-body">
         <h3>Technical &amp; Admin Support</h3>
         <div class="featured-tag-row">
@@ -1207,7 +1324,7 @@
   <!-- Business Analysis -->
   <div class="card fade-in">
     <div class="featured-card" style="box-shadow:none;border:none;padding:0;">
-      <div class="featured-card-icon icon-gold" aria-hidden="true">📊</div>
+      <div class="featured-card-icon icon-gold" aria-hidden="true"><i class="ph ph-chart-bar"></i></div>
       <div class="featured-card-body">
         <h3>Business Analysis</h3>
         <div class="featured-tag-row">
@@ -1236,7 +1353,7 @@
     <div class="section-eyebrow fade-in">Featured Work</div>
     <h2 id="featured-work-heading" class="fade-in">AI Automation</h2>
     <div class="featured-card fade-in">
-      <div class="featured-card-icon" aria-hidden="true">🤖</div>
+      <div class="featured-card-icon" aria-hidden="true"><i class="ph ph-robot"></i></div>
       <div class="featured-card-body">
         <h3>Agentic Sales Lead Generation & AI-Powered Cold Outreach</h3>
         <div class="featured-tag-row">
@@ -1258,7 +1375,7 @@
   <span class="case-label">Outcome</span>
   <p>Reduced manual prospecting by 90%, enabled personalized outreach at scale, and significantly improved sales efficiency by automating repetitive lead generation and email outreach tasks</p>
 </div>
-        <a class="text-link" href="#projects">See all projects →</a>
+        <a class="text-link" href="#projects">See all projects <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
   </div>
@@ -1275,7 +1392,7 @@
 </p>
       <footer>&mdash; Alex Hubert</footer>
     </blockquote>
-    <a class="text-link" href="#recommendations">Read more recommendations →</a>
+    <a class="text-link" href="#recommendations">Read more recommendations <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
   </div>
 </section>
 
@@ -1416,7 +1533,7 @@
       <div>
         <div class="card-title">AI & Automation Specialist</div>
         <div class="card-subtitle">Freelance Projects</div>
-        <div class="location-tag">📍 Remote</div>
+        <div class="location-tag"><i class="ph ph-map-pin" aria-hidden="true"></i> Remote</div>
         <span class="work-type work-freelance">Freelance</span>
         <div class="card-impact">Streamline business operations and reduce manual work by 50%</div>
       </div>
@@ -1452,7 +1569,7 @@
         <div>
           <div class="card-title">Sales and Marketing Specialist</div>
           <div class="card-subtitle">Sharpe Two</div>
-          <div class="location-tag">📍 United Arab Emirates</div>
+          <div class="location-tag"><i class="ph ph-map-pin" aria-hidden="true"></i> United Arab Emirates</div>
           <span class="work-type work-freelance">Freelance</span>
           <div class="card-impact">Bridge gap between business operations and engineering</div>
         </div>
@@ -1491,7 +1608,7 @@
         <div>
           <div class="card-title">Account Specialist</div>
           <div class="card-subtitle">TDCX MY · Supporting Stripe Merchants</div>
-          <div class="location-tag">📍 Kuala Lumpur, Malaysia</div>
+          <div class="location-tag"><i class="ph ph-map-pin" aria-hidden="true"></i> Kuala Lumpur, Malaysia</div>
           <span class="work-type work-fulltime">Full-time</span>
           <div class="card-impact">Well-rounded specialist focus on first contact resolution and providing high-quality customer experience</div>
         </div>
@@ -1527,7 +1644,7 @@
         <div>
           <div class="card-title">Sales Advisor</div>
           <div class="card-subtitle">Concentrix</div>
-          <div class="location-tag">📍 Makati, Philippines</div>
+          <div class="location-tag"><i class="ph ph-map-pin" aria-hidden="true"></i> Makati, Philippines</div>
           <span class="work-type work-fulltime">Full-time</span>
           <div class="card-impact">B2B and B2C specialize in negotiation and upselling of products and services</div>
         </div>
@@ -1562,7 +1679,7 @@
         <div>
           <div class="card-title">Credit Risk Analyst</div>
           <div class="card-subtitle">Chinabanking Corp.</div>
-          <div class="location-tag">📍 Makati, Philippines</div>
+          <div class="location-tag"><i class="ph ph-map-pin" aria-hidden="true"></i> Makati, Philippines</div>
           <span class="work-type work-fulltime">Full-time</span>
           <div class="card-impact">Conducted credit risk assessments using analytics, banking tools, and excel</div>
         </div>
@@ -1613,7 +1730,7 @@
 
   <!-- AI Workflow Automation -->
   <div class="card fade-in">
-    <div class="project-icon icon-teal">🤖</div>
+    <div class="project-icon icon-teal"><i class="ph ph-robot"></i></div>
     <div class="card-meta">
       <div>
         <h3 class="card-title">AI Workflow Automations</h3>
@@ -1657,7 +1774,7 @@
           <div class="workflow-desc">This workflow automatically discovers qualified prospects, enriches lead data, generates personalized outreach emails, and sends them at scale.</div>
         </div>
         <a class="workflow-repo-button" href="https://github.com/kennethics/Sales-Lead-Generation" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Sales Lead Generation repository" title="Open GitHub repository">
-          <span aria-hidden="true">&#129302;</span>
+          <i class="ph ph-github-logo" aria-hidden="true"></i>
         </a>
       </div>
       <div class="workflow-item">
@@ -1666,7 +1783,7 @@
           <div class="workflow-desc">Automated cold email outreach system built with n8n, Google Sheets, Gmail, and dynamic email templates.</div>
         </div>
         <a class="workflow-repo-button" href="https://github.com/kennethics/For-FlowMingo---Cold-Email-Automation" target="_blank" rel="noopener noreferrer" aria-label="Open AI Cold Email Automation repository" title="Open GitHub repository">
-          <span aria-hidden="true">&#129302;</span>
+          <i class="ph ph-github-logo" aria-hidden="true"></i>
         </a>
       </div>
       <div class="workflow-item">
@@ -1675,7 +1792,7 @@
           <div class="workflow-desc">An AI-powered email assistant built in n8n that can read emails, send messages, and maintain conversation memory.</div>
         </div>
         <a class="workflow-repo-button" href="https://github.com/kennethics/Agentic-Email-Manager" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Email Manager repository" title="Open GitHub repository">
-          <span aria-hidden="true">&#129302;</span>
+          <i class="ph ph-github-logo" aria-hidden="true"></i>
         </a>
       </div>
       <div class="workflow-item">
@@ -1684,7 +1801,7 @@
           <div class="workflow-desc">An AI-powered job search and application assistant built with n8n that automatically discovers jobs, finds hiring contacts, drafts tailored applications, generates customized resumes, and keeps a complete application tracking system.</div>
         </div>
         <a class="workflow-repo-button" href="https://github.com/kennethics/kenneth-job-application-automation" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Job Application Automation repository" title="Open GitHub repository">
-          <span aria-hidden="true">&#129302;</span>
+          <i class="ph ph-github-logo" aria-hidden="true"></i>
         </a>
       </div>
       <div class="workflow-item">
@@ -1693,7 +1810,7 @@
           <div class="workflow-desc">An AI-powered startup intelligence workflow that researches companies and automatically stores structured business information into Google Sheets.</div>
         </div>
         <a class="workflow-repo-button" href="https://github.com/kennethics/startup-company-research-agent" target="_blank" rel="noopener noreferrer" aria-label="Open Agentic Researcher repository" title="Open GitHub repository">
-          <span aria-hidden="true">&#129302;</span>
+          <i class="ph ph-github-logo" aria-hidden="true"></i>
         </a>
       </div>
     </div>
@@ -1701,7 +1818,7 @@
 
   <!-- Data Analysis Practice -->
   <div class="card fade-in">
-    <div class="project-icon icon-orange">📊</div>
+    <div class="project-icon icon-orange"><i class="ph ph-chart-bar"></i></div>
     <div class="card-meta">
       <div>
         <h3 class="card-title">Data Analysis Practice</h3>
@@ -1757,9 +1874,9 @@
 
     <!-- Substack -->
     <a class="platform-card" href="https://substack.com/@kennethsoriano" target="_blank">
-      <div class="platform-icon-wrap icon-substack">
+      <div class="platform-icon-wrap">
         <!-- Official Substack S logo -->
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
           <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
         </svg>
       </div>
@@ -1770,9 +1887,9 @@
 
     <!-- X (Twitter) -->
     <a class="platform-card" href="https://x.com/nethxkensoriano" target="_blank">
-      <div class="platform-icon-wrap icon-x">
+      <div class="platform-icon-wrap">
         <!-- Official X logo -->
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
         </svg>
       </div>
@@ -1783,9 +1900,9 @@
 
     <!-- Threads -->
     <a class="platform-card" href="https://www.threads.com/@keenneeth13" target="_blank">
-      <div class="platform-icon-wrap icon-threads">
+      <div class="platform-icon-wrap">
         <!-- Official Threads logo -->
-        <svg viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" fill="white">
+        <svg viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
           <path d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.5619 44.745C97.4484 44.7443 97.3355 44.7443 97.222 44.7443C82.2364 44.7443 69.7731 51.1409 62.102 62.7807L75.881 72.2328C81.6116 63.5383 90.6052 61.6848 97.2286 61.6848C97.3051 61.6848 97.3819 61.6848 97.4576 61.6855C105.707 61.7381 111.932 64.1366 115.961 68.814C118.893 72.2193 120.854 76.925 121.825 82.8638C114.511 81.6207 106.601 81.2385 98.145 81.7233C74.3247 83.0954 59.0111 96.9879 60.0396 116.292C60.5615 126.084 65.4397 134.508 73.775 140.011C80.8224 144.663 89.899 146.938 99.3323 146.423C111.79 145.74 121.563 140.987 128.381 132.296C133.559 125.696 136.834 117.143 138.28 106.366C144.217 109.949 148.617 114.664 151.047 120.332C155.179 129.967 155.42 145.8 142.501 158.708C131.182 170.016 117.576 174.908 97.0135 175.059C74.2042 174.89 56.9538 167.575 45.7381 153.317C35.2355 139.966 29.8077 120.682 29.6052 96C29.8077 71.3178 35.2355 52.0336 45.7381 38.6827C56.9538 24.4249 74.2039 17.11 97.0132 16.9405C119.988 17.1113 137.539 24.4614 149.184 38.788C154.894 45.8136 159.199 54.6488 162.037 64.9503L178.184 60.6422C174.744 47.9622 169.331 37.0357 161.965 27.974C147.036 9.60668 125.202 0.195148 97.0695 0H96.9569C68.8816 0.19447 47.2921 9.6418 32.7883 28.0793C19.8819 44.4864 13.2244 67.3157 13.0007 95.9325L13 96L13.0007 96.0675C13.2244 124.684 19.8819 147.514 32.7883 163.921C47.2921 182.358 68.8816 191.806 96.9569 192H97.0695C122.03 191.827 139.624 185.292 154.118 170.811C173.081 151.866 172.51 128.119 166.26 113.541C161.776 103.087 153.227 94.5962 141.537 88.9883ZM98.4405 129.507C88.0005 130.095 77.1544 125.409 76.6196 115.372C76.2232 107.93 81.9158 99.626 99.0812 98.6368C101.047 98.5234 102.976 98.468 104.871 98.468C111.106 98.468 116.939 99.0737 122.242 100.233C120.264 124.935 108.662 128.946 98.4405 129.507Z"/>
         </svg>
       </div>
@@ -1893,23 +2010,26 @@
         <div class="form-group full">
           <a class="linkedin-cta-wrap" href="https://linkedin.com/in/kennethsorianova" target="_blank" rel="noopener" aria-label="Continue on LinkedIn">
             <span class="hero-logo-link" aria-hidden="true">
-              <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
-              </svg>
+              <i class="ph ph-linkedin-logo"></i>
             </span>
             <span class="linkedin-cta-text">Continue on LinkedIn</span>
           </a>
         </div>
         <div class="form-group full">
-          <button type="submit" class="submit-btn">Send Recommendation ↗</button>
+          <button type="submit" class="submit-btn">
+            <span class="submit-btn-label">Send Recommendation</span>
+            <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+          </button>
         </div>
       </form>
       <div class="success-msg" id="success-msg">
-        ✅ Thank you! Your recommendation has been saved. I review every submission personally — check your inbox for a quick thank-you note, and it may appear here
+        <i class="ph ph-check-circle" aria-hidden="true"></i>
+        <span>Thank you! Your recommendation has been saved. I review every submission personally — check your inbox for a quick thank-you note, and it may appear here</span>
       </div>
       <div class="error-msg" id="error-msg">
-        ⚠️ Something went wrong sending your recommendation. Please try again in a moment, or email it directly to
-        <a href="mailto:nethxkensoriano@gmail.com" style="color:inherit;text-decoration:underline;">nethxkensoriano@gmail.com</a>.
+        <i class="ph ph-warning-circle" aria-hidden="true"></i>
+        <span id="error-msg-text">Something went wrong sending your recommendation. Please try again in a moment, or email it directly to
+        <a href="mailto:nethxkensoriano@gmail.com" style="color:inherit;text-decoration:underline;">nethxkensoriano@gmail.com</a>.</span>
       </div>
     </div>
   </div>
@@ -1952,38 +2072,25 @@
   </div>
 
   <div class="hero-logo-links fade-in">
-    <!-- Email: Lucide "mail" icon -->
+    <!-- Email -->
     <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-      </svg>
+      <i class="ph ph-envelope-simple" aria-hidden="true"></i>
     </a>
-    <!-- LinkedIn: brand logo (fill uses currentColor, so it still tracks var(--text)/var(--accent) like the rest of the set) -->
+    <!-- LinkedIn -->
     <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
-      <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z" />
-      </svg>
+      <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
     </a>
-    <!-- WhatsApp: brand logo (fill uses currentColor, so it still tracks var(--text)/var(--accent) like the rest of the set) -->
+    <!-- WhatsApp -->
     <a class="hero-logo-link" href="https://wa.me/60146630493" target="_blank" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
-      <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z" />
-      </svg>
+      <i class="ph ph-whatsapp-logo" aria-hidden="true"></i>
     </a>
-    <!-- GitHub: Lucide "code" (no brand logo available) -->
+    <!-- GitHub -->
     <a class="hero-logo-link" href="https://github.com/kennethics" target="_blank" title="GitHub" aria-label="View GitHub profile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="m16 18 6-6-6-6" />
-        <path d="m8 6-6 6 6 6" />
-      </svg>
+      <i class="ph ph-github-logo" aria-hidden="true"></i>
     </a>
-    <!-- Location: Lucide "map-pin" -->
+    <!-- Location -->
     <a class="hero-logo-link" id="location-link" href="https://www.google.com/maps/search/Klang,+Selangor,+Malaysia" target="_blank" title="My Location" aria-label="Find my current location on Google Maps">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-        <circle cx="12" cy="10" r="3" />
-      </svg>
+      <i class="ph ph-map-pin" aria-hidden="true"></i>
     </a>
   </div>
 </section>
@@ -2046,6 +2153,7 @@
     const honeypotEl = document.getElementById('rec-hp');
     const submitBtn = document.querySelector('#rec-form .submit-btn');
     const errorMsg = document.getElementById('error-msg');
+    const errorMsgText = document.getElementById('error-msg-text');
 
     const name = nameEl.value.trim();
     const company = companyEl.value.trim();
@@ -2072,13 +2180,13 @@
     }
 
     if (APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) {
-      errorMsg.textContent = '⚠️ The recommendation backend isn\'t connected yet. (Dev note: paste the Apps Script Web App URL into APPS_SCRIPT_URL.)';
-      errorMsg.style.display = 'block';
+      errorMsgText.textContent = 'The recommendation backend isn\'t connected yet. (Dev note: paste the Apps Script Web App URL into APPS_SCRIPT_URL.)';
+      errorMsg.style.display = 'flex';
       return;
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    submitBtn.querySelector('.submit-btn-label').textContent = 'Sending…';
 
     // Content-Type "text/plain" avoids a CORS preflight (OPTIONS) request,
     // which Apps Script Web Apps don't handle. The script parses JSON manually.
@@ -2107,16 +2215,16 @@
       })
       .catch(function (err) {
         console.error('Recommendation submission failed:', err);
-        errorMsg.style.display = 'block';
+        errorMsg.style.display = 'flex';
       })
       .finally(function () {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Recommendation ↗';
+        submitBtn.querySelector('.submit-btn-label').textContent = 'Send Recommendation';
       });
   }
 
   function showSuccess() {
-    document.getElementById('success-msg').style.display = 'block';
+    document.getElementById('success-msg').style.display = 'flex';
   }
 
   function resetForm() {
@@ -2322,10 +2430,7 @@
 
 <!-- Back to top -->
 <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <line x1="12" y1="19" x2="12" y2="5"></line>
-    <polyline points="5 12 12 5 19 12"></polyline>
-  </svg>
+  <i class="ph ph-arrow-up" aria-hidden="true"></i>
 </button>
 
 </body>
