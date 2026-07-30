@@ -137,8 +137,7 @@ body {
    4 icon-size tiers; color is intentionally NOT set here so every icon
    inherits `color` from its parent (per "icons inherit text color unless
    intentionally accented"). ═══════════════════════════════════ */
-[class^="ph-"],
-[class*=" ph-"] {
+.ph {
   display: inline-block;
   line-height: 1;
   vertical-align: -0.125em;
@@ -202,7 +201,7 @@ body {
 }
 
 /* Navigation-tier icon size (22px) — see Design Rules. */
-.theme-toggle-icon [class^="ph-"] {
+.theme-toggle-icon .ph {
   font-size: 22px;
 }
 
@@ -386,8 +385,9 @@ nav.nav-floating.nav-scrolled {
 
 /* Animated role ticker — previously duplicated inside every page's own
    embedded <style> block; centralized here since it's part of the shared
-   nav-brand component. Decorative, so it's the first thing to go on very
-   small phones (see media query) rather than letting it force overflow. */
+   nav-brand component. Always visible at every screen width — see the
+   420px media query below for how it avoids overflow on small phones
+   (wraps to its own line rather than disappearing). */
 .nav-roles {
   overflow: hidden;
   height: 1.2em;
@@ -521,7 +521,7 @@ nav.nav-floating.nav-scrolled {
 }
 
 /* Navigation-tier icon size (22px) — see Design Rules. */
-.nav-hamburger [class^="ph-"] {
+.nav-hamburger .ph {
   font-size: 22px;
 }
 
@@ -670,7 +670,7 @@ nav.nav-floating.nav-scrolled {
 }
 
 /* Navigation-tier icon size (22px) — see Design Rules. */
-.nav-drawer-close [class^="ph-"] {
+.nav-drawer-close .ph {
   font-size: 22px;
 }
 
@@ -820,11 +820,16 @@ nav.nav-floating.nav-scrolled {
   .card { padding: 20px; }
 }
 
-/* Smallest phones: the animated role ticker is decorative, so it's the
-   first thing to drop rather than letting it force any overflow next to
-   the logo, name, and theme toggle. */
+/* Small phones: the logo + name + role ticker no longer fit on one line,
+   so the ticker wraps to its own line underneath instead of disappearing
+   (it used to just be display:none here — now it's always visible,
+   regardless of screen width). */
 @media (max-width: 420px) {
-  .nav-roles { display: none; }
+  .nav-brand-link { flex-wrap: wrap; row-gap: 2px; }
+  .nav-roles {
+    flex-basis: 100%;
+    margin-left: calc(clamp(18px, 4vw, 22px) + 10px); /* aligns under the name, past the logo icon */
+  }
 }
 
 
@@ -872,9 +877,24 @@ nav.nav-floating.nav-scrolled {
 }
 
 /* Buttons-tier icon size, bumped from the standard 20px — back-to-top's
-   arrow was reading too faint at the base size, per feedback. */
-.back-to-top [class^="ph-"] {
+   arrow was reading too faint at the base size, per feedback. Bounce
+   lives on the icon (not the button) so it doesn't fight the button's
+   own transform-based show/hide slide-in and hover-lift. Bounces
+   upward — mirrors the arrow's direction, opposite of the hero
+   scroll-cue's downward bounce. */
+.back-to-top .ph {
   font-size: 24px;
+  animation: back-to-top-bounce 1.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+@keyframes back-to-top-bounce {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-6px); }
+  40%  { transform: translateY(0); }
+  55%  { transform: translateY(-3px); }
+  70%, 100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top .ph { animation: none; }
 }
 
 /* Light mode only: the button's default border/shadow (var(--border) /

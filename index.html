@@ -47,7 +47,6 @@
        HERO
     ═══════════════════════════════════ */
     .hero {
-      position: relative;
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
@@ -144,6 +143,15 @@
       margin-top: 30px;
     }
 
+    /* Scroll-to-services cue: its own row directly under email/LinkedIn,
+       same left alignment as the row above it (matches on desktop; both
+       switch to centered together on mobile via the existing
+       .hero-logo-links centering media query, extended below). */
+    .hero-scroll-cue-row {
+      display: flex;
+      margin-top: 14px;
+    }
+
     .hero-logo-link {
       display: inline-flex;
       align-items: center;
@@ -169,57 +177,30 @@
        Hero, Contact, and the recommendations-form LinkedIn badge all use
        this same value (a Hero-only 32px bump was tried and reverted per
        feedback — original size preferred). */
-    .hero-logo-link [class^="ph-"] {
+    .hero-logo-link .ph {
       font-size: 28px;
     }
 
-    /* ── Hero scroll-down cue: invites visitors to keep scrolling straight
-       to Services. Absolutely positioned against .hero (see position:
-       relative added above), so it holds its spot regardless of hero
-       content height and disappears naturally once the user scrolls past
-       the hero (it's inside .hero, not position:fixed). ── */
-    .hero-scroll-cue {
-      position: absolute;
-      left: 50%;
-      bottom: clamp(12px, 3vw, 28px);
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      text-decoration: none;
-      transition: color var(--ease-fast), border-color var(--ease-fast), transform var(--ease-fast);
+    /* ── Scroll-to-services cue: now lives inside .hero-logo-links as a
+       third tile (same class as email/LinkedIn), so it automatically
+       gets the same box size, icon size, hover treatment, and responsive
+       wrap/center behavior as those two — always visible at every screen
+       size, no separate positioning or breakpoint rules needed. Only the
+       bounce is unique to it, and it's applied to the icon itself (not
+       the tile) so it doesn't fight .hero-logo-link's hover-lift
+       transform. ── */
+    .hero-scroll-cue .ph {
       animation: hero-scroll-cue-bounce 1.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
     }
-    .hero-scroll-cue:hover,
-    .hero-scroll-cue:focus-visible {
-      color: var(--accent-ink);
-      border-color: rgba(58, 184, 168, 0.3);
-    }
-    .hero-scroll-cue [class^="ph-"] { font-size: 20px; }
-
-    /* A snappier drop-and-rebound (not a smooth sine float) so it reads
-       as an actual "bounce" — quick fall, small rebound, brief pause,
-       repeat. */
     @keyframes hero-scroll-cue-bounce {
-      0%   { transform: translateX(-50%) translateY(0); }
-      25%  { transform: translateX(-50%) translateY(10px); }
-      40%  { transform: translateX(-50%) translateY(0); }
-      55%  { transform: translateX(-50%) translateY(4px); }
-      70%, 100% { transform: translateX(-50%) translateY(0); }
+      0%   { transform: translateY(0); }
+      25%  { transform: translateY(7px); }
+      40%  { transform: translateY(0); }
+      55%  { transform: translateY(3px); }
+      70%, 100% { transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero-scroll-cue { animation: none; }
-    }
-    /* Out of the way on short/mobile viewports where it would otherwise
-       sit on top of the CTA row or logo links. */
-    @media (max-width: 768px), (max-height: 700px) {
-      .hero-scroll-cue { display: none; }
+      .hero-scroll-cue .ph { animation: none; }
     }
 
     /* ── Fade-up: hero entrance animation (plays once on load) ── */
@@ -357,8 +338,8 @@
        the same reason: one consistent icon language sitewide. (A
        Services-only 27px bump was tried and reverted per feedback —
        original size preferred across all three.) */
-    .featured-card-icon [class^="ph-"],
-    .project-icon [class^="ph-"] {
+    .featured-card-icon .ph,
+    .project-icon .ph {
       font-size: 24px;
     }
 
@@ -400,11 +381,11 @@
     /* Small-inline icon size (18px) — see Design Rules. Same directional
        hover nudge used on .submit-btn's arrow below, so every "arrow"
        icon on the site moves the same way on hover. */
-    .text-link [class^="ph-"] {
+    .text-link .ph {
       font-size: 18px;
       transition: transform var(--ease-fast);
     }
-    .text-link:hover [class^="ph-"] { transform: translateX(3px); }
+    .text-link:hover .ph { transform: translateX(3px); }
 
     .home-quote {
       position: relative;
@@ -451,6 +432,7 @@
       .hero-photo-wrap { width: min(100%, 280px); }
       .hero-bio { max-width: 100%; }
       .hero-logo-links { justify-content: center; }
+      .hero-scroll-cue-row { justify-content: center; }
       .hero-skills { justify-content: center; }
       .hero-subhead { max-width: 100%; }
       .hero-credibility { justify-content: center; }
@@ -573,7 +555,7 @@
       gap: 4px;
     }
     /* Small-inline icon size (18px) — see Design Rules. */
-    .location-tag [class^="ph-"] { font-size: 18px; }
+    .location-tag .ph { font-size: 18px; }
     .work-type {
       display: inline-flex;
       align-items: center;
@@ -700,7 +682,7 @@
       transform: translateY(-1px);
     }
     /* Buttons-tier icon size (20px) — see Design Rules. */
-    .workflow-repo-button [class^="ph-"] {
+    .workflow-repo-button .ph {
       font-size: 20px;
     }
     @media (max-width: 480px) {
@@ -928,11 +910,11 @@
     /* Small-inline icon size (18px) — same directional hover nudge as
        .text-link's arrow above, so every arrow icon on the site behaves
        identically. */
-    .submit-btn [class^="ph-"] {
+    .submit-btn .ph {
       font-size: 18px;
       transition: transform var(--ease-fast);
     }
-    .submit-btn:hover [class^="ph-"] { transform: translate(2px, -2px); }
+    .submit-btn:hover .ph { transform: translate(2px, -2px); }
 
     .success-msg {
       display: none;
@@ -952,7 +934,7 @@
        (JS sets this element's `display` to `flex` when shown — see the
        script near the recommendation form — so this row-layout applies
        whenever it's visible.) */
-    .success-msg [class^="ph-"] {
+    .success-msg .ph {
       font-size: 18px;
       margin-top: 3px;
     }
@@ -1026,7 +1008,7 @@
       line-height: 1.6;
     }
     /* Small-inline icon size (18px) — see .success-msg above. */
-    .error-msg [class^="ph-"] {
+    .error-msg .ph {
       font-size: 18px;
       margin-top: 3px;
     }
@@ -1036,7 +1018,7 @@
       cursor: not-allowed;
       transform: none !important;
     }
-    .submit-btn:disabled [class^="ph-"] { display: none; }
+    .submit-btn:disabled .ph { display: none; }
   
     /* ── Contact section ── */
     /* .hero-logo-link(s) reuses the homepage hero's icon-button styles
@@ -1259,11 +1241,14 @@
       </a>
 
       </div>
-    </div>
 
-    <a class="hero-scroll-cue" href="#services" aria-label="Scroll to services">
-      <i class="ph ph-arrow-down" aria-hidden="true"></i>
-    </a>
+      <!-- Scroll to services — its own row, directly under email/LinkedIn -->
+      <div class="hero-scroll-cue-row fade-up">
+        <a class="hero-logo-link hero-scroll-cue" href="#services" title="Jump to Services" aria-label="Scroll to services">
+          <i class="ph ph-arrow-down" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
   </div>
 </main>
 
