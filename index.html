@@ -152,24 +152,25 @@
       margin-top: 14px;
     }
 
+    /* ── Icon links: NO-BOX treatment ──
+       Background/border tile removed sitewide per feedback — icons now
+       sit directly on the page background. Tap target size (64px) is
+       PRESERVED (invisible hit area) so mobile tap accuracy doesn't
+       regress even though the visual box is gone. Hover feedback is a
+       color shift + lift only (no more background/border-color change). */
     .hero-logo-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 64px;
       height: 64px;
-      border-radius: 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
       color: var(--text);
-      transition: transform var(--ease-standard), background var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
+      transition: transform var(--ease-standard), color var(--ease-fast);
       text-decoration: none;
     }
 
     .hero-logo-link:hover {
       transform: translateY(var(--lift-md));
-      background: var(--card-bg);
-      border-color: rgba(58, 184, 168, 0.3);
       color: var(--accent-ink);
     }
 
@@ -181,15 +182,15 @@
       font-size: 28px;
     }
 
-    /* ── Scroll-to-services cue: now lives inside .hero-logo-links as a
-       third tile (same class as email/LinkedIn), so it automatically
-       gets the same box size, icon size, hover treatment, and responsive
-       wrap/center behavior as those two — always visible at every screen
-       size, no separate positioning or breakpoint rules needed. Only the
-       bounce is unique to it, and it's applied to the icon itself (not
-       the tile) so it doesn't fight .hero-logo-link's hover-lift
-       transform. ── */
-    .hero-scroll-cue .ph {
+    /* ── Scroll-to-services cue: swapped from a Phosphor arrow-down icon
+       to a small bouncing 👇 emoji per feedback. Still lives inside
+       .hero-logo-links as a third tile, so it keeps the same tap target,
+       hover-lift, and responsive wrap/center behavior as the other two —
+       only the glyph itself (and its own bounce animation) differs. ── */
+    .hero-scroll-cue-emoji {
+      display: inline-block;
+      font-size: 18px;
+      line-height: 1;
       animation: hero-scroll-cue-bounce 1.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
     }
     @keyframes hero-scroll-cue-bounce {
@@ -200,7 +201,7 @@
       70%, 100% { transform: translateY(0); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero-scroll-cue .ph { animation: none; }
+      .hero-scroll-cue-emoji { animation: none; }
     }
 
     /* ── Fade-up: hero entrance animation (plays once on load) ── */
@@ -664,21 +665,22 @@
       color: var(--muted);
       line-height: 1.5;
     }
+    /* Box removed per feedback — icon-only, no tile. Tap target (34px)
+       preserved. Hover now shifts to accent color instead of a
+       darker/lighter fill, since there's no longer a fill to darken. */
     .workflow-repo-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 34px;
       height: 34px;
-      background: rgba(58,184,168,0.12);
       color: var(--teal-ink);
-      border-radius: 10px;
       text-decoration: none;
       flex-shrink: 0;
-      transition: background 0.2s, transform 0.2s;
+      transition: color 0.2s, transform 0.2s;
     }
     .workflow-repo-button:hover {
-      background: rgba(58,184,168,0.2);
+      color: var(--accent-ink);
       transform: translateY(-1px);
     }
     /* Buttons-tier icon size (20px) — see Design Rules. */
@@ -716,29 +718,27 @@
 
     /* Substack/X/Threads keep their official brand SVG shapes (Phosphor has
        no Substack mark, and its only X/Twitter glyph is the old bird — see
-       project notes), but are recolored to the site's own palette instead
-       of each platform's brand color, so the three read as one consistent
-       family with every other icon tile on the site (same idea as
-       .hero-logo-link: neutral surface, text-color icon, accent on hover). */
+       project notes). Box/tile removed per feedback — icons now sit
+       directly above the platform name, recolored to text color with an
+       accent shift on hover (same idea as .hero-logo-link, just without
+       the background fill). SVG bumped 26px → 30px since a bare glyph
+       reads better slightly larger without a tile behind it. */
     .platform-icon-wrap {
       width: 52px;
       height: 52px;
-      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 12px;
-      background: var(--card);
       color: var(--text);
-      transition: background var(--ease-fast), color var(--ease-fast);
+      transition: color var(--ease-fast);
     }
     .platform-icon-wrap svg {
-      width: 26px;
-      height: 26px;
+      width: 30px;
+      height: 30px;
       fill: currentColor;
     }
     .platform-card:hover .platform-icon-wrap {
-      background: rgba(58, 184, 168, 0.12);
       color: var(--accent-ink);
     }
 
@@ -798,7 +798,8 @@
        Icon box reuses the site-wide .hero-logo-link component (already
        styled above, in the homepage hero's CSS) — only the hover-through
        state is added here since it's triggered by hovering the wrapping
-       link rather than the icon itself. */
+       link rather than the icon itself. Background/border removed to
+       match the no-box treatment applied to .hero-logo-link. */
     .linkedin-cta-wrap {
       display: inline-flex;
       align-items: center;
@@ -809,8 +810,6 @@
 
     .linkedin-cta-wrap:hover .hero-logo-link {
       transform: translateY(-3px);
-      background: var(--card-bg);
-      border-color: rgba(58, 184, 168, 0.3);
       color: var(--accent-ink);
     }
 
@@ -1245,7 +1244,7 @@
       <!-- Scroll to services — its own row, directly under email/LinkedIn -->
       <div class="hero-scroll-cue-row fade-up">
         <a class="hero-logo-link hero-scroll-cue" href="#services" title="Jump to Services" aria-label="Scroll to services">
-          <i class="ph ph-arrow-down" aria-hidden="true"></i>
+          <span class="hero-scroll-cue-emoji" aria-hidden="true">👇</span>
         </a>
       </div>
     </div>
