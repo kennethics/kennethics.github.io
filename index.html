@@ -443,7 +443,7 @@
       .home-section h2 { max-width: 100%; }
     }
 
-    /* ── Site footer ── */
+  /* ── Site footer ── */
 .site-footer {
   text-align: center;
   padding: 24px 20px clamp(32px, 6vw, 48px);
@@ -451,6 +451,16 @@
   color: var(--muted);
   border-top: 1px solid var(--border);
   margin-top: 20px;
+}
+
+.footer-verse {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--muted);
+  opacity: 0.75;
+  margin-top: 10px;
 }
 
 /* Reserve horizontal clearance on mobile so the fixed back-to-top
@@ -2081,6 +2091,7 @@
 
 <footer class="site-footer">
   <p>&copy; <span id="footer-year"></span> Kenneth S. — AI Automation Specialist | Business Analyst</p>
+  <p class="footer-verse">Jeremiah 29:11<br>"Just Keep Going"</p>
 </footer>
 
 <script src="assets/js/hero-card.js"></script>
