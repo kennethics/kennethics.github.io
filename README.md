@@ -6,32 +6,39 @@ Personal portfolio website for Kenneth Soriano — AI Automation Specialist, Bus
 
 ## Stack
 - Pure HTML5 + CSS3 + Vanilla JS
-- Single-page application (SPA) with anchor-based navigation
+- Single-page site with anchor-based navigation (no separate pages)
 - Hosted on GitHub Pages (no build tools)
 
 ## Structure
-| File | Description |
+| File / Folder | Description |
 |---|---|
-| index.html | Single-page site — Hero, About, Experience, Projects, Writing, Recommendations, Contact |
-| assets/css/shared.css | Global styles (variables, nav, cards, buttons, fade-in reveal) |
-| assets/css/hero-card.css | Hero flip-card component styles |
-| assets/js/theme.js | Light/dark theme toggle |
-| assets/js/interactions.js | Scroll reveal, nav float/solidify, back-to-top, mobile drawer |
-| assets/js/hero-card.js | Hero profile card flip interaction |
-| assets/js/legacy-redirect.js | Redirect map used by legacy page stubs (see below) |
+| `index.html` | The entire site — Hero, Services, About, Experience, Projects, Writing, Recommendations, Contact |
+| `assets/css/shared.css` | Global styles: variables, nav, drawer, cards, buttons, fade-in reveal, back-to-top |
+| `assets/css/hero-card.css` | Hero flip-card component styles |
+| `assets/css/background.css` | "Business Intelligence Canvas" decorative background layer (grid, glow, section motifs) |
+| `assets/js/theme.js` | Light/dark theme toggle, persisted via localStorage |
+| `assets/js/interactions.js` | Scroll reveal, nav float/solidify, back-to-top, mobile drawer |
+| `assets/js/hero-card.js` | Hero profile card flip interaction |
+| `assets/icons/favicon.svg` | Site favicon |
+| `sitemap.xml` | Lists only the homepage (the canonical, and only, page) |
+| `robots.txt` | Allows standard crawling, blocks known AI-training bots, points to `sitemap.xml` |
+| `LICENSE` | All Rights Reserved — reuse of design/code as a template elsewhere is prohibited |
 
 ## Sections (in-page anchors)
-`#hero` · `#about` · `#experience` · `#projects` · `#writing` · `#recommendations` · `#contact`
+`#hero` · `#services` · `#about` · `#experience` · `#projects` · `#writing` · `#recommendations` · `#contact`
 
-## Legacy pages
-`about.html`, `experience.html`, `projects.html`, `writing.html`, `recommendations.html`, and `contact.html`
-are retained as thin redirect stubs (meta-refresh + JS + canonical tag) that forward visitors and search
-engines to the matching anchor section on `index.html`. This preserves any external links/SEO equity
-pointing at the old multi-page URLs without duplicating content.
+Scroll-spy (in `index.html`'s inline script) keeps the nav active state and the URL hash in sync with whichever section is in view, using `IntersectionObserver` + `history.replaceState()` — no new history entries are created while scrolling.
+
+## Architecture note
+`index.html` maintains its own embedded `<style>` block for homepage-only styles (hero, sections, form, etc.) **in addition to** linking `shared.css` for cross-cutting styles (nav, cards, buttons, reveal animations). Any change to a shared component (nav, cards, buttons) must be made in `shared.css` only — it is not duplicated in `index.html`'s embedded styles.
 
 ## SEO
-- `sitemap.xml` — lists only `index.html` (the canonical page)
-- `robots.txt` — allows all crawling, points to `sitemap.xml`
+- `sitemap.xml` — lists only `index.html`, since that's the only page that exists
+- `robots.txt` — allows general crawling, explicitly disallows GPTBot, CCBot, Google-Extended, ClaudeBot, and anthropic-ai
+- Previously, this repo had six separate redirect-stub pages (`about.html`, `experience.html`, etc.) forwarding to `index.html` anchors, to preserve SEO equity from any external links to the old multi-page URLs. These were removed once Search Console confirmed the sitemap referencing them had never been successfully indexed, making the stubs unnecessary.
+
+## License
+All Rights Reserved — see `LICENSE`. This code and design may not be reused as a template or basis for another portfolio without written permission.
 
 ## Contact
 - Email: nethxkensoriano@gmail.com
