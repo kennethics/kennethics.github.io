@@ -175,6 +175,75 @@
       color: var(--accent-ink);
     }
 
+        /* Button-specific reset — .hero-logo-link was originally styled only
+       for <a> tags. Email/WhatsApp icons are now <button> triggers for
+       the contact-popover component below; LinkedIn stays an <a>. */
+    button.hero-logo-link {
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .hero-logo-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 50%;
+    }
+
+    /* ── Contact popover: category picker shown when clicking the Email or
+       WhatsApp icons. Injected into <body> at runtime by the
+       contact-popover script (near the end of <body>); hidden by default,
+       shown via the .open class the script toggles. ── */
+    .contact-popover {
+      position: fixed;
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      min-width: 210px;
+      padding: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 12px 32px var(--card-shadow);
+    }
+
+    .contact-popover.open {
+      display: flex;
+    }
+
+    .contact-popover-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 6px 10px 8px;
+    }
+
+    .contact-popover-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 10px;
+      border: none;
+      background: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--ease-fast), color var(--ease-fast);
+    }
+
+    .contact-popover-option:hover,
+    .contact-popover-option:focus-visible {
+      background: var(--card);
+      color: var(--accent-ink);
+      outline: none;
+    }
+
     /* Social-tier icon size (28px) — see Design Rules. Applies sitewide:
        Hero, Contact, and the recommendations-form LinkedIn badge all use
        this same value (a Hero-only 32px bump was tried and reverted per
@@ -1247,9 +1316,9 @@
       <div class="hero-logo-links fade-up">
 
 <!-- Email -->
-      <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
+      <button type="button" class="hero-logo-link" data-contact-trigger="email" aria-haspopup="menu" aria-expanded="false" title="Email Kenneth" aria-label="Email Kenneth">
         <i class="ph ph-envelope-simple" aria-hidden="true"></i>
-      </a>
+      </button>
 
       <!-- LinkedIn -->
       <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
@@ -2074,17 +2143,17 @@
 
   <div class="hero-logo-links fade-in">
     <!-- Email -->
-    <a class="hero-logo-link" href="mailto:nethxkensoriano@gmail.com" title="Email Kenneth" aria-label="Email Kenneth">
+    <button type="button" class="hero-logo-link" data-contact-trigger="email" aria-haspopup="menu" aria-expanded="false" title="Email Kenneth" aria-label="Email Kenneth">
       <i class="ph ph-envelope-simple" aria-hidden="true"></i>
-    </a>
+    </button>
     <!-- LinkedIn -->
     <a class="hero-logo-link" href="https://linkedin.com/in/kennethsorianova" target="_blank" title="LinkedIn" aria-label="View LinkedIn profile">
       <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
     </a>
     <!-- WhatsApp -->
-    <a class="hero-logo-link" href="https://wa.me/639380757956" target="_blank" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
+    <button type="button" class="hero-logo-link" data-contact-trigger="whatsapp" aria-haspopup="menu" aria-expanded="false" title="WhatsApp" aria-label="Message Kenneth on WhatsApp">
       <i class="ph ph-whatsapp-logo" aria-hidden="true"></i>
-    </a>
+    </button>
     <!-- GitHub -->
     <a class="hero-logo-link" href="https://github.com/kennethics" target="_blank" title="GitHub" aria-label="View GitHub profile">
       <i class="ph ph-github-logo" aria-hidden="true"></i>
@@ -2435,6 +2504,174 @@
 <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
   <i class="ph ph-arrow-up" aria-hidden="true"></i>
 </button>
+
+<script>
+(() => {
+  // Contact topic picker for the hero Email icon, contact Email icon,
+  // and contact WhatsApp icon.
+  const EMAIL = 'nethxkensoriano@gmail.com';
+  const WHATSAPP_NUMBER = '60146630493';
+  const MESSAGE_INTRO = "Hi Kenneth, I found your portfolio and I'd like to connect regarding";
+
+  const CONTACT_TOPICS = [
+    { key: 'ai-automations', label: 'AI & Automations', phrase: 'AI & Automations' },
+    { key: 'opportunities', label: 'Opportunities', phrase: 'Opportunities' },
+    { key: 'projects', label: 'Projects', phrase: 'Projects' },
+    { key: 'others', label: 'Others', phrase: 'something else' },
+  ];
+
+  const triggers = document.querySelectorAll('[data-contact-trigger]');
+  if (!triggers.length) return;
+
+  const getMessage = (topic) => `${MESSAGE_INTRO} ${topic.phrase}.`;
+  const getEmailSubject = (topic) => `Portfolio connection - ${topic.label}`;
+  const getEmailBody = (topic) => `${getMessage(topic)}\n\n`;
+  const getContactUrl = (channel, topic) => {
+    const message = getMessage(topic);
+
+    if (channel === 'whatsapp') {
+      return `https://wa.me/${639380757956}?text=${encodeURIComponent(message)}`;
+    }
+
+    return `mailto:${EMAIL}?subject=${encodeURIComponent(getEmailSubject(topic))}&body=${encodeURIComponent(getEmailBody(topic))}`;
+  };
+
+  const popover = document.createElement('div');
+  popover.id = 'contact-topic-popover';
+  popover.className = 'contact-popover';
+  popover.setAttribute('role', 'menu');
+  popover.setAttribute('aria-label', 'Choose a contact topic');
+  document.body.appendChild(popover);
+
+  let activeTrigger = null;
+
+  const buildOptions = (channel) => {
+    popover.innerHTML = '';
+
+    const label = document.createElement('div');
+    label.className = 'contact-popover-label';
+    label.textContent = channel === 'whatsapp' ? 'WhatsApp about' : 'Email about';
+    popover.appendChild(label);
+
+    CONTACT_TOPICS.forEach((topic) => {
+      const option = document.createElement('a');
+      option.className = 'contact-popover-option';
+      option.setAttribute('role', 'menuitem');
+      option.href = getContactUrl(channel, topic);
+      option.textContent = topic.label;
+
+      if (channel === 'whatsapp') {
+        option.target = '_blank';
+        option.rel = 'noopener noreferrer';
+      }
+
+      option.addEventListener('click', () => {
+        closePopover({ restoreFocus: false });
+      });
+      popover.appendChild(option);
+    });
+  };
+
+  // Positions the popover relative to its trigger. Clamped horizontally to
+  // stay inside the viewport, and flips ABOVE the trigger when there isn't
+  // enough room below — needed because the Contact-section icons sit close
+  // to the page bottom.
+  const positionPopover = (trigger) => {
+    const rect = trigger.getBoundingClientRect();
+    const popW = popover.offsetWidth || 230;
+
+    let left = rect.left;
+    if (left + popW > window.innerWidth - 12) {
+      left = window.innerWidth - popW - 12;
+    }
+    left = Math.max(left, 12);
+
+    const popH = popover.offsetHeight;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const fitsAbove = rect.top > popH + 12;
+
+    const top = spaceBelow < popH + 12 && fitsAbove
+      ? rect.top - popH - 8
+      : rect.bottom + 8;
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${Math.max(top, 12)}px`;
+  };
+
+  const openPopover = (trigger) => {
+    const channel = trigger.getAttribute('data-contact-trigger');
+    if (channel !== 'email' && channel !== 'whatsapp') return;
+
+    buildOptions(channel);
+    popover.classList.add('open');
+    positionPopover(trigger);
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.setAttribute('aria-controls', popover.id);
+    activeTrigger = trigger;
+    popover.querySelector('.contact-popover-option')?.focus();
+  };
+
+  const closePopover = ({ restoreFocus = true } = {}) => {
+    if (!activeTrigger) return;
+    const trigger = activeTrigger;
+    popover.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+    activeTrigger = null;
+    if (restoreFocus) trigger.focus();
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (activeTrigger === trigger) {
+        closePopover();
+        return;
+      }
+      activeTrigger?.setAttribute('aria-expanded', 'false');
+      openPopover(trigger);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (activeTrigger && !popover.contains(e.target)) {
+      closePopover({ restoreFocus: false });
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!activeTrigger) return;
+
+    if (e.key === 'Escape') {
+      closePopover();
+      return;
+    }
+
+    // ── Focus trap ── same pattern as initNavDrawer() in interactions.js.
+    if (e.key === 'Tab') {
+      const focusables = popover.querySelectorAll('.contact-popover-option');
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  window.addEventListener('scroll', () => {
+    if (activeTrigger) closePopover({ restoreFocus: false });
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (activeTrigger) closePopover({ restoreFocus: false });
+  }, { passive: true });
+})();
+</script>
 
 </body>
 </html>
